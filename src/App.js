@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Help form './help.js'
+import Help from './help.js'
 
 class App extends Component {
   render() {
@@ -9,7 +9,7 @@ class App extends Component {
         <div className="App-header">
           <h2>Welcome to React</h2>
         </div>
-        <Help>
+        <Help />
       </div>
     );
   }
