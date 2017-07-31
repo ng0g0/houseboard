@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 class Help extends Component {
   render() { 
     return (
-       <p> Abount </p>
+       <p> About House Board </p>
     );
   }
 }
