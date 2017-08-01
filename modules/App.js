@@ -1,20 +1,19 @@
-import React from 'react'
-import { Link } from 'react-router'
-import { IndexLink } from 'react-router'
-import Home from './Home'
+import React, {PropTypes} from 'react';
+import Navigation from './NavLink';
 
-export default React.createClass({
+class App extends React.Component {
   render() {
     return (
-      <div>
-        <h1>React Router Tutorial</h1>
-        <ul role="nav">
-			<li><IndexLink to="/" activeClassName="active">Home</IndexLink></li>
-			<li><Link to="/about" activeClassName="active">About</Link></li>
-			<li><Link to="/repos" activeClassName="active">Repos</Link></li>
-        </ul>
-		{this.props.children || <Home/>}
+      <div className="container-fluid">
+        <Navigation />
+        {this.props.children}
       </div>
-    )
+    );
   }
-})
+}
+
+App.propTypes = {
+  children: PropTypes.object.isRequired
+};
+
+export default App;

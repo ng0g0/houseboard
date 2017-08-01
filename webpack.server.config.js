@@ -10,6 +10,16 @@ module.exports = {
   },
 
   target: 'node',
+  
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'API_HOST': JSON.stringify('http://localhost:8080')
+      } 
+    })
+  ],
 
   // keep node_module paths out of the bundle
   externals: fs.readdirSync(path.resolve(__dirname, 'node_modules')).concat([

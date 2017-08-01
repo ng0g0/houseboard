@@ -1,10 +1,17 @@
 import React from 'react'
 import { render } from 'react-dom'
+import { Provider } from 'react-redux';
+import configureStore from './store/configureStore';
 import { Router, browserHistory } from 'react-router'
-// import routes and pass them into <Router/>
 import routes from './modules/routes'
+import reducers from './reducers'
+
+const store = configureStore();
 
 render(
-  <Router routes={routes} history={browserHistory}/>,
-  document.getElementById('app')
+	<Provider store={store}>
+		<Router routes={routes} history={browserHistory}/>
+	</Provider>
+	,document.getElementById('app')
+  
 )
