@@ -54,35 +54,14 @@
 
 	var _reactRouter = __webpack_require__(184);
 
-	var _App = __webpack_require__(247);
+	var _routes = __webpack_require__(247);
 
-	var _App2 = _interopRequireDefault(_App);
-
-	var _About = __webpack_require__(249);
-
-	var _About2 = _interopRequireDefault(_About);
-
-	var _Repos = __webpack_require__(250);
-
-	var _Repos2 = _interopRequireDefault(_Repos);
-
-	var _Home = __webpack_require__(248);
-
-	var _Home2 = _interopRequireDefault(_Home);
+	var _routes2 = _interopRequireDefault(_routes);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	(0, _reactDom.render)(_react2.default.createElement(
-	  _reactRouter.Router,
-	  { history: _reactRouter.browserHistory },
-	  _react2.default.createElement(
-	    _reactRouter.Route,
-	    { path: '/', component: _App2.default },
-	    _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/repos', component: _Repos2.default }),
-	    _react2.default.createElement(_reactRouter.Route, { path: '/about', component: _About2.default })
-	  )
-	), document.getElementById('app'));
+	(0, _reactDom.render)(_react2.default.createElement(_reactRouter.Router, { routes: _routes2.default, history: _reactRouter.browserHistory }), document.getElementById('app'));
+	// import routes and pass them into <Router/>
 
 /***/ }),
 /* 1 */
@@ -27866,6 +27845,52 @@
 
 	'use strict';
 
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(184);
+
+	var _App = __webpack_require__(248);
+
+	var _App2 = _interopRequireDefault(_App);
+
+	var _About = __webpack_require__(250);
+
+	var _About2 = _interopRequireDefault(_About);
+
+	var _Repos = __webpack_require__(251);
+
+	var _Repos2 = _interopRequireDefault(_Repos);
+
+	var _Repo = __webpack_require__(253);
+
+	var _Repo2 = _interopRequireDefault(_Repo);
+
+	var _Home = __webpack_require__(249);
+
+	var _Home2 = _interopRequireDefault(_Home);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	module.exports = _react2.default.createElement(
+	  _reactRouter.Route,
+	  { path: '/', component: _App2.default },
+	  _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
+	  _react2.default.createElement(
+	    _reactRouter.Route,
+	    { path: '/repos', component: _Repos2.default },
+	    _react2.default.createElement(_reactRouter.Route, { path: '/repos/:userName/:repoName', component: _Repo2.default })
+	  ),
+	  _react2.default.createElement(_reactRouter.Route, { path: '/about', component: _About2.default })
+	);
+
+/***/ }),
+/* 248 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
@@ -27876,7 +27901,7 @@
 
 	var _reactRouter = __webpack_require__(184);
 
-	var _Home = __webpack_require__(248);
+	var _Home = __webpack_require__(249);
 
 	var _Home2 = _interopRequireDefault(_Home);
 
@@ -27930,7 +27955,7 @@
 	});
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27957,7 +27982,7 @@
 	});
 
 /***/ }),
-/* 249 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27984,7 +28009,92 @@
 	});
 
 /***/ }),
-/* 250 */
+/* 251 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _NavLink = __webpack_require__(252);
+
+	var _NavLink2 = _interopRequireDefault(_NavLink);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+	  displayName: 'Repos',
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      null,
+	      _react2.default.createElement(
+	        'h2',
+	        null,
+	        'Repos'
+	      ),
+	      _react2.default.createElement(
+	        'ul',
+	        null,
+	        _react2.default.createElement(
+	          'li',
+	          null,
+	          _react2.default.createElement(
+	            _NavLink2.default,
+	            { to: '/repos/reactjs/react-router' },
+	            'React Router'
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'li',
+	          null,
+	          _react2.default.createElement(
+	            _NavLink2.default,
+	            { to: '/repos/facebook/react' },
+	            'React'
+	          )
+	        )
+	      ),
+	      this.props.children
+	    );
+	  }
+	});
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(184);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _react2.default.createClass({
+	  displayName: 'NavLink',
+	  render: function render() {
+	    return _react2.default.createElement(_reactRouter.Link, _extends({}, this.props, { activeClassName: 'active' }));
+	  }
+	});
+
+/***/ }),
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28000,7 +28110,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = _react2.default.createClass({
-	  displayName: 'Repos',
+	  displayName: 'Repo',
 	  render: function render() {
 	    return _react2.default.createElement(
 	      'div',
