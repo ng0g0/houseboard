@@ -4,16 +4,16 @@
   "description": "Residence Board Managment",
   "main": "index.js",
   "scripts": {
-	"start": "if-env NODE_ENV=dev && npm run start || npm run start:prod",
-	"start:dev": "webpack-dev-server --inline --content-base public/ --history-api-fallback",
-	"start:prod": "webpack && node server.js"
+    "start": "webpack && node server.js",
+	"start:dev": "webpack-dev-server --inline --content-base public/ --history-api-fallback"
 	},
   "author": "Low Intellect Ltd.",
   "license": "ISC",
   "dependencies": {
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-	"react-router": "^2.7.0"
+	"react-router": "^2.7.0",
+	"webpack": "^1.12.9"
   },
   "devDependencies": {
     "babel-core": "^6.5.1",
