@@ -1,3 +1,5 @@
+// REQUEST index.js
+
 export default opts => {
     return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();

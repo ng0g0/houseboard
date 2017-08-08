@@ -2,14 +2,26 @@
 
 let express = require('express'),
     compression = require('compression'),
-    //products = require('./api/products'),
     app = express();
+//    session  = require('express-session');
 	
 var db = require('./api/queries');
 
 app.set('port', process.env.PORT || 80);
-
 app.use(compression());
+//app.use(session({
+//    secret: '2C44-4D44-WppQ38S',
+//    resave: true,
+//    saveUninitialized: true
+//}));
+
+//var auth = function(req, res, next) {
+//  if (req.session && req.session.user === "amy" && req.session.admin)
+//    return next();
+//  else
+//    return res.sendStatus(401);
+//}
+
 
 app.use('/', express.static(__dirname + '/www'));
 
@@ -28,31 +40,33 @@ app.all('*', function (req, res, next) {
     }
 });
 
-//app.get('/object/:id', products.findObjectMaster);
-//app.get('/object/', products.findObjects);
-app.get('/api/object/:id', db.getSinglePuppy);
-//GET('/products/find/:objId', req => db.findObjects(req.params));
+app.get('/api/block/:id', db.getObject);
+//app.get('/login', function (req, res) {
+//  if (!req.query.username || !req.query.password) {
+//    res.send('login failed');    
+    
+//  } else if(req.query.username === "amy" || req.query.password === "amyspassword") {
+//    req.session.user = "amy";
+//    req.session.userid = 0;
+//    req.session.admin = true;
+//    res.redirect('/');
+//  }
+//});
 
+// Logout endpoint
+//app.get('/logout', function (req, res) {
+//  req.session.destroy();
+//  res.send("logout success!");
+//});
 
-
-// Generic GET handler;
-function GET(url, handler) {
-    app.get(url, (req, res) => {
-        handler(req)
-            .then(data => {
-                res.json({
-                    success: true,
-                    data
-                });
-            })
-            .catch(error => {
-                res.json({
-                    success: false,
-                    error: error.message || error
-                });
-            });
-    });
-}
+app.route('/api/blocks')
+  .get(function (req, res) {
+    res.send('Get a random book');
+  })
+  .post(db.addBlock)
+  .put( function (req, res) {
+    res.send('Update the book');
+  });
 
 app.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));

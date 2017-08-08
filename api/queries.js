@@ -1,4 +1,5 @@
 var promise = require('bluebird');
+var session  = require('express-session');
 
 var options = {
   // Initialization Options
@@ -10,30 +11,44 @@ var connectionString = 'postgres://elink:elink123@192.168.56.101/rbm';
 
 var db = pgp(connectionString);
 
-function getSinglePuppy(req, res, next) {
-	
+function getObject(req, res, next) {
+
+  
   var pupID = parseInt(req.params.id);
- 
   let countSql = "SELECT COUNT(*) from RBM_OBJECTS o where  o.objmaster = $1";
-  var sql = "select o.objid,o.OBJTYPE,o.objmaster,ot.typename, otd.OBJTYPEDETNAME, od.value , otd.OBJTYPEDETTYPE " +
-	    " from RBM_OBJECTS o, RBM_OBJ_DETAILS od,	RBM_OBJECT_TYPE ot,	RBM_OBJ_TYPE_DET otd " +
-	    " where o.OBJID = od.OBJID and o.OBJTYPE = ot.OBJTYPEID and od.OBJTYPEDETID =otd.OBJTYPEDETID " +
+  var sql = "select o.objid,o.OBJTYPE,o.objmaster,ot.typename " +
+            "  from RBM_OBJECTS o, RBM_OBJECT_TYPE ot " +
+            " where o.OBJTYPE = ot.OBJTYPEID " +
 	    " and o.objmaster = $1";
+    
   db.one(countSql, pupID)
     .then(result => {
       let total = parseInt(result.count);		
-	  db.one(sql, pupID)
+	  db.any(sql, pupID)
 	    .then(products => {
            return res.status(200)
-					.json({"total": total, "products": products});
+            .json({"total": total, "blocks": products});
                 })
                 .catch(next);
-        })
-        .catch(next);
+    })
+    .catch(next);
+}
+
+function addBlock(req, res, next) {
+    db.none('INSERT INTO rbm_objects (objtype, objmaster, objactive)' +
+      'VALUES( 1, 0, 1)')
+    .then(function () {
+      res.status(200)
+       .json({
+          message: 'Inserted Block'
+        });
+    })
+    .catch(next);
 }
 
 module.exports = {
 
-  getSinglePuppy: getSinglePuppy
+  getObject: getObject,
+  addBlock: addBlock
 
 };

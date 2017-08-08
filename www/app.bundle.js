@@ -60,7 +60,11 @@
 	
 	var _Header2 = _interopRequireDefault(_Header);
 	
-	var _productService = __webpack_require__(186);
+	var _BlockList = __webpack_require__(186);
+	
+	var _BlockList2 = _interopRequireDefault(_BlockList);
+	
+	var _productService = __webpack_require__(188);
 	
 	var productService = _interopRequireWildcard(_productService);
 	
@@ -73,10 +77,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	//import ProductList from './components/ProductList';
-	//import Paginator from './components/Paginator';
-	//import SearchBar from './components/SearchBar';
-	//import RangeSlider from './components/RangeSlider';
 	
 	var App = function (_React$Component) {
 	    _inherits(App, _React$Component);
@@ -87,7 +87,7 @@
 	        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 	
 	        _this.state = {
-	            products: [],
+	            blocks: [],
 	            total: 0
 	        };
 	        return _this;
@@ -96,67 +96,53 @@
 	    _createClass(App, [{
 	        key: 'componentDidMount',
 	        value: function componentDidMount() {
-	            this.findObjects();
+	            this.setState({ userid: 0 });
+	            this.findUserBuildings(0);
 	        }
 	    }, {
-	        key: 'searchKeyChangeHandler',
-	        value: function searchKeyChangeHandler(searchKey) {
-	            this.setState({ searchKey: searchKey, page: 1 }, this.findProducts);
+	        key: 'addBlock',
+	        value: function addBlock() {
+	            productService.addBlock();
+	            this.findUserBuildings(0);
 	        }
 	    }, {
-	        key: 'rangeChangeHandler',
-	        value: function rangeChangeHandler(values) {
-	            this.setState({ min: values[0], max: values[1], page: 1 }, this.findProducts);
+	        key: 'onOpenObject',
+	        value: function onOpenObject(objectid) {
+	            this.setState({ userid: objectid });
+	            this.findUserBuildings(objectid);
 	        }
 	    }, {
-	        key: 'findObjects',
-	        value: function findObjects() {
+	        key: 'findUserBuildings',
+	        value: function findUserBuildings(id) {
 	            var _this2 = this;
 	
-	            productService.findObjectId({ id: 1 }).then(function (data) {
+	            productService.findBlockList({ id: id }).then(function (data) {
 	                _this2.setState({
-	                    products: data.products,
+	                    blocks: data.blocks,
 	                    total: data.total
 	                });
 	            });
 	        }
 	    }, {
-	        key: 'findProducts',
-	        value: function findProducts() {
-	            //    productService.findAll({search: this.state.searchKey, min: this.state.min, max: this.state.max, page: this.state.page})
-	            //        .then(data => {
-	            //            this.setState({
-	            //                products: data.products,
-	            //                page: data.page,
-	            //                pageSize: data.pageSize,
-	            //                total: data.total
-	            //            });
-	            //       });
-	        }
-	    }, {
-	        key: 'nextPageHandler',
-	        value: function nextPageHandler() {
-	            var p = this.state.page + 1;
-	            this.setState({ page: p }, this.findProducts);
-	        }
-	    }, {
-	        key: 'prevPageHandler',
-	        value: function prevPageHandler() {
-	            var p = this.state.page - 1;
-	            this.setState({ page: p }, this.findProducts);
-	        }
-	    }, {
 	        key: 'render',
 	        value: function render() {
-	            console.log(this.state);
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                _react2.default.createElement(_Header2.default, { text: 'Residence Board Managment' }),
+	                _react2.default.createElement(_Header2.default, { text: 'Building Board Managment' }),
 	                _react2.default.createElement(
 	                    'div',
-	                    { className: 'slds-grid slds-p-top--small slds-grid--align-center' },
-	                    'TEXT'
+	                    { className: 'slds-grid slds-p-top--small slds-grid--align-right' },
+	                    _react2.default.createElement(
+	                        'button',
+	                        { type: 'button', onClick: this.addBlock.bind(this) },
+	                        'Add Block'
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    'div',
+	                    null,
+	                    _react2.default.createElement(_BlockList2.default, { blocks: this.state.blocks, onOpenObject: this.onOpenObject.bind(this) })
 	                )
 	            );
 	        }
@@ -168,14 +154,6 @@
 	;
 	
 	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById("main"));
-	
-	//
-	//<div className="slds-col">
-	//	<SearchBar searchKey={this.state.searchKey} onChange={this.searchKeyChangeHandler.bind(this)}/>                      
-	//<RangeSlider defaultValue={[0, 26]} min={0} max={26} step={.5} withBars={true} onChange={this.rangeChangeHandler.bind(this)}/>
-	//</div>
-	//<Paginator page={this.state.page} pageSize={this.state.pageSize} total={this.state.total} onPrevious={this.prevPageHandler.bind(this)} onNext={this.nextPageHandler.bind(this)}/>
-	//<ProductList products={this.state.products} total={this.state.total} onSearchKeyChange={this.searchKeyChangeHandler.bind(this)}/>
 
 /***/ }),
 /* 1 */
@@ -22341,14 +22319,146 @@
 /* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _BlocktListItem = __webpack_require__(187);
+	
+	var _BlocktListItem2 = _interopRequireDefault(_BlocktListItem);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var BlockList = function (_React$Component) {
+	  _inherits(BlockList, _React$Component);
+	
+	  function BlockList() {
+	    _classCallCheck(this, BlockList);
+	
+	    return _possibleConstructorReturn(this, (BlockList.__proto__ || Object.getPrototypeOf(BlockList)).apply(this, arguments));
+	  }
+	
+	  _createClass(BlockList, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      var listItems = this.props.blocks.map(function (blocks) {
+	        return _react2.default.createElement(_BlocktListItem2.default, { key: blocks.objid, block: blocks, onOpenObject: _this2.props.onOpenObject });
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'slds-grid slds-wrap slds-m-horizontal--large' },
+	        listItems
+	      );
+	    }
+	  }]);
+	
+	  return BlockList;
+	}(_react2.default.Component);
+	
+	;
+	
+	exports.default = BlockList;
+
+/***/ }),
+/* 187 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.findObjectId = exports.findObjects = exports.findObjectMaster = undefined;
 	
-	var _request = __webpack_require__(187);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var BlocktListItem = function (_React$Component) {
+	    _inherits(BlocktListItem, _React$Component);
+	
+	    function BlocktListItem() {
+	        _classCallCheck(this, BlocktListItem);
+	
+	        return _possibleConstructorReturn(this, (BlocktListItem.__proto__ || Object.getPrototypeOf(BlocktListItem)).apply(this, arguments));
+	    }
+	
+	    _createClass(BlocktListItem, [{
+	        key: "linkHandler",
+	        value: function linkHandler(id, e) {
+	            this.props.onOpenObject(id);
+	            return false;
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            var link = void 0;
+	            link = "/block/" + this.props.block.objid;
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "slds-col slds-p-around--xx-small slds-small-size--1-of-1 slds-medium-size--1-of-2 slds-large-size--1-of-4",
+	                    key: this.props.block.objid },
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "slds-card slds-card--narrow" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "slds-media__figure" },
+	                        _react2.default.createElement(
+	                            "a",
+	                            { href: "#", onClick: this.linkHandler.bind(this, this.props.block.objid) },
+	                            _react2.default.createElement("img", { src: "images/block.png" })
+	                        )
+	                    )
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return BlocktListItem;
+	}(_react2.default.Component);
+	
+	;
+	
+	exports.default = BlocktListItem;
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.addBlock = exports.findBlockList = undefined;
+	
+	var _request = __webpack_require__(189);
 	
 	var _request2 = _interopRequireDefault(_request);
 	
@@ -22356,34 +22466,22 @@
 	
 	var baseURL = "";
 	
-	var findObjectMaster = exports.findObjectMaster = function findObjectMaster() {
-	    return (0, _request2.default)({ url: baseURL + "/object/" + id }).then(function (data) {
-	        return data = JSON.parse(data);
-	    });
-	};
-	
-	var findObjects = exports.findObjects = function findObjects(values) {
-	    var qs = "";
-	    if (values) {
-	        qs = Object.keys(values).map(function (key) {
-	            return encodeURIComponent(key) + '=' + encodeURIComponent(values[key]);
-	        }).join('&');
-	        qs = "?" + qs;
-	    }
-	    return (0, _request2.default)({ url: baseURL + "/object" + qs }).then(function (data) {
-	        return data = JSON.parse(data);
-	    });
-	};
-	
-	var findObjectId = exports.findObjectId = function findObjectId(req) {
+	var findBlockList = exports.findBlockList = function findBlockList(req) {
 	    var id = parseInt(req.id);
-	    return (0, _request2.default)({ url: baseURL + "/api/object/" + id }).then(function (data) {
+	    return (0, _request2.default)({ url: baseURL + "/api/block/" + id }).then(function (data) {
+	        return data = JSON.parse(data);
+	    });
+	};
+	
+	var addBlock = exports.addBlock = function addBlock() {
+	    console.log();
+	    return (0, _request2.default)({ url: baseURL + "/api/blocks", method: "POST" }).then(function (data) {
 	        return data = JSON.parse(data);
 	    });
 	};
 
 /***/ }),
-/* 187 */
+/* 189 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -22391,6 +22489,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	
+	// REQUEST index.js
 	
 	exports.default = function (opts) {
 	    return new Promise(function (resolve, reject) {
