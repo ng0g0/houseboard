@@ -1,3 +1,13 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Aug 21, 2017, 4:18:16 PM
+    Author     : cpt2geh
+*/
+
 a:link,
 a:visited,
 a:hover {
@@ -143,3 +153,232 @@ input[type="search"]:focus {
 .slds-card img {
     margin: 4px;
 }
+
+.loader {
+  font-size: 10px;
+  margin: 50px auto;
+  text-indent: -9999em;
+  width: 11em;
+  height: 11em;
+  border-radius: 50%;
+  background: #808080;
+  background: -moz-linear-gradient(left, #808080 10%, rgba(128,128,128, 0) 42%);
+  background: -webkit-linear-gradient(left, #808080 10%, rgba(128,128,128, 0) 42%);
+  background: -o-linear-gradient(left, #808080 10%, rgba(128,128,128, 0) 42%);
+  background: -ms-linear-gradient(left, #808080 10%, rgba(128,128,128, 0) 42%);
+  background: linear-gradient(to right, #808080 10%, rgba(128,128,128, 0) 42%);
+  position: relative;
+  -webkit-animation: load3 1.4s infinite linear;
+  animation: load3 1.4s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.loader:before {
+  width: 50%;
+  height: 50%;
+  background: #808080;
+  border-radius: 100% 0 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+}
+.loader:after {
+  background: #ffffff;
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  content: '';
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+@-webkit-keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration:none;
+  color:#1ab188;
+  transition:.5s ease;
+  &:hover {
+    color: #1ab160;
+  }
+}
+
+#main > div > div.loginform {
+  background:#145A32;
+  padding: 40px;
+  max-width:600px;
+  margin:40px auto;
+  border-radius:4px;
+  box-shadow:0 4px 10px 4px #13232f;
+  font-family: 'Titillium Web', sans-serif;
+
+}
+
+.tab-group {
+   list-style:none;
+  padding:0;
+  margin:0 0 40px 0;
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+.tab {
+    display:block;
+    text-decoration:none;
+    padding:15px;
+    color:#a0b3b0;
+    font-size:20px;
+    float:left;
+    width:50%;
+    text-align:center;
+    cursor:pointer;
+    transition:.5s ease;
+    background:#a0b3b0;
+    &:hover {
+      background:#1ab160;
+      color:#ffffff;
+    }
+}  
+.tab.active {
+    background:#1ab188;
+    color:#ffffff;
+  }
+  
+h1 {
+  text-align:center;
+  color:#ffffff;
+  font-weight:300;
+  margin:0 0 40px;
+}
+
+label {
+  color:#ffffff;
+  transition:all 0.25s ease;
+  -webkit-backface-visibility: hidden;
+  pointer-events: none;
+  font-size:22px;
+  .req {
+  	margin:2px;
+  	color:#1ab188;
+  }
+}
+
+label.active {
+  transform:translateY(50px);
+  left:2px;
+  font-size:14px;
+  .req {
+    opacity:0;
+  }
+}
+
+label.highlight {
+	color:#ffffff;
+}
+
+input, textarea {
+  font-size:22px;
+  display:block;
+  width:100%;
+  height:100%;
+  padding:5px 10px;
+  background:none;
+  background-image:none;
+  border:1px solid #a0b3b0;
+  color:#ffffff;
+  border-radius:0;
+  transition:border-color .25s ease, box-shadow .25s ease;
+  &:focus {
+		outline:0;
+		border-color:#1ab188;
+  }
+}
+
+
+#signup > div.field-wrap, #login > div.field-wrap {
+  position:relative;
+  margin-bottom:40px;
+}
+
+
+#signup > div.top-row, #login > div.top-row {
+    &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  > div {
+    float:left;
+    width:48%;
+    margin-right:4%;
+    &:last-child { 
+      margin:0;
+    }
+  }
+}
+
+#login > button, #signup >  button, #forgot > div > button 
+{
+    border:0;
+    outline:none;
+    border-radius:0;
+    padding:15px 0;
+    font-size:2rem;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    background:#1ab188;
+    color:#ffffff;
+    transition:all.5s ease;
+    -webkit-appearance: none;
+        &:hover, &:focus {
+        background:#1ab160;
+    }
+}
+
+
+
+#login > button-block, #signup >  button-block {
+  display:block;
+  width:100%;
+}
+
+.forgot {
+  margin-top:-20px;
+  text-align:right;
+}
+
+
+  

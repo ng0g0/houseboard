@@ -1,12 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 
 import Header from './components/Header';
 import BlockList from './components/BlockList';
+import block from './services/block';
+import LoginInfo from './components/info';
+import { connect } from 'react-redux';
+import Login from './components/login';
+
 
 import axios from 'axios';
 const baseURL = "";
-
 
 class App extends React.Component {
     constructor(props) {
@@ -16,22 +20,16 @@ class App extends React.Component {
             blocks: [],
             total: 0
 //            pollInterval: 2000
+          ,setupComplete: false
         };
     }
     componentDidMount() {
-        this.setState({userid: 0});
-        this.findUserBuildings(0);
+      this.setState({userid: 0});
+      this.findUserBuildings(0);
 //        setInterval(this.findUserBuildings(this.state.userid), this.state.pollInterval);
     }
     addBlock() {
-      const url = baseURL + "/api/block";
-      axios.post(url)
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+      axios.all([block.AddObjectBlock()]);
       this.findUserBuildings(0);
     }
     
@@ -42,35 +40,60 @@ class App extends React.Component {
     
     findUserBuildings(id) {
       let that = this;
-      console.log(id);
-      const url = baseURL + "/api/block/" + id;
-      axios.get(url)
-        .then(function (response) {
-          console.log(response);
-          that.setState({
-                    blocks: response.data.blocks,
-                    total: response.data.total
-                });
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      axios.all([block.getblockObject(id)])
+        .then(function(response) {
+          that.setState(
+            { 
+              blocks: response[0].data.blocks, 
+               total: response[0].data.total, 
+               setupComplete:true 
+             }
+          );
+        });    
     }
     
+    renderMainSent() {
+      if (this.props.emailsent) {
+      return(<div> Password was sent to your email! </div>
+      );
+      }
+    }
+    
+    renderContent() {
+      if ( this.state.setupComplete ) {
+          return (<div className='container'>
+            <BlockList 
+              blocks={this.state.blocks} 
+              onOpenObject={this.onOpenObject.bind(this)} 
+              onAddObject={this.addBlock.bind(this)}/>
+            </div>);
+      } else {
+        return (<div className='loader'> Loading...</div> );
+        }
+    }
 
     render() {
-        return (
-            <div>
-                <Header text="Building Board Managment"/>
-                <div>
-                <BlockList 
-                  blocks={this.state.blocks} 
-                  onOpenObject={this.onOpenObject.bind(this)} 
-                  onAddObject={this.addBlock.bind(this)}/>
-              </div>
-            </div>
-        );
+      if (this.props.isLoggedIn) {
+        return (<div>
+          <Header text="Building Board Managment"/>
+          <LoginInfo />
+          {this.renderContent()}
+        </div>);
+      } else {
+        return (<div>
+          <Header text="Building Board Managment"/>
+          {this.renderMainSent()}
+          <Login />
+	</div>);
+        }
     }
-};
+}
 
-ReactDOM.render(<App/>, document.getElementById("main"));
+    const mapStateToProps = (state, ownProps) => {
+      return {
+        isLoggedIn: state.auth.isLoggedIn,
+        emailsent: state.auth.emailsent
+      };
+    };
+
+export default connect(mapStateToProps)(App);
