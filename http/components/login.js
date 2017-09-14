@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import { login, signin, forgot } from '../actions/auth';
 //import './login.css';
 
+//import bcrypt  from 'bcrypt-nodejs';
+
 const passTab = 2;
 const singTab = 1;
 const loginTab = 0;
@@ -22,31 +24,34 @@ class Login extends Component {
         password: '',
         firstname: '',
         lastname: '',
-        tab: loginTab 
+        tab: loginTab
       };
       this.handleInputChange = this.handleInputChange.bind(this);
       this.tabchange = this.tabchange.bind(this);
   }
 
+  
     userLogin (e) {
+      
+      console.log(this.state.username);
       this.props.onLogin(this.state.username, this.state.password);
       e.preventDefault();
     }
     userSignup (e) {
-      this.props.onSign(this.state.username, this.state.firstname, this.state.lastname);
+      console.log(this.state.username);
+      var password = '123';
+      this.props.onSign(this.state.username, this.state.firstname, this.state.lastname, password);
       e.preventDefault();
-      this.setState({
-        username: '',
-        firstname: '',
-        lastname: ''
-      });
+     // this.setState({
+     //   username: '',
+     //   firstname: '',
+     //   lastname: ''
+     // });
     }
     
 
     tabchange(e) {
       var name = e.target.getAttribute('name');
-      console.log("KUR");
-      console.log(name);
       var value = loginTab;
       if (name === "SignIn") {
         value = singTab;
@@ -93,8 +98,12 @@ class Login extends Component {
       );
     }
     renderLogin() {
+      console.log(this.props.message);
       return (<div id="login"> 
           <h1>Login</h1>
+          <div className="field-wrap">
+            <label> {this.props.message}</label>
+          </div>
           <div className="field-wrap">
             <label> Username<span className="req">*</span></label>
             <input type="text" required autoComplete="off" name="username" value={this.state.username} onChange={this.handleInputChange}/>
@@ -108,8 +117,12 @@ class Login extends Component {
       </div>  );
     }
     renderSignin() {
+      console.log(this.props.message);
       return(<div id="signup"> 
           <h1>Sign Up for Free</h1>
+          <div className="field-wrap">
+            <label> {this.props.message}</label>
+          </div>
           <div className="top-row">
             <div className="field-wrap">
               <label>First Name<span className="req">*</span></label>
@@ -165,16 +178,16 @@ class Login extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         isLoggedIn: state.auth.isLoggedIn,
-        emailSent: state.auth.emailsent
-
+        emailSent: state.auth.emailsent,
+        message: state.auth.message
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         onLogin: (username, password) => { dispatch(login(username, password)); },
-	onSign: (username, firstname, lastname) => { dispatch(forgot(username, firstname,lastname)); },
-        onForgot: (username) => { dispatch(signin(username)); }
+	onSign: (username, firstname, lastname, password) => { dispatch(signin(username, firstname,lastname, password)); },
+        onForgot: (username) => { dispatch(forgot(username)); }
     };
 };
 

@@ -1,3 +1,16 @@
+create table rbm_user (
+	usrid serial8,
+	username varchar(32) NOT NULL,
+	password varchar(128) NOT NULL,
+	firstname varchar(128) NOT NULL,
+	lastname varchar(128) NOT NULL,
+	resetPasswordToken varchar(128),
+	resetPasswordExpires Date,
+	CONSTRAINT rbm_username_key UNIQUE (username) 
+);
+
+insert into rbm_user(username, password, firstname , lastname) values ('admin', 'pass', 'Admin', 'User');
+
 CREATE TABLE rbm_obj_details (
 	objdetid serial8 NOT NULL,
 	objid int4 NOT NULL,
