@@ -5,12 +5,21 @@
   "main": "index.js",
   "license": "ISC",
   "author": "Low Intellect Ltd.",
-  "dependencies": {
-    "express": "^4.15.3",
-    "password-generator": "^2.1.0"
-  },
   "scripts": {
-  "start": "node index.js",
-  "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
-  }
+    "start": "node index.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm start"
+  },
+  "dependencies": {
+    "async": "^2.5.0",
+    "axios": "^0.16.2",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.2",
+	"express": "^4.14.0",
+	"jsonwebtoken": "^5.7.0",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.0.0",
+    "passport-local": "^1.0.0",
+    "pg-monitor": "^0.8.2",
+    "pg-promise": "^6.3.6"
+   }
 }

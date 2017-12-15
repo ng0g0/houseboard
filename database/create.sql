@@ -4,12 +4,22 @@ create table rbm_user (
 	password varchar(128) NOT NULL,
 	firstname varchar(128) NOT NULL,
 	lastname varchar(128) NOT NULL,
-	resetPasswordToken varchar(128),
-	resetPasswordExpires Date,
+	userToken varchar(128),
+	userExpires Date,
 	CONSTRAINT rbm_username_key UNIQUE (username) 
 );
 
 insert into rbm_user(username, password, firstname , lastname) values ('admin', 'pass', 'Admin', 'User');
+select * from rbm_user
+
+update rbm_user 
+	set  resetPasswordToken = 'aaaa',
+		 resetPasswordExpires = NOW() + interval '1 hour'
+where 	username = 'ng0g0@yahoo.com'	 
+		 
+		 
+select 		 
+delete from rbm_user
 
 CREATE TABLE rbm_obj_details (
 	objdetid serial8 NOT NULL,
@@ -51,43 +61,43 @@ INSERT INTO rbm_obj_details (objdetid,objid,objtypedetid,value) VALUES (
 5,3,4,'2');
 INSERT INTO rbm_obj_details (objdetid,objid,objtypedetid,value) VALUES (
 3,3,4,'0');
-INSERT INTOrbm_obj_details (objdetid,objid,objtypedetid,value) VALUES (
+INSERT INTO rbm_obj_details (objdetid,objid,objtypedetid,value) VALUES (
 6,6,3,'Sofia, 1510, 156 Angel Voivoda street');
 
-INSERT INTO public.rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
+INSERT INTO rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
 1,'MAX',1,'n');
-INSERT INTO public.rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
+INSERT INTO rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
 2,'SIZE',1,'a');
-INSERT INTO public.rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
+INSERT INTO rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
 3,'ADDRESS',2,'b');
-INSERT INTO public.rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
+INSERT INTO rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
 4,'NUMBER',2,'be');
-INSERT INTO public.rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
+INSERT INTO rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
 5,'BDAY',3,'p');
-INSERT INTO public.rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
+INSERT INTO rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
 6,'AGE',1,'p');
-INSERT INTO public.rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
+INSERT INTO rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
 7,'PET',4,'p');
-INSERT INTO public.rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
+INSERT INTO rbm_obj_type_det (objtypedetid,objtypedetname,objtypedettype,visible) VALUES (
 8,'NAME',2,'ptivw');
 
-INSERT INTO public.rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
+INSERT INTO rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
 1,'BLOCK',1,0,'b');
-INSERT INTO public.rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
+INSERT INTO rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
 2,'ENTRANCE',1,1,'e');
-INSERT INTO public.rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
+INSERT INTO rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
 3,'FLOOR',1,2,'f');
-INSERT INTO public.rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
+INSERT INTO rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
 4,'APARTMENT',1,3,'a');
-INSERT INTO public.rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
+INSERT INTO rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
 5,'PERSON',1,4,'p');
-INSERT INTO public.rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
+INSERT INTO rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
 6,'ACOM-BL',1,1,'t');
-INSERT INTO public.rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
+INSERT INTO rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
 7,'ACOM-ENT',1,2,'v');
-INSERT INTO public.rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
+INSERT INTO rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
 8,'ACOM-FL',1,3,'i');
-INSERT INTO public.rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
+INSERT INTO rbm_object_type (objtypeid,typename,objactive,objtypemaster,objshort) VALUES (
 9,'ACOM-AP',1,4,'w');
 
 INSERT INTO public.rbm_objects (objid,objtype,objmaster,objactive) VALUES (
