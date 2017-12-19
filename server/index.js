@@ -1,20 +1,33 @@
+import webpack from 'webpack';
+import path from 'path';
+import config from '../webpack.config.dev';
+import open from 'open';
+import favicon from 'serve-favicon';
+
 
 const express = require('express'),
   app = express(),
   bodyParser = require('body-parser'),
-//  logger = require('morgan'),
   router = require('./router'),
-  config = require('./config/main');
-
-  
+  confighttp = require('./config/main');
   
 let server;  
-if (process.env.NODE_ENV != config.test_env) {
-  server = app.listen(config.port);
-  console.log(`Your server is running on port ${config.port}.`);
+if (process.env.NODE_ENV != confighttp.test_env) {
+  server = app.listen(confighttp.port);
+  console.log(`Your server is running on port ${confighttp.port}.`);
 } else{
-  server = app.listen(config.test_port);
+  server = app.listen(confighttp.test_port);
 }
+
+const compiler = webpack(config);
+app.use(require('webpack-dev-middleware')(compiler, {
+  noInfo: true,
+  publicPath: config.output.publicPath
+}));
+
+app.use(require('webpack-hot-middleware')(compiler));
+app.use(favicon(path.join(__dirname,'assets','public','favicon.ico')));
+
 
 // Serve static files from the React app
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,6 +46,10 @@ app.use(function(req, res, next) {
 
 
 router(app);
+
+app.get('*', function(req, res) {
+  res.sendFile(path.join( __dirname, '/client/src/index.html'));
+});
 
 // necessary for testing
 module.exports = server;
