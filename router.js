@@ -1,5 +1,5 @@
 const AuthenticationController = require('./api/controllers/authentication');
-//const UserController = require('./controllers/user');
+const UserController = require('./api/controllers/user');
 //const ChatController = require('./controllers/chat');
 //const CommunicationController = require('./controllers/communication');
 //const StripeController = require('./controllers/stripe');
@@ -19,8 +19,8 @@ const requireLogin = passport.authenticate('local', { session: false });
 module.exports = function (app) {
   // Initializing route groups
   const apiRoutes = express.Router(),
-    authRoutes = express.Router();
-    //userRoutes = express.Router(),
+    authRoutes = express.Router(),
+    userRoutes = express.Router();
     //chatRoutes = express.Router(),
     //payRoutes = express.Router(),
     //communicationRoutes = express.Router();
@@ -49,10 +49,10 @@ module.exports = function (app) {
   //= ========================
 
   // Set user routes as a subgroup/middleware to apiRoutes
-  //apiRoutes.use('/user', userRoutes);
+  apiRoutes.use('/user', userRoutes);
 
   // View user profile route
-  //userRoutes.get('/:userId', requireAuth, UserController.viewProfile);
+  userRoutes.get('/:userId', requireAuth, UserController.viewProfile);
 
   // Test protected route
    apiRoutes.get('/protected', requireAuth, (req, res) => {

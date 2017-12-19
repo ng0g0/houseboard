@@ -9,10 +9,9 @@ const config = require('../../config/main');
 var pgp = require('pg-promise')(/*options*/);
 var async = require('async');
 const bcrypt = require('bcrypt-nodejs');
-var connectionString = 'postgres://elink:elink123@192.168.56.101/rbm';
-//var connectionString ='postgres://rrfcffhsalqnly:6b596e4fd06c6a808f1c99ddec492ff92320bc77b3b6d208125bfe1a3b0a555e@ec2-54-247-177-33.eu-west-1.compute.amazonaws.com:5432/d24mflhkuq27nd';
 
-var db = pgp(connectionString);
+//var db = pgp(config.connectionString);
+const db = require('../connection/postgres');
 var QRE = pgp.errors.QueryResultError;
 var qrec = pgp.errors.queryResultErrorCode;
 
@@ -26,18 +25,18 @@ function generateToken(user) {
 };
 
 exports.findUser = function(userName, callback) {
-	let finUserSql = "select username, password, firstname, lastname from rbm_user where username = $1 ";
+	let finUserSql = "select usrid,username, password, firstname, lastname from rbm_user where username = $1 ";
 	var obj;
 	
 	db.one(finUserSql, [userName])
 		.then(user=> {
 		obj = {
+			uid: user.usrid,
 			username: user.username,
 			password: user.password,
 			firstName: user.firstname,
 			lastName: user.lastname
 		};
-		//console.log(obj);
 		callback(null, obj);
 	})
 	.catch(error=> {
@@ -68,13 +67,14 @@ exports.comparePassword = function(pass, hash, callback) {
 exports.login = function (req, res, next) {
   //console.log(req); 	
   const userInfo  = { 
+    uid: req.user.uid,
 	username: req.user.username,
 	firstName: req.user.firstName,
 	lastName: req.user.lastName,
 	email: req.user.username
   };
   //console.log('login');
-  //console.log(userInfo);
+  console.log(userInfo);
   //console.log('-----');
   res.status(200).json({
     token: `JWT ${generateToken(userInfo)}`,
@@ -112,15 +112,16 @@ exports.register = function (req, res, next) {
 		if (err) return next(err);
 		hashPassword = hash;
 		//console.log('Validating password');
-		let registerSql = "INSERT INTO rbm_user (username, password, firstname, lastname) VALUES( $1, $2, $3, $4)";
-		db.none(registerSql, [email, hashPassword, firstName, lastName] )
-		.then(() => {
+		let registerSql = "INSERT INTO rbm_user (username, password, firstname, lastname) VALUES( $1, $2, $3, $4) RETURNING usrid";
+		db.one(registerSql, [email, hashPassword, firstName, lastName] )
+		.then((user) => {
 			obj = {
+				uid: user.usrid,
 				username: email,
 				firstName: firstName,
 				lastName: lastName
 				};
-			//console.log(obj);	
+			console.log(obj);	
 			res.status(201).json({
 				token: `JWT ${generateToken(obj)}`,
 				user: obj

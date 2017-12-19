@@ -43,7 +43,6 @@ class HeaderTemplate extends Component {
                 <span className="icon-bar" />
                 <span className="icon-bar" />
               </button>
-				<img src="images/building.png"/>
 		        <Link className="navbar-brand" to="/">{this.props.logo}</Link>
             </div>
 

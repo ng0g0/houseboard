@@ -6,13 +6,14 @@ const config = {
   context: __dirname,
   entry: './src/index.js',
   output: {
-    path: __dirname + '/build',
-    filename: 'bundle.js',
+    path:       path.join(__dirname, 'build'),
+    filename:   'bundle.js',
+    publicPath: '/'
   },
   module: {
     loaders: [{
       exclude: /node_modules/,
-      test: /\.js)$/,
+      test: /\.js$/,
       loader: 'babel',
     },
       {

@@ -5,7 +5,7 @@ import { STATIC_ERROR, FETCH_USER } from './types';
 //export const API_URL = 'http://localhost:5000/api';
 export const API_URL = 'http://houseboard.herokuapp.com:5000/api';
 //export const CLIENT_ROOT_URL = 'http://localhost:8080';
-export const CLIENT_ROOT_URL = 'http://houseboard.herokuapp.com:8080';
+export const CLIENT_ROOT_URL = 'http://houseboard.herokuapp.com';
 
 //= ===============================
 // Utility actions
