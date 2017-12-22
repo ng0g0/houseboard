@@ -1,0 +1,15 @@
+/api/user/signup
+/api/user/login
+/api/user/logout
+/api/user/forgot
+
+/api/obj/:id
+/api/obj/list
+/api/obj/addblock
+/api/obj/addfloor
+/api/obj/addapartment
+/api/obj/addperson
+/api/obj/addacomudation
+
+/api/money/pay
+/api/money/
