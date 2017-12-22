@@ -9,8 +9,8 @@
 	"start": "npm-run-all --parallel start:rest start:web",
     "open:src": "webpack -p --progress",
     "start:rest": "node index.js",
-	"start:web": "cd client && npm start",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm start"
+	"start:web": "cd client && npm install --only=dev && npm install && npm start",
+    "blaheroku-postbuild": "cd client && npm install --only=dev && npm install && npm start"
   },
   "dependencies": {
     "async": "^2.5.0",
