@@ -2,7 +2,7 @@
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const config = require('../../config/main');
+const config = require('./../../config/main');
 
 var pgp = require('pg-promise')(/*options*/);
 var async = require('async');

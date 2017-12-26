@@ -5,18 +5,18 @@ const express = require('express'),
   router = require('./router'),
   config = require('./config/main');
   
-process.env.NODE_ENV = 'production';
+//process.env.NODE_ENV = 'production';
   
   
 let server;  
-console.log(`Your ENV:"${process.env.NODE_ENV}".`);
+console.log(`Your ENV:"${process.env.npm_package_run}".`);
 //process.env
 //if (process.env.NODE_ENV != config.test_env) {
   server = app.listen(config.api_port);
 //  console.log(`Your server is running on port ${config.api_port}.`);
 //} else{
 //  server = app.listen(config.test_api_port);
-  console.log(`Your server is ${process.env.NODE_ENV} and running on port ${config.api_port}.`);
+  console.log(`Your server is ${process.env.npm_package_run} and running on port ${config.api_port}.`);
 //}
 
 

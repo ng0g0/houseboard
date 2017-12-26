@@ -9,8 +9,8 @@
 	"startlocal": "npm-run-all --parallel start:rest start:web",
     "start": "node index.js",
 	"start:rest": "node index.js",
-	"start:web": "cd client && npm start",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm start"
+	"start:web": "cd ../client && npm start",
+    "heroku-postbuild": "cd ../client && npm install --only=dev && npm install && npm start"
   },
   "dependencies": {
     "async": "^2.5.0",
