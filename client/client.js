@@ -7,11 +7,8 @@ const express = require('express'),
 let server;  
 
 
-server = app.listen(config.client_port, error => (
-  error
-    ? console.error(error)
-    : console.info(`Visit ${config.app_url}:${config.client_port}/ in your browser.`)
-));
+server = app.listen(config.client_port);
+console.log(`Visit ${config.app_url}:${config.client_port}/ in your browser.`);
 
  
 //const PORT = process.env.PORT || 8080;
