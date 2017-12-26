@@ -5,7 +5,7 @@
   "main": "client.js",
   "private": true,
   "scripts": {
-    "start": "node client.js",
+    "start": "NODE_ENV=production node client.js",
     "build": "webpack -p --progress",
 	"dev": "webpack-dev-server --hot --inline",
 	"clean-public": "npm run remove-public && mkdir public",
