@@ -2,7 +2,7 @@ import axios from 'axios';
 import cookie from 'react-cookie';
 import { logoutUser } from './auth';
 import { STATIC_ERROR, FETCH_USER } from './types';
-//const config = require('../../../config/main');
+let config = require('../../../config/main');
 const test_env = 'test';
 const test_url = 'http://localhost';
 const prod_url = 'http://houseboard.herokuapp.com';
@@ -16,13 +16,15 @@ const prod_api_port = 5000;
 //= ===============================
 
 function apiURL() {
-	return (process.env.NODE_ENV != test_env)? 
-			`${test_url}:${test_api_port}/api` : `${prod_url}:${prod_api_port}/api`;
+		return `${config.app_url}:${config.api_port}/api`;
+		//return (process.env.npm_package_run != test_env)? 
+		//	`${test_url}:${test_api_port}/api` : `${prod_url}:${prod_api_port}/api`;
 }
 
 function clientURL() {
-	return (process.env.NODE_ENV != test_env)? 
-			`${test_url}:${test_client_port}` : `${prod_url}:${prod_client_port}`;
+			return `${config.app_url}:${config.client_port}`;
+	//return (process.env.npm_package_run != test_env)? 
+	//		`${test_url}:${test_client_port}` : `${prod_url}:${prod_client_port}`;
 }
 
 export const API_URL = apiURL();

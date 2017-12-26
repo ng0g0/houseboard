@@ -1,15 +1,13 @@
-var pgp = require('pg-promise')(/*options*/);
+//var pgp = require('pg-promise')(/*options*/);
 
 var test_connectionString = 'postgres://elink:elink123@192.168.56.101/rbm';
 var prod_connectionString = 'postgres://rrfcffhsalqnly:6b596e4fd06c6a808f1c99ddec492ff92320bc77b3b6d208125bfe1a3b0a555e@ec2-54-247-177-33,eu-west-1,compute,amazonaws,com:5432/d24mflhkuq27nd';
 
 var test_env = 'test';
-//var db = pgp(connectionString);
-//if (process.env.NODE_ENV != config.test_env) {
-//    connectionString = config.connectionString;
-//  } else{
-//	connectionString = config.test_connectionString;
-//  }
+
+//global.FOO = 5;
+
+//console.log(process.env.npm_package_run);
 
 module.exports = {
   // Secret key for JWT signing and encryption
@@ -17,10 +15,10 @@ module.exports = {
   // Database connection information
   //database: 'mongodb://localhost:27017',
   // Setting port for server
-  api_port: (process.env.NODE_ENV != test_env)? 5000: 5000,
-  client_port: (process.env.NODE_ENV != test_env)? 8080: 80,
-  app_url:(process.env.NODE_ENV != test_env)? 'http://localhost': 'http://houseboard.herokuapp.com',
-  connectionString: (process.env.NODE_ENV != test_env)? test_connectionString : prod_connectionString 
+  api_port: (process.env.npm_package_run == test_env)? 5000: 5001,
+  client_port: (process.env.npm_package_run == test_env)? 8080: 80,
+  app_url:(process.env.npm_package_run == test_env)? 'http://localhost': 'http://houseboard.herokuapp.com',
+  connectionString: (process.env.npm_package_run == test_env)? test_connectionString : prod_connectionString 
   //,
   // Configuring Mailgun API for sending transactional email
   //mailgun_priv_key: 'mailgun private key here',

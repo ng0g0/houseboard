@@ -8,7 +8,8 @@ const config = {
     './src/index'
   ],
   output: {
-      path: __dirname,
+    path: path.join(__dirname, '/public'),
+	publicPath: '/',
     filename: 'bundle.js',
   },
   module: {

@@ -2,16 +2,22 @@
   "name": "BBM",
   "version": "0.1.0",
   "description": "Building Board Managment",
-  "main": "index.js",
+  "main": "client.js",
   "private": true,
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "build": "webpack"
+    "start": "node client.js",
+    "build": "webpack -p --progress",
+	"dev": "webpack-dev-server --hot --inline",
+	"clean-public": "npm run remove-public && mkdir public",
+	"remove-public": "node_modules/.bin/rimraf ./public",
+	"build:html": "babel-node tools/buildHtml.js",
+	"build": "babel-node tools/build.js"
   },
   "author": "Low Intellect Ltd.",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.13.1",
+	"express": "^4.14.0",
     "bootstrap": "^3.3.7",
     "lodash": "^4.6.1",
     "moment": "^2.13.0",
@@ -22,9 +28,11 @@
     "react-router": "^2.6.0",
     "redux": "^3.5.2",
     "redux-form": "^6.0.0-rc.3",
+	"rimraf": "2.5.2",
     "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
+	"babel-cli": "6.8.0",
 	"babel-core": "^6.6.0",
     "babel-eslint": "^7.1.0",
     "babel-loader": "^6.2.4",
@@ -32,12 +40,11 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "css-loader": "^0.23.1",
-    "npm-run-all": "1.8.0",
-    "open": "0.0.5",
-	"style-loader": "^0.13.0",
+	"cheerio": "^0.20.0",
+    "style-loader": "^0.13.0",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
     
   },
-  "proxy": "http://localhost:5000"
+  "run": "production"
 }

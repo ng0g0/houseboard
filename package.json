@@ -6,11 +6,11 @@
   "license": "ISC",
   "author": "Low Intellect Ltd.",
   "scripts": {
-	"start": "npm-run-all --parallel start:rest start:web",
-    "open:src": "webpack -p --progress",
-    "start:rest": "node index.js",
-	"start:web": "cd client && npm install --only=dev && npm install && npm start",
-    "blaheroku-postbuild": "cd client && npm install --only=dev && npm install && npm start"
+	"startlocal": "npm-run-all --parallel start:rest start:web",
+    "start": "node index.js",
+	"start:rest": "node index.js",
+	"start:web": "cd client && npm start",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm start"
   },
   "dependencies": {
     "async": "^2.5.0",
@@ -24,7 +24,7 @@
     "passport-local": "^1.0.0",
     "pg-monitor": "^0.8.2",
     "pg-promise": "^6.3.6",
-	"npm-run-all": "1.8.0",
-    "open": "0.0.5"
-   }
+	"npm-run-all": "1.8.0"
+   },
+   "run": "production"
 }
