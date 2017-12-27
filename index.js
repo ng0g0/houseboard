@@ -1,7 +1,7 @@
 var express = require("express");
-    bodyParser = require("body-parser"),
-    router = require('./router'),
-    config = require('./config/main');
+    bodyParser = require("body-parser");
+    //router = require('./router'),
+  //  config = require('./config/main');
 //var mongodb = require("mongodb");
 ///var ObjectID = mongodb.ObjectID;
 
@@ -49,6 +49,6 @@ function handleError(res, reason, message, code) {
 //});
 */
 
-router(app);
+//router(app);
 
 //module.exports = server;
