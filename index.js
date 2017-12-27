@@ -98,6 +98,6 @@ app.use((req, res, next) => {
 //});
 */
 
-router(app);
+//router(app);
 
-module.exports = server;
+//module.exports = server;
