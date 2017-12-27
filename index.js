@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 //});
 
 // CONTACTS API ROUTES BELOW
-
+/*
 app.use((req, res, next) => {
    var clinet_address = config.app_url + ':' + config.client_port;	
   // console.log(`Your ENV:"${clinet_address}".`);
@@ -32,7 +32,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
-
+*/
 function handleError(res, reason, message, code) {
   console.log("ERROR: " + reason);
   res.status(code || 500).json({"error": message});
@@ -51,4 +51,4 @@ function handleError(res, reason, message, code) {
 
 router(app);
 
-module.exports = server;
+//module.exports = server;
