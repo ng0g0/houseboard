@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
    var clinet_address = config.app_url + ':' + config.client_port;	
-   console.log(`Your ENV:"${clinet_address}".`);
+  // console.log(`Your ENV:"${clinet_address}".`);
   //res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
   res.header('Access-Control-Allow-Origin', clinet_address);
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
