@@ -15,8 +15,8 @@ module.exports = {
   // Database connection information
   //database: 'mongodb://localhost:27017',
   // Setting port for server
-  api_port: (process.env.npm_package_run == test_env)? 5000: 5000,
-  client_port: (process.env.npm_package_run == test_env)? 8080: 80,
+  api_port: (process.env.npm_package_run == test_env)? 80: 80,
+  client_port: (process.env.npm_package_run == test_env)? 80: 80,
   app_url:(process.env.npm_package_run == test_env)? 'http://localhost': 'http://houseboard.herokuapp.com',
   connectionString: (process.env.npm_package_run == test_env)? test_connectionString : prod_connectionString 
   //,

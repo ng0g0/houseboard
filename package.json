@@ -6,11 +6,7 @@
   "license": "ISC",
   "author": "Low Intellect Ltd.",
   "scripts": {
-	"startlocal": "npm-run-all --parallel start:rest start:web",
-    "start": "node index.js",
-	"start:rest": "node index.js",
-	"start:web": "cd ../client && npm start",
-    "heroku-postbuild": "cd ../client && npm install --only=dev && npm install && npm start"
+    "start": "node index.js"
   },
   "dependencies": {
     "async": "^2.5.0",
@@ -23,8 +19,7 @@
     "passport-jwt": "^2.0.0",
     "passport-local": "^1.0.0",
     "pg-monitor": "^0.8.2",
-    "pg-promise": "^6.3.6",
-	"npm-run-all": "1.8.0"
+    "pg-promise": "^6.3.6"
    },
-   "run": "production"
+   "run": "test"
 }
