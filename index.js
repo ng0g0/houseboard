@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 //process.env.NODE_ENV = 'production';
 
   // Initialize the app.
-  var server = app.listen(config.api_port, function () {
+  var server = app.listen(80, function () {
     var port = server.address().port;
     console.log("App now running on port", port);
   });
