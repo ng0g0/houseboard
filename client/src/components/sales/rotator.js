@@ -19,7 +19,7 @@ class Rotator extends Component {
 
   render() {
     const selectedSlide = this.props.rotators.filter(function (slider, index) {
-      return index == this.state.index;
+      return index === this.state.index;
     }, this);
 
     return (

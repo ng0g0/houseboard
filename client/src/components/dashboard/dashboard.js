@@ -15,7 +15,7 @@ class Dashboard extends Component {
   isRole(roleToCheck, toRender) {
     const userRole = cookie.load('user').role;
 
-    if (userRole == roleToCheck) {
+    if (userRole === roleToCheck) {
       return toRender;
     }
 

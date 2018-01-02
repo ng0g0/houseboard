@@ -9,7 +9,7 @@ class RotatorNav extends Component {
         <li
           key={`${i}nav`}
           value={i}
-          className={i == this.props.active ? 'slider-nav-bullet active' : 'slider-nav-bullet'}
+          className={i === this.props.active ? 'slider-nav-bullet active' : 'slider-nav-bullet'}
           onClick={this.props.setPage}
         />,
       );

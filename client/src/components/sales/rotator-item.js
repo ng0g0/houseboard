@@ -6,7 +6,7 @@ class RotatorItem extends Component {
       <div className="slide">
         {this.props.selectedSlide.map((rotator, index) => (
           <div className="rotator-item" key={`${index}-${rotator.headline}`}>
-            <img className="rotator-image" src={rotator.img} />
+            <img className="rotator-image" src={rotator.img} alt="rotator-pix" />
             {rotator.headline ? `<h3>${rotator.headline}</h3>` : ''}
             <div className="rotator-text-container">
               <p className="rotator-text">{rotator.text}</p>
