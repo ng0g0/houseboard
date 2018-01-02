@@ -47,3 +47,4 @@ jspm_packages
 .yarn-integrity
 
 /nbproject/private/
+/client/build/static

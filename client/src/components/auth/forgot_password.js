@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types'; // ES6
 import { Field, reduxForm } from 'redux-form';
 import { getForgotPasswordToken } from '../../actions/auth';
 
