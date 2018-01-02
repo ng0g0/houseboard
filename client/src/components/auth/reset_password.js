@@ -1,4 +1,4 @@
-import React, { Component, PropTypes  } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { resetPassword } from '../../actions/auth';
@@ -46,7 +46,10 @@ const renderField = ({
 //);
 
 class ResetPassword extends Component {
-  
+  static contextTypes = {
+    router: React.PropTypes.object,
+  }
+
   componentWillMount() {
     if (this.props.authenticated) {
       this.context.router.push('/dashboard');
@@ -100,10 +103,6 @@ class ResetPassword extends Component {
     );
   }
 }
-
-ResetPassword.propTypes = {
-   router: PropTypes.object
-   };
 
 function mapStateToProps(state) {
   return { errorMessage: state.auth.error, message: state.auth.resetMessage };

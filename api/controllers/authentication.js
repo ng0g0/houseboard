@@ -2,7 +2,9 @@
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const config = require('./../../config/main');
+const config = require('../../config/main');
+
+
 
 var pgp = require('pg-promise')(/*options*/);
 var async = require('async');
@@ -165,17 +167,11 @@ exports.forgotPassword = function (req, res, next) {
 			" where username = $2";
 		db.none(forgotSQL, [resetToken,email])
 		.then( () => {
-			var client_url =  'http://localhost:8080';	
-			if (process.env.npm_package_run != config.test_env) {
-				client_url = config.app_url + ':' + config.client_port;
-			} else{
-				client_url = config.test_app_url + ':' + config.test_client_port;
-			}
 			const message = {
 				subject: 'Reset Password',
 				text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
 					'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-					' '}${client_url}/reset-password/${resetToken}\n\n` +
+					' '}${CLIENT_ROOT_URL}/reset-password/${resetToken}\n\n` +
 					`If you did not request this, please ignore this email and your password will remain unchanged.\n`
 			};
 

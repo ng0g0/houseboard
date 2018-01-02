@@ -1,105 +1,94 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-const pgp = require('pg-promise')(/*options*/);
+const AuthenticationController = require('./api/controllers/authentication');
+const UserController = require('./api/controllers/user');
 
-var app = express();
+const express = require('express');
+const passport = require('passport');
+const path = require('path');
+//const generatePassword = require('password-generator');
+
+const passportService = require('./config/passport');
+const requireAuth = passport.authenticate('jwt', { session: false });
+const requireLogin = passport.authenticate('local', { session: false });
+
+const app = express();
+const bodyParser = require('body-parser');
+const config = require('./config/main');
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-var prod_connectionString = 'postgres://rrfcffhsalqnly:6b596e4fd06c6a808f1c99ddec492ff92320bc77b3b6d208125bfe1a3b0a555e@ec2-54-247-177-33,eu-west-1,compute,amazonaws,com:5432/d24mflhkuq27nd';
-// Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 
-console.log(prod_connectionString);
-const db = pgp(prod_connectionString);
-  console.log("Database connection ready");
 
-  // Initialize the app.
-  var server = app.listen(80, function () {
-    var port = server.address().port;
-    console.log("App now running on port", port);
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+}); 
+
+const apiRoutes = express.Router(),
+    authRoutes = express.Router(),
+    userRoutes = express.Router();
+	
+	
+	// Set auth routes as subgroup/middleware to apiRoutes
+  apiRoutes.use('/auth', authRoutes);
+
+  // Registration route
+  authRoutes.post('/register', AuthenticationController.register);
+
+  // Login route
+  authRoutes.post('/login', requireLogin, AuthenticationController.login);
+
+  // Password reset request route (generate/send token)
+  authRoutes.post('/forgot-password', AuthenticationController.forgotPassword);
+
+  // Password reset route (change password using token)
+  authRoutes.post('/reset-password/:token', AuthenticationController.verifyToken);
+
+  //= ========================
+  // User Routes
+  //= ========================
+
+  // Set user routes as a subgroup/middleware to apiRoutes
+  apiRoutes.use('/user', userRoutes);
+
+  // View user profile route
+  userRoutes.get('/:userId', requireAuth, UserController.viewProfile);
+
+  // Test protected route
+   apiRoutes.get('/protected', requireAuth, (req, res) => {
+    res.send({ content: 'The protected test route is functional!' });
   });
 
-// CONTACTS API ROUTES BELOW
+app.use('/api', apiRoutes);
 
-// Generic error handler used by all endpoints.
-function handleError(res, reason, message, code) {
-  console.log("ERROR: " + reason);
-  res.status(code || 500).json({"error": message});
-}
 
-app.get('*', function(req, res) {
-  res.sendFile(path.join( __dirname, '/api/index.html'));
+// Put all API endpoints under '/api'
+//app.get('/api/passwords', (req, res) => {
+//  const count = 5;
+
+  // Generate some passwords
+//  const passwords = Array.from(Array(count).keys()).map(i =>
+    //generatePassword(12, false)
+  //)
+
+  // Return them as json
+  //res.json(passwords);
+
+  //console.log(`Sent ${count} passwords`);
+//});
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
+const port = process.env.PORT || 5000;
+app.listen(port);
 
-/*  "/api/contacts"
- *    GET: finds all contacts
- *    POST: creates a new contact
- 
-
-app.get("/api/contacts", function(req, res) {
-  db.collection(CONTACTS_COLLECTION).find({}).toArray(function(err, docs) {
-    if (err) {
-      handleError(res, err.message, "Failed to get contacts.");
-    } else {
-      res.status(200).json(docs);
-    }
-  });
-});
-
-app.post("/api/contacts", function(req, res) {
-  var newContact = req.body;
-  newContact.createDate = new Date();
-
-  if (!req.body.name) {
-    handleError(res, "Invalid user input", "Must provide a name.", 400);
-  }
-
-  db.collection(CONTACTS_COLLECTION).insertOne(newContact, function(err, doc) {
-    if (err) {
-      handleError(res, err.message, "Failed to create new contact.");
-    } else {
-      res.status(201).json(doc.ops[0]);
-    }
-  });
-});
-*/
-
-/*  "/api/contacts/:id"
- *    GET: find contact by id
- *    PUT: update contact by id
- *    DELETE: deletes contact by id
- 
-
-app.get("/api/contacts/:id", function(req, res) {
-  db.collection(CONTACTS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
-    if (err) {
-      handleError(res, err.message, "Failed to get contact");
-    } else {
-      res.status(200).json(doc);
-    }
-  });
-});
-
-app.put("/api/contacts/:id", function(req, res) {
-  var updateDoc = req.body;
-  delete updateDoc._id;
-
-  db.collection(CONTACTS_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, function(err, doc) {
-    if (err) {
-      handleError(res, err.message, "Failed to update contact");
-    } else {
-      updateDoc._id = req.params.id;
-      res.status(200).json(updateDoc);
-    }
-  });
-});
-
-app.delete("/api/contacts/:id", function(req, res) {
-  db.collection(CONTACTS_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, function(err, result) {
-    if (err) {
-      handleError(res, err.message, "Failed to delete contact");
-    } else {
-      res.status(200).json(req.params.id);
-    }
-  });
-});
-*/
+console.log(`Password generator listening on ${port}`);

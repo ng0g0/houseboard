@@ -1,40 +1,15 @@
 import axios from 'axios';
 import cookie from 'react-cookie';
 import { logoutUser } from './auth';
-import { STATIC_ERROR, FETCH_USER } from './types';
-let config = require('../../../config/main');
-const test_env = 'test';
-const test_url = 'http://localhost';
-const prod_url = 'http://houseboard.herokuapp.com';
-const test_client_port = 8080;
-const prod_client_port = 80;
-const test_api_port = 5000;
-const prod_api_port = 5000;
+import { STATIC_ERROR, FETCH_USER, SEND_CONTACT_FORM } from './types';
+export const API_URL = 'http://localhost:5000/api';
+//export const API_URL = 'http://houseboard.herokuapp.com:5000/api';
+//export const CLIENT_ROOT_URL = 'http://localhost:3000';
+export const CLIENT_ROOT_URL = 'http://houseboard.herokuapp.com';
 
 //= ===============================
 // Utility actions
 //= ===============================
-
-function apiURL() {
-		return `${config.app_url}:${config.api_port}/api`;
-		//return (process.env.npm_package_run != test_env)? 
-		//	`${test_url}:${test_api_port}/api` : `${prod_url}:${prod_api_port}/api`;
-}
-
-function clientURL() {
-			return `${config.app_url}:${config.client_port}`;
-	//return (process.env.npm_package_run != test_env)? 
-	//		`${test_url}:${test_client_port}` : `${prod_url}:${prod_client_port}`;
-}
-
-export const API_URL = apiURL();
-export const CLIENT_ROOT_URL = clientURL();
-
-//export const API_URL = apiURL();
-//export const API_URL = 'http://houseboard.herokuapp.com:5000/api';
-//export const CLIENT_ROOT_URL = clientURL();
-//export const CLIENT_ROOT_URL = 'http://houseboard.herokuapp.com';
-
 
 export function fetchUser(uid) {
   return function (dispatch) {

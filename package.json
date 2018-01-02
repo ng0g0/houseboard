@@ -6,7 +6,8 @@
   "license": "ISC",
   "author": "Low Intellect Ltd.",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "dependencies": {
     "async": "^2.5.0",
@@ -20,6 +21,5 @@
     "passport-local": "^1.0.0",
     "pg-monitor": "^0.8.2",
     "pg-promise": "^6.3.6"
-   },
-   "run": "production"
+   }
 }
