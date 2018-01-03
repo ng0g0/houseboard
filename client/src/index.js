@@ -8,7 +8,6 @@ import cookie from 'react-cookie';
 import routes from './routes';
 import reducers from './reducers/index';
 import { AUTH_USER } from './actions/types';
-import registerServiceWorker from './registerServiceWorker';
 
 // Import stylesheets
 //import './public/stylesheets/base.scss';
