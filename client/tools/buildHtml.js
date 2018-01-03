@@ -5,7 +5,7 @@ import colors from 'colors';
 
 var copydir = require('copy-dir');
 
-copydir('./public', './build', function(err){
+copydir('./public', './prod', function(err){
   if(err){
     console.log(err);
   } else {

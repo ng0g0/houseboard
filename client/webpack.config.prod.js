@@ -9,9 +9,9 @@ export default {
   ],
 
   output: {
-    path: path.join(__dirname, 'build'),
+    path: path.join(__dirname, 'prod'),
     filename: 'bundle.js',
-    publicPath: '/build'
+    publicPath: '/prod'
   },
 
   plugins: [
