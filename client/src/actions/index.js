@@ -1,24 +1,36 @@
 import axios from 'axios';
 import cookie from 'react-cookie';
 import { logoutUser } from './auth';
-import { STATIC_ERROR, FETCH_USER, SEND_CONTACT_FORM } from './types';
-export const API_URL = (process.env.NODE_ENV === 'production') ? '/api' : 'http://localhost:5000';
+import { STATIC_ERROR, FETCH_USER, SEND_CONTACT_FORM, REQ_USER_DATA, RECV_USER_DATA } from './types';
+export const API_URL = (process.env.NODE_ENV === 'production') ? '/api' : 'http://localhost:5000/api';
 export const CLIENT_ROOT_URL = (process.env.NODE_ENV === 'production') ? 'https://houseboard.herokuapp.com' : 'http://localhost:3000';
 
 //= ===============================
 // Utility actions
 //= ===============================
 
+function requestUserData() {
+	return {type: REQ_USER_DATA}
+};
+
+function receiveUserData(json) {
+	return{
+		type: RECV_USER_DATA,
+		data: json
+	}
+};
+
 export function fetchUser(uid) {
   return function (dispatch) {
-    axios.get(`${API_URL}/user/${uid}`, {
-      headers: { Authorization: cookie.load('token') },
+	dispatch(requestUserData());  
+	return axios({ url: `${API_URL}/user/${uid}`,
+			timeout: 2000,
+			method: 'get',
+			headers: { Authorization: cookie.load('token') }
     })
     .then((response) => {
-      dispatch({
-        type: FETCH_USER,
-        payload: response.data.user,
-      });
+		//console.log(response.data.user);
+        dispatch(receiveUserData(response.data.user));
     })
     .catch(response => dispatch(errorHandler(response.data.error)));
   };

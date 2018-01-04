@@ -1,9 +1,13 @@
 var pgp = require('pg-promise')(/*options*/);
 
-//var connectionString = 'postgres://elink:elink123@192.168.56.101/rbm';
-var connectionString = 'postgres://rrfcffhsalqnly:6b596e4fd06c6a808f1c99ddec492ff92320bc77b3b6d208125bfe1a3b0a555e@ec2-54-247-177-33.eu-west-1.compute.amazonaws.com:5432/d24mflhkuq27nd';
+ 
 
-//var db = pgp(connectionString);
+var connectionString = (process.env.NODE_ENV === 'production') ? 
+     'postgres://rrfcffhsalqnly:6b596e4fd06c6a808f1c99ddec492ff92320bc77b3b6d208125bfe1a3b0a555e@ec2-54-247-177-33.eu-west-1.compute.amazonaws.com:5432/d24mflhkuq27nd'
+     :'postgres://elink:elink123@192.168.56.101/rbm';
+
+console.log(`Postgress connection: ${connectionString}`);
+	 //var db = pgp(connectionString);
 
 module.exports = {
   // Secret key for JWT signing and encryption

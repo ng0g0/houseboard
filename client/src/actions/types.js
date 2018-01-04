@@ -12,6 +12,9 @@ export const AUTH_USER = 'auth_user',
 // User Profile Actions
 //= =====================
 export const FETCH_USER = 'fetch_user';
+export const REQ_USER_DATA = 'REQ_USER_DATA';
+export const RECV_USER_DATA = 'RECV_USER_DATA';
+
 
 //= =====================
 // Messaging Actions

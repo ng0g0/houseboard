@@ -1,4 +1,10 @@
-import { AUTH_USER, UNAUTH_USER, AUTH_ERROR, FORGOT_PASSWORD_REQUEST, RESET_PASSWORD_REQUEST, PROTECTED_TEST } from '../actions/types';
+import { AUTH_USER, 
+		UNAUTH_USER, 
+		AUTH_ERROR, 
+		FORGOT_PASSWORD_REQUEST, 
+		RESET_PASSWORD_REQUEST, 
+		PROTECTED_TEST 
+} from '../actions/types';
 
 const INITIAL_STATE = { error: '', message: '', content: '', authenticated: false };
 
@@ -9,7 +15,7 @@ export default function (state = INITIAL_STATE, action) {
     case UNAUTH_USER:
       return { ...state, authenticated: false, error: action.payload };
     case AUTH_ERROR:
-      return { ...state, error: action.payload };
+      return { ...state, error: action.payload, message: action.payload.message };
     case FORGOT_PASSWORD_REQUEST:
       return { ...state, message: action.payload.message };
     case RESET_PASSWORD_REQUEST:
