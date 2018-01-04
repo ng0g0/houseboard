@@ -88,7 +88,9 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/prod/index.html'));
 });
 
+console.log(process.env.NODE_ENV);
+
 const port = process.env.PORT || 5000;
 app.listen(port);
 
-console.log(`Password generator listening on ${port}`);
+console.log(`API listening on ${port}`);
