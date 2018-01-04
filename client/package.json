@@ -39,7 +39,7 @@
     "webpack-dev-server": "2.6.1"
   },
   "scripts": {
-    "build": "npm run remove-public && npm run build:html && npm run build:web",
+    "build": "npm run remove-public && npm run build:html && npm run build:prod",
     "remove-public": "node_modules/.bin/rimraf ./build",
     "build:html": "babel-node tools/buildHtml.js",
     "build:web": "babel-node tools/build.js",
