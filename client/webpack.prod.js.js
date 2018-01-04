@@ -12,7 +12,7 @@ const publicPath = '/prod/';
   output: {
     path: path.join(__dirname, 'prod'),
     filename: 'bundle.js',
-    publicPath: '/prod'
+    publicPath: '/'
   },
 
   plugins: [
