@@ -1,7 +1,8 @@
 const path = require('path')
-const webpack = require('webpack')
+const webpack = require('webpack');
+const publicPath = '/prod/';
 
-export default {
+ module.exports = {
   devtool: 'source-map',
 
   entry: [
@@ -17,6 +18,7 @@ export default {
   plugins: [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
+	  beautify: false,
       minimize: true,
       compress: {
         warnings: false
