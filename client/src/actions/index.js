@@ -2,8 +2,11 @@ import axios from 'axios';
 import cookie from 'react-cookie';
 import { logoutUser } from './auth';
 import { STATIC_ERROR, FETCH_USER, SEND_CONTACT_FORM, REQ_USER_DATA, RECV_USER_DATA } from './types';
-export const API_URL = (process.env.NODE_ENV === 'production') ? '/api' : 'http://localhost:5000/api';
-export const CLIENT_ROOT_URL = (process.env.NODE_ENV === 'production') ? 'https://houseboard.herokuapp.com' : 'http://localhost:3000';
+//export const API_URL = (process.env.NODE_ENV === 'production') ? '/api' : 'http://localhost:5000/api';
+//export const CLIENT_ROOT_URL = (process.env.NODE_ENV === 'production') ? 'https://houseboard.herokuapp.com' : 'http://localhost:3000';
+
+export const API_URL = '/api' ;
+export const CLIENT_ROOT_URL = 'https://houseboard.herokuapp.com';
 
 //= ===============================
 // Utility actions
