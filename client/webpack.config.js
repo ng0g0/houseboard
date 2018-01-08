@@ -4,7 +4,7 @@ const publicPath = '/prod/';
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  //Content 
+   devtool: 'source-map',
   entry: './src/index',
   devtool: 'cheap-module-eval-source-map',
   output: {
@@ -25,10 +25,18 @@ module.exports = {
     //hotmodulereplacementeplugin
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({
-      title: 'Hot Module Replacement'
+    new webpack.optimize.UglifyJsPlugin({
+	  beautify: false,
+      minimize: true,
+      compress: {
+        warnings: false
+      }
     }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    })
   ],
   module: {
     rules: [
