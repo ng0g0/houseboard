@@ -45,7 +45,7 @@
     "build:html": "babel-node tools/buildHtml.js",
     "build:web": "babel-node tools/build.js",
     "build:dev": "webpack --env=dev --progress --profile --colors",
-    "build:prod": "webpack --env=prod --progress --profile --colors",
+    "build:prod": "webpack --progress --profile --colors",
     "start": "webpack-dev-server --open"
   },
   "proxy": "https://localhost:5000"
