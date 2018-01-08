@@ -58,6 +58,7 @@ const apiRoutes = express.Router(),
 
   // View user profile route
   userRoutes.get('/:userId', requireAuth, UserController.viewProfile);
+  userRoutes.post('/:userId', UserController.userUpdate);
 
   // Test protected route
    apiRoutes.get('/protected', requireAuth, (req, res) => {

@@ -25,14 +25,14 @@ function generateToken(user) {
 };
 
 exports.findUser = function(userName, callback) {
-	let finUserSql = "select usrid,username, password, firstname, lastname from rbm_user where username = $1 ";
+	let finUserSql = "select usrid,username as email, password, firstname, lastname from rbm_user where username = $1 ";
 	var obj;
 	
 	db.one(finUserSql, [userName])
 		.then(user=> {
 		obj = {
 			uid: user.usrid,
-			username: user.username,
+			email: user.email,
 			password: user.password,
 			firstName: user.firstname,
 			lastName: user.lastname
@@ -51,31 +51,23 @@ exports.findUser = function(userName, callback) {
 }
 
 exports.comparePassword = function(pass, hash, callback) {
-  //console.log('comparePassword');
   bcrypt.compare(pass, hash, (err, isMatch) => {
     if (err) { 
-		//console.log('Error in comparePassword');
-		//console.log(err);
 		return callback(err); 
 	}
-	//console.log(isMatch);
     callback(null, isMatch);
   });
 }; 
   
 
 exports.login = function (req, res, next) {
-  //console.log(req); 	
   const userInfo  = { 
     uid: req.user.uid,
-	username: req.user.username,
+	email: req.user.email,
 	firstName: req.user.firstName,
-	lastName: req.user.lastName,
-	email: req.user.username
+	lastName: req.user.lastName
   };
-  //console.log('login');
   console.log(userInfo);
-  //console.log('-----');
   res.status(200).json({
     token: `JWT ${generateToken(userInfo)}`,
     user: userInfo
@@ -90,8 +82,6 @@ exports.register = function (req, res, next) {
 	const password = req.body.password;
 	let hashPassword = '123';
 	const SALT_FACTOR = 5;
-	//console.log('register');
-	// Return error if no email provided
 	if (!email) {
 		return res.status(422).send({ error: 'You must enter an email address.' });
 	}
@@ -117,11 +107,11 @@ exports.register = function (req, res, next) {
 		.then((user) => {
 			obj = {
 				uid: user.usrid,
-				username: email,
+				email: email,
 				firstName: firstName,
 				lastName: lastName
 				};
-			console.log(obj);	
+			//console.log(obj);	
 			res.status(201).json({
 				token: `JWT ${generateToken(obj)}`,
 				user: obj
@@ -141,19 +131,15 @@ exports.register = function (req, res, next) {
 
 exports.forgotPassword = function (req, res, next) {
   const email = req.body.email;
-	//console.log('forgotPassword');
-	//console.log(email);
 	let findSql = "select count(username) as cnt from rbm_user where username = $1 ";
 	db.one(findSql, [email])
 	.then(user=> {
-		//console.log(user);
 		if (user.cnt === '0' ) {
 			res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
 			return next(err);
 		}	
 	})
 	.catch(error=> {
-		//console.log(error);
 		res.status(422).json({ error: error });
 		return next(err);
 	});

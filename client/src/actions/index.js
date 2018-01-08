@@ -1,16 +1,44 @@
 import axios from 'axios';
 import cookie from 'react-cookie';
 import { logoutUser } from './auth';
-import { STATIC_ERROR, FETCH_USER, SEND_CONTACT_FORM, REQ_USER_DATA, RECV_USER_DATA } from './types';
+import { STATIC_ERROR//, FETCH_USER
+, SEND_CONTACT_FORM, REQ_USER_DATA, RECV_USER_DATA, ERROR_RESPONSE } from './types';
 //export const API_URL = (process.env.NODE_ENV === 'production') ? '/api' : 'http://localhost:5000/api';
 //export const CLIENT_ROOT_URL = (process.env.NODE_ENV === 'production') ? 'https://houseboard.herokuapp.com' : 'http://localhost:3000';
-
-export const API_URL = '/api' ;
-export const CLIENT_ROOT_URL = 'https://houseboard.herokuapp.com';
 
 //= ===============================
 // Utility actions
 //= ===============================
+
+function returnApiUrl() {
+	if (process.env.NODE_ENV !== undefined)  {
+		if (process.env.NODE_ENV === 'production') {
+			return '/api';
+		} else {
+			return 'http://localhost:5000/api';
+		}
+		
+	} else {
+		return 'http://localhost:5000/api';
+	}
+}
+
+function returnClientUrl() {
+	if (process.env.NODE_ENV !== undefined)  {
+		if (process.env.NODE_ENV === 'production') {
+			return 'https://houseboard.herokuapp.com';
+		} else {
+			return 'http://localhost:5000';
+		}
+		
+	} else {
+		return 'http://localhost:5000';
+	}
+}
+
+export const API_URL = returnApiUrl() ;
+export const CLIENT_ROOT_URL = returnClientUrl();
+
 
 function requestUserData() {
 	return {type: REQ_USER_DATA}
@@ -32,10 +60,34 @@ export function fetchUser(uid) {
 			headers: { Authorization: cookie.load('token') }
     })
     .then((response) => {
-		//console.log(response.data.user);
         dispatch(receiveUserData(response.data.user));
     })
     .catch(response => dispatch(errorHandler(response.data.error)));
+  };
+}
+
+export function updateUser({ email, firstName, lastName, password, uid }) {
+return function (dispatch) {
+    axios.post(`${API_URL}/user/${uid}`, { email, firstName, lastName, password, uid })
+    .then((response) => {
+		console.log(response);
+		if (!response.data.error) {
+			console.log('OK');
+			dispatch(fetchUser(uid));
+		} else {
+			console.log('NOK');
+			dispatch({
+				type: ERROR_RESPONSE,
+				payload: {
+						error: response.data.error
+				}
+			});
+		}
+    })
+    .catch((error) => {
+		console.log(error);
+		errorHandler(dispatch, error.response, ERROR_RESPONSE);
+    });
   };
 }
 
