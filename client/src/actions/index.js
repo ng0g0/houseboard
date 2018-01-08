@@ -11,37 +11,37 @@ import { STATIC_ERROR//, FETCH_USER
 //= ===============================
 
 function returnApiUrl() {
-	console.log(process.env.NODE_ENV);
+//	console.log(process.env.NODE_ENV);
 	if (process.env.NODE_ENV !== undefined)  {
-		console.log('DEF');
+		//console.log('DEF');
 		if (process.env.NODE_ENV === 'production') {
-			console.log('PROD');
+		//	console.log('PROD');
 			return '/api';
 		} else {
-			console.log('LOC');
+		//	console.log('LOC');
 			return 'http://localhost:5000/api';
 		}
 		
 	} else {
-		console.log('UNDEF');
+		//console.log('UNDEF');
 		return 'http://localhost:5000/api';
 	}
 }
 
 function returnClientUrl() {
-	console.log(process.env.NODE_ENV);
+	//console.log(process.env.NODE_ENV);
 	if (process.env.NODE_ENV !== undefined)  {
-		console.log('DEF');
+		//console.log('DEF');
 		if (process.env.NODE_ENV === 'production') {
-			console.log('PROD');
+			//console.log('PROD');
 			return 'https://houseboard.herokuapp.com';
 		} else {
-			console.log('LOC');
+			//console.log('LOC');
 			return 'http://localhost:5000';
 		}
 		
 	} else {
-		console.log('UNDEF');		
+		//console.log('UNDEF');		
 		return 'http://localhost:5000';
 	}
 }

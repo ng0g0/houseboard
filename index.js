@@ -13,9 +13,11 @@ const requireLogin = passport.authenticate('local', { session: false });
 const app = express();
 const bodyParser = require('body-parser');
 const config = require('./config/main');
+const favicon  = require('serve-favicon');
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/prod')));
+app.use(favicon(path.join(__dirname,'/client/prod/favicon.ico')));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
