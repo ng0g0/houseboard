@@ -19,12 +19,12 @@ function returnApiUrl() {
 			return '/api';
 		} else {
 			console.log('LOC');
-			return 'http://localhost:5000/api2';
+			return 'http://localhost:5000/api';
 		}
 		
 	} else {
 		console.log('UNDEF');
-		return 'http://localhost:5000/api3';
+		return 'http://localhost:5000/api';
 	}
 }
 
