@@ -141,10 +141,11 @@ exports.forgotPassword = function (req, res, next) {
 		const resetToken = buffer.toString('hex');
 		if (err) { return next(err); }
 			let forgotSQL = "update rbm_user  set  " +
-				" resetPasswordToken = $1, resetPasswordExpires = NOW() + interval '24 hour' "  + 
+				" usertoken = $1, userexpires = NOW() + interval '24 hour' "  + 
 				" where usrid = $2 ";
 			db.none(forgotSQL, [resetToken,user.usrid])
-			.then( (resetpass) => {
+			.then( () => {
+				
 				const message = {
 					subject: 'Reset Password',
 					text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
@@ -177,7 +178,8 @@ exports.forgotPassword = function (req, res, next) {
 	});
     
 };
-
+				
+				
 //= =======================================
 // Reset Password Route
 //= =======================================
@@ -187,8 +189,8 @@ exports.verifyToken = function (req, res, next) {
 	let hashPassword = '123';
 	const Token = req.params.token;
     let findTokenSql = "select username "+
-	                   " FROM rbm_user where resetPasswordToken = $1 "+
-					   " AND  resetPasswordExpires > NOW()";
+	                   " FROM rbm_user where usertoken = $1 "+
+					   " AND  userexpires > NOW()";
 	db.one(findTokenSql, [Token])
 		.then(user=> {
 			const newPassword = req.body.password;
@@ -200,8 +202,8 @@ exports.verifyToken = function (req, res, next) {
 					hashPassword = hash;
 					//console.log('Validating password');
 					let updatePassSQL = "update rbm_user  set  " +
-						" password = $1, resetPasswordToken = NULL ,"+
-						" resetPasswordExpires = NULL, active = 1 "  + 
+						" password = $1, usertoken = NULL ,"+
+						" userexpires = NULL, active = 1 "  + 
 						" where username = $2";
 					db.none(updatePassSQL, [hashPassword,userName])
 					.then( () => {
