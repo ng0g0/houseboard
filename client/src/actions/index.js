@@ -3,45 +3,31 @@ import cookie from 'react-cookie';
 import { logoutUser } from './auth';
 import { STATIC_ERROR//, FETCH_USER
 , SEND_CONTACT_FORM, REQ_USER_DATA, RECV_USER_DATA, ERROR_RESPONSE } from './types';
-//export const API_URL = (process.env.NODE_ENV === 'production') ? '/api' : 'http://localhost:5000/api';
-//export const CLIENT_ROOT_URL = (process.env.NODE_ENV === 'production') ? 'https://houseboard.herokuapp.com' : 'http://localhost:3000';
 
 //= ===============================
 // Utility actions
 //= ===============================
 
 function returnApiUrl() {
-//	console.log(process.env.NODE_ENV);
 	if (process.env.NODE_ENV !== undefined)  {
-		//console.log('DEF');
 		if (process.env.NODE_ENV === 'production') {
-		//	console.log('PROD');
 			return '/api';
 		} else {
-		//	console.log('LOC');
 			return 'http://localhost:5000/api';
 		}
-		
 	} else {
-		//console.log('UNDEF');
 		return 'http://localhost:5000/api';
 	}
 }
 
 function returnClientUrl() {
-	//console.log(process.env.NODE_ENV);
 	if (process.env.NODE_ENV !== undefined)  {
-		//console.log('DEF');
 		if (process.env.NODE_ENV === 'production') {
-			//console.log('PROD');
 			return 'https://houseboard.herokuapp.com';
 		} else {
-			//console.log('LOC');
 			return 'http://localhost:5000';
 		}
-		
 	} else {
-		//console.log('UNDEF');		
 		return 'http://localhost:5000';
 	}
 }
@@ -76,8 +62,22 @@ export function fetchUser(uid) {
   };
 }
 
+export function deleteUser(uid) {
+	return function (dispatch) {
+		axios.delete(`${API_URL}/user/${uid}`, { uid })
+		.then((response) => {
+			    let errorMessage = 'User deleted';  
+				dispatch(logoutUser(errorMessage));
+			})
+    .catch((error) => {
+		console.log(error);
+		errorHandler(dispatch, error.response, ERROR_RESPONSE);
+    });
+	};
+}
+
 export function updateUser({ email, firstName, lastName, password, uid }) {
-return function (dispatch) {
+	return function (dispatch) {
     axios.post(`${API_URL}/user/${uid}`, { email, firstName, lastName, password, uid })
     .then((response) => {
 		console.log(response);

@@ -6,20 +6,18 @@ create table rbm_user (
 	lastname varchar(128) NOT NULL,
 	userToken varchar(128),
 	userExpires Date,
+	active int4,
 	CONSTRAINT rbm_username_key UNIQUE (username) 
 );
 
 insert into rbm_user(username, password, firstname , lastname) values ('admin', 'pass', 'Admin', 'User');
-select * from rbm_user
 
 update rbm_user 
-	set  resetPasswordToken = 'aaaa',
-		 resetPasswordExpires = NOW() + interval '1 hour'
+set  resetPasswordToken = 'aaaa',
+ resetPasswordExpires = NOW() + interval '1 hour'
 where 	username = 'ng0g0@yahoo.com'	 
+ 
 		 
-		 
-select 		 
-delete from rbm_user
 
 CREATE TABLE rbm_obj_details (
 	objdetid serial8 NOT NULL,

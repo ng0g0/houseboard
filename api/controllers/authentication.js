@@ -1,4 +1,4 @@
-//import { CLIENT_ROOT_URL } from '../../client/src/actions';
+//const CLIENT_ROOT_URL } from '../../client/src/actions';
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -25,7 +25,8 @@ function generateToken(user) {
 };
 
 exports.findUser = function(userName, callback) {
-	let finUserSql = "select usrid,username as email, password, firstname, lastname from rbm_user where username = $1 ";
+	let finUserSql = "select usrid,username as email, password, firstname, lastname " + 
+	                 " from rbm_user where username = $1 and active = 1";
 	var obj;
 	
 	db.one(finUserSql, [userName])
@@ -102,7 +103,7 @@ exports.register = function (req, res, next) {
 		if (err) return next(err);
 		hashPassword = hash;
 		//console.log('Validating password');
-		let registerSql = "INSERT INTO rbm_user (username, password, firstname, lastname) VALUES( $1, $2, $3, $4) RETURNING usrid";
+		let registerSql = "INSERT INTO rbm_user (username, password, firstname, lastname, active) VALUES( $1, $2, $3, $4, 1) RETURNING usrid";
 		db.one(registerSql, [email, hashPassword, firstName, lastName] )
 		.then((user) => {
 			obj = {
@@ -130,49 +131,51 @@ exports.register = function (req, res, next) {
 };
 
 exports.forgotPassword = function (req, res, next) {
-  const email = req.body.email;
-	let findSql = "select count(username) as cnt from rbm_user where username = $1 ";
+	const email = req.body.email;
+	let findSql = "select usrid from rbm_user where username = $1";
 	db.one(findSql, [email])
 	.then(user=> {
-		if (user.cnt === '0' ) {
-			res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
-			return next(err);
-		}	
+		console.log(`USERID:${user.usrid}`);
+		// Generate a token with Crypto
+		crypto.randomBytes(48, (err, buffer) => {
+		const resetToken = buffer.toString('hex');
+		if (err) { return next(err); }
+			let forgotSQL = "update rbm_user  set  " +
+				" resetPasswordToken = $1, resetPasswordExpires = NOW() + interval '24 hour' "  + 
+				" where usrid = $2 ";
+			db.none(forgotSQL, [resetToken,user.usrid])
+			.then( (resetpass) => {
+				const message = {
+					subject: 'Reset Password',
+					text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+						'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+						' '}${config.clientUrl}/reset-password/${resetToken}\n\n` +
+						`If you did not request this, please ignore this email and your password will remain unchanged.\n`
+				};
+
+			  // Otherwise, send user email via Mailgun
+			//mailgun.sendEmail(existingUser.email, message);
+				console.log(message.text);
+				return res.status(200).json({ message: 'Please check your email for the link to reset your password.' });
+			})
+			.catch(error=> {
+				console.log(error);
+				return next(err);
+			});
+		});
 	})
 	.catch(error=> {
-		res.status(422).json({ error: error });
-		return next(err);
-	});
-
-      // Generate a token with Crypto
-    crypto.randomBytes(48, (err, buffer) => {
-      const resetToken = buffer.toString('hex');
-      if (err) { return next(err); }
-		let forgotSQL = "update rbm_user  set  " +
-			" resetPasswordToken = $1, resetPasswordExpires = NOW() + interval '1 hour' "  + 
-			" where username = $2";
-		db.none(forgotSQL, [resetToken,email])
-		.then( () => {
-			const message = {
-				subject: 'Reset Password',
-				text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-					'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-					' '}${CLIENT_ROOT_URL}/reset-password/${resetToken}\n\n` +
-					`If you did not request this, please ignore this email and your password will remain unchanged.\n`
-			};
-
-          // Otherwise, send user email via Mailgun
-        //mailgun.sendEmail(existingUser.email, message);
-			console.log(message.text);
-			return res.status(200).json({ message: 'Please check your email for the link to reset your password.' });
-		})
-		.catch(error=> {
-			//console.log(error);
+	   if (error instanceof QRE && error.code === qrec.noData) {
+		    console.log(error);
+			res.status(422).json({ error: 'Your request could not be processed as entered. Please try again.' });
 			return next(err);
-        });
-
-
-      });
+		} else {
+			console.log(error);
+			res.status(422).json({ error: error });
+			return next(err);
+		}
+	});
+    
 };
 
 //= =======================================
@@ -185,7 +188,7 @@ exports.verifyToken = function (req, res, next) {
 	const Token = req.params.token;
     let findTokenSql = "select username "+
 	                   " FROM rbm_user where resetPasswordToken = $1 "+
-					   " AND  resetPasswordExpires > NOW() ";
+					   " AND  resetPasswordExpires > NOW()";
 	db.one(findTokenSql, [Token])
 		.then(user=> {
 			const newPassword = req.body.password;
@@ -198,7 +201,7 @@ exports.verifyToken = function (req, res, next) {
 					//console.log('Validating password');
 					let updatePassSQL = "update rbm_user  set  " +
 						" password = $1, resetPasswordToken = NULL ,"+
-						" resetPasswordExpires = NULL "  + 
+						" resetPasswordExpires = NULL, active = 1 "  + 
 						" where username = $2";
 					db.none(updatePassSQL, [hashPassword,userName])
 					.then( () => {
@@ -226,5 +229,125 @@ exports.verifyToken = function (req, res, next) {
 			}
 		});	
 };
+
+//======================================
+//   View Profile
+// =====================================
+
+
+exports.viewProfile = function (req, res, next) {
+  console.log(req.params);	
+  const userId = req.params.userId;
+  let finUserSql = "select usrid,username as email, password, firstname, lastname " + 
+					" from rbm_user where usrid = $1 ";
+	var obj;
+	db.one(finUserSql, [userId])
+	.then(user=> {
+		if (req.user.email !== user.email) { 
+			return res.status(401).json({ error: 'You are not authorized to view this user profile.' }); 
+		} else {
+			obj = {
+				uid: user.usrid,
+				email: user.email,
+				password: null,
+				firstName: user.firstname,
+				lastName: user.lastname
+			};
+			return res.status(200).json({ user: obj });
+		}
+	})
+	.catch(error=> {
+	   if (error instanceof QRE && error.code === qrec.noData) {
+			res.status(400).json({ error: 'No user could be found for this ID.' });
+			return next(error);
+		} else {
+			return next(error);
+		}
+	});
+};
+
+
+//=======================================
+// Update User
+//========================================
+
+exports.userUpdate = function (req, res, next) {
+
+	const email = req.body.email;
+	const firstName = req.body.firstName;
+	const lastName = req.body.lastName;
+	const password = req.body.password;
+	const uid = req.body.uid;
+	let hashPassword = '123';
+	const SALT_FACTOR = 5;
+	if (!email) {
+		return res.status(422).send({ error: 'You must enter an email address.' });
+	}
+	if (!firstName || !lastName) {
+		return res.status(422).send({ error: 'You must enter your full name.' });
+	}
+	if (!password) {
+		return res.status(422).send({ error: 'You must enter an password address.' });
+	}
+	bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
+		if (err) return next(err);
+		bcrypt.hash(password, salt, null, (err, hash) => {
+		if (err) return next(err);
+		hashPassword = hash;
+		let registerSql = "UPDATE rbm_user SET username = $1, password =$2, firstname=$3, lastname=$4 " + 
+						  " WHERE usrid = $5";
+		db.none(registerSql, [email, hashPassword, firstName, lastName, uid] )
+			.then((user) => {
+				obj = {
+					uid: uid,
+					email: email,
+					firstName: firstName,
+					lastName: lastName
+					};
+				res.status(200).json({ user: obj });	
+			})
+			.catch(error=> {
+					console.log(error);
+				if (error.code === "23505") {
+					return res.status(200).json({ 
+						user: {email: email } , 
+						error: `Email ${email} is already in use.` 
+					});	
+				} else {
+					return res.status(500).send({ error: error });
+				}
+			});
+		});
+	});
+};
+
+//=====================================
+// Delete User
+//=====================================
+
+exports.userDelete = function (req, res, next) {
+	const email = req.body.email;
+	//const uid = req.body.uid;
+	const uid = req.params.userId;
+	console.log(req.params);
+	let deleteSql = "UPDATE rbm_user SET active = 0 WHERE usrid = $1";
+	db.none(deleteSql, [uid] )
+		.then((user) => {
+			console.log('Deleted');	
+			const message = {
+				subject: 'User Deleted',
+				text: 'You are receiving this email because you deleted your user. \n\n' +
+					  'If you did not request this change, please contact us immediately.'
+				};
+				console.log(message.text);
+				// Otherwise, send user email confirmation of password change via Mailgun
+				//mailgun.sendEmail(resetUser.email, message);
+				return res.status(200).json({ message: 'User Deleted successfully.' });  	
+		})
+		.catch(error=> {
+			return res.status(500).send({ error: error });
+		});
+
+}
 
 

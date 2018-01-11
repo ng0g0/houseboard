@@ -3,7 +3,7 @@ import cookie from 'react-cookie';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import {bindActionCreators} from 'redux';
-import { fetchUser, updateUser } from '../../../actions/index';
+import { fetchUser, updateUser, deleteUser} from '../../../actions/index';
 
 const form = reduxForm({
   form: 'ViewProfile',
@@ -64,6 +64,9 @@ class ViewProfile extends Component {
     this.props.updateUser(formProps);
 	this.props.dispatch(this.props.reset('ViewProfile'));
   }	
+  deleteUser() {
+	this.props.deleteUser(this.props.data.uid);  
+  }
 
   componentDidMount() {
     // Fetch user data prior to component mounting
@@ -121,6 +124,7 @@ class ViewProfile extends Component {
 			  </div>
 			</div>
 			<button type="submit" className="btn btn-primary">Update</button>
+			<button type="button" onClick={() => this.deleteUser(this)}>Delete</button>
 		  </form>
 		  </div>
 		);
@@ -145,7 +149,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch) =>   
   bindActionCreators({
     fetchUser,
-	updateUser
+	updateUser,
+	deleteUser
   }, dispatch);
 
   

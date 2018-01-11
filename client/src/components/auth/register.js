@@ -19,6 +19,11 @@ const renderField = ({
   </div>
 );
 
+
+const emailValidate = value =>
+  value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
+  'Invalid email address' : undefined;
+  
 function validate(formProps) {
   const errors = {};
 
@@ -37,6 +42,8 @@ function validate(formProps) {
   if (!formProps.password) {
     errors.password = 'Please enter a password';
   }
+  
+  errors.email = emailValidate(formProps.email);
   
    if (!formProps.passwordConfirm) {
     errors.passwordConfirm = 'Please confirm new password';

@@ -1,5 +1,5 @@
-const AuthenticationController = require('./api/controllers/authentication');
-const UserController = require('./api/controllers/user');
+const UserController = require('./api/controllers/authentication');
+//const UserController = require('./api/controllers/user');
 
 const express = require('express');
 const passport = require('passport');
@@ -40,16 +40,16 @@ const apiRoutes = express.Router(),
   apiRoutes.use('/auth', authRoutes);
 
   // Registration route
-  authRoutes.post('/register', AuthenticationController.register);
+  authRoutes.post('/register', UserController.register);
 
   // Login route
-  authRoutes.post('/login', requireLogin, AuthenticationController.login);
+  authRoutes.post('/login', requireLogin, UserController.login);
 
   // Password reset request route (generate/send token)
-  authRoutes.post('/forgot-password', AuthenticationController.forgotPassword);
+  authRoutes.post('/forgot-password', UserController.forgotPassword);
 
   // Password reset route (change password using token)
-  authRoutes.post('/reset-password/:token', AuthenticationController.verifyToken);
+  authRoutes.post('/reset-password/:token', UserController.verifyToken);
 
   //= ========================
   // User Routes
@@ -61,6 +61,7 @@ const apiRoutes = express.Router(),
   // View user profile route
   userRoutes.get('/:userId', requireAuth, UserController.viewProfile);
   userRoutes.post('/:userId', UserController.userUpdate);
+  userRoutes.delete('/:userId', UserController.userDelete);
 
   // Test protected route
    apiRoutes.get('/protected', requireAuth, (req, res) => {
@@ -68,22 +69,6 @@ const apiRoutes = express.Router(),
   });
 
 app.use('/api', apiRoutes);
-
-
-// Put all API endpoints under '/api'
-//app.get('/api/passwords', (req, res) => {
-//  const count = 5;
-
-  // Generate some passwords
-//  const passwords = Array.from(Array(count).keys()).map(i =>
-    //generatePassword(12, false)
-  //)
-
-  // Return them as json
-  //res.json(passwords);
-
-  //console.log(`Sent ${count} passwords`);
-//});
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
@@ -93,7 +78,7 @@ app.get('*', (req, res) => {
 
 console.log(process.env.NODE_ENV);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || config.port;
 app.listen(port);
 
 console.log(`API listening on ${port}`);
