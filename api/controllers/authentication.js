@@ -1,16 +1,11 @@
-//const CLIENT_ROOT_URL } from '../../client/src/actions';
-
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const config = require('../../config/main');
-
-
 
 var pgp = require('pg-promise')(/*options*/);
 var async = require('async');
 const bcrypt = require('bcrypt-nodejs');
 
-//var db = pgp(config.connectionString);
 const db = require('../connection/postgres');
 var QRE = pgp.errors.QueryResultError;
 var qrec = pgp.errors.queryResultErrorCode;
@@ -41,7 +36,6 @@ exports.findUser = function(userName, callback) {
 		callback(null, obj);
 	})
 	.catch(error=> {
-		//console.log(error);
 	   if (error instanceof QRE && error.code === qrec.noData) {
 			callback(null, null);
 						
@@ -68,6 +62,7 @@ exports.login = function (req, res, next) {
 	firstName: req.user.firstName,
 	lastName: req.user.lastName
   };
+  console.log('login');
   console.log(userInfo);
   res.status(200).json({
     token: `JWT ${generateToken(userInfo)}`,
@@ -238,6 +233,7 @@ exports.verifyToken = function (req, res, next) {
 
 
 exports.viewProfile = function (req, res, next) {
+  console.log('viewProfile');
   console.log(req.params);	
   const userId = req.params.userId;
   let finUserSql = "select usrid,username as email, password, firstname, lastname " + 
@@ -245,6 +241,7 @@ exports.viewProfile = function (req, res, next) {
 	var obj;
 	db.one(finUserSql, [userId])
 	.then(user=> {
+		console.log(user);
 		if (req.user.email !== user.email) { 
 			return res.status(401).json({ error: 'You are not authorized to view this user profile.' }); 
 		} else {
@@ -259,6 +256,7 @@ exports.viewProfile = function (req, res, next) {
 		}
 	})
 	.catch(error=> {
+		console.log(error);
 	   if (error instanceof QRE && error.code === qrec.noData) {
 			res.status(400).json({ error: 'No user could be found for this ID.' });
 			return next(error);

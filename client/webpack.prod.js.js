@@ -41,5 +41,8 @@ const publicPath = '/prod/';
         loader: 'style-loader!css-loader' 
       }
     ]
+  },
+  stats: {
+	warnings: false
   }
 }

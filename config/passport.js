@@ -14,20 +14,20 @@ const localOptions = {
 
 // Setting up local login strategy
 const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
-	console.log(email);
+	//console.log(email);
 	AuthenticationController.findUser(email, (err, user) => {
-	console.log('localLogin');	
+	//console.log('localLogin');	
     if (err) { return done(err); }
     if (!user) { return done(null, false, { error: 'Your login details could not be verified. Please try again.' }); }
 	const hashpass = user.password;
-	console.log(hashpass);	
+	//console.log(hashpass);	
     AuthenticationController.comparePassword(password, hashpass, (err, isMatch) => {
       if (err) { 
-		console.log('Error localLogin');
+		//console.log('Error localLogin');
 		return done(err); 
 		}
       if (!isMatch) { return done(null, false, { error: 'Your login details could not be verified. Please try again.' }); }
-	  console.log(user);
+	  //console.log(user);
       return done(null, user);
     });
   });
@@ -45,7 +45,7 @@ const jwtOptions = {
 
 // Setting up JWT login strategy
 const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
-	console.log(payload);
+	//console.log(payload);
 	AuthenticationController.findUser(payload.email, (err, user) => {
     if (err) { return done(err, false); }
     if (user) {

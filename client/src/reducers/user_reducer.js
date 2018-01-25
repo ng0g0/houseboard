@@ -10,6 +10,7 @@ export default function (state = INITIAL_STATE, action) {
             setupComplete: false
 			});
 	case RECV_USER_DATA:
+	    console.log(action);
 			return Object.assign({}, state, {
 				data: action.data,
 				setupComplete: true

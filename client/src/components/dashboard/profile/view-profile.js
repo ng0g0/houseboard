@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import {bindActionCreators} from 'redux';
 import { fetchUser, updateUser, deleteUser} from '../../../actions/index';
+import Translation from '../../locale/translate';
 
 const form = reduxForm({
   form: 'ViewProfile',
@@ -67,9 +68,9 @@ class ViewProfile extends Component {
   deleteUser() {
 	this.props.deleteUser(this.props.data.uid);  
   }
-
   componentDidMount() {
-    // Fetch user data prior to component mounting
+    console.log(this.props.data);
+  // Fetch user data prior to component mounting
 	if (!this.props.data) {
 		const user = cookie.load('user');
 		this.setState({setupComplete: false});
@@ -92,57 +93,57 @@ class ViewProfile extends Component {
 	
 	if ( this.props.setupComplete ) {
 		return (
-		  <div> User information:	
+		  <div> <Translation text="UserInformation" />:	
 		  <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
 			{this.renderAlert()}
 			<div className="row">
 			  <div className="col-md-6">
-				<label>First Name</label>
+				<label><Translation text="FirstName" /></label>
 				<Field name="firstName" className="form-control" component={renderField} type="text" />
 			  </div>
 			  <div className="col-md-6">
-				<label>Last Name</label>
+				<label><Translation text="LastName" /></label>
 				<Field name="lastName" className="form-control" component={renderField} type="text" />
 			  </div>
 			</div>
 			<div className="row">
 			  <div className="col-md-12">
-				<label>Email</label>
+				<label><Translation text="Email" /></label>
 				<Field name="email" className="form-control" component={renderField} type="text" />
 			  </div>
 			</div>
 			<div className="row">
 			  <div className="col-md-12">
-				<label>Password</label>
+				<label><Translation text="Password" /></label>
 				<Field name="password" className="form-control" component={renderField} type="password" />
 			  </div>
 			</div>
 			<div className="row">
 			  <div className="col-md-12">
-				<label>Confirm Password</label>
+				<label><Translation text="ConfirmPassword" /></label>
 				<Field name="passwordConfirm" className="form-control" component={renderField} type="password" />
 			  </div>
 			</div>
-			<button type="submit" className="btn btn-primary">Update</button>
-			<button type="button" onClick={() => this.deleteUser(this)}>Delete</button>
+			<button type="submit" className="btn btn-primary"><Translation text="Update" /></button>
+			<button type="button" onClick={() => this.deleteUser(this)}><Translation text="Delete" /></button>
 		  </form>
 		  </div>
 		);
 		}
 	else {
-		return (<div className='loader'> Loading...</div> );
+		return (<div className='loader'> <Translation text="Loading" />...</div> );
 	}
   }
 }
 
 function mapStateToProps(state) {
-	//console.log(state);
+	//	console.log(state);
   return {
     data: state.user.data,
 	setupComplete: state.user.setupComplete,
 	initialValues: state.user.data,
-	errorMessage: state.user.error
-	//,formFields: state.form.ViewProfile.fields
+	errorMessage: state.user.error,
+	locale: state.lang.locale
   };
 }
 
@@ -151,10 +152,9 @@ const mapDispatchToProps = (dispatch) =>
     fetchUser,
 	updateUser,
 	deleteUser
-  }, dispatch);
+}, dispatch);
 
   
   export default connect(mapStateToProps, mapDispatchToProps)(form(ViewProfile));
-//export default connect(mapStateToProps, mapDispatchToProps )(ProfileFromStateForm(ViewProfile));
 
 

@@ -105,6 +105,13 @@ class ResetPassword extends Component {
   }
 }
 
+const props = {
+  router: {}
+};
+
+PropTypes.checkPropTypes(ResetPassword.contextTypes, props, 'prop', 'ResetPassword');
+
+
 function mapStateToProps(state) {
   return { errorMessage: state.auth.error, message: state.auth.resetMessage };
 }

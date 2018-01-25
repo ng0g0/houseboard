@@ -4,29 +4,50 @@ const db = require('../connection/postgres');
 var QRE = pgp.errors.QueryResultError;
 var qrec = pgp.errors.queryResultErrorCode;
 
+
+function getNestedChildren(arr, parent) {
+    var out = []
+    for(var i in arr) {
+        if(arr[i].objmaster == parent) {
+            var items = getNestedChildren(arr, arr[i].objid)
+
+            if(items.length) {
+                arr[i].items = items
+            }
+            out.push(arr[i])
+        }
+    }
+    return out
+}
+
 exports.listEntry = function (req, res, next) {
-  console.log(req.params);	
-  const userId = req.params.userId;
-  let finUserSql = "select usrid,username as email, password, firstname, lastname from rbm_user where usrid = $1 ";
-	var obj;
-	db.many(finUserSql, [userId])
-	.then(user=> {
-		if (req.user.email !== user.email) { 
-			return res.status(401).json({ error: 'You are not authorized to view this user profile.' }); 
-		} else {
-			obj = {
-				uid: user.usrid,
-				email: user.email,
-				password: null,
-				firstName: user.firstname,
-				lastName: user.lastname
-			};
-			return res.status(200).json({ user: obj });
-		}
-	})
+  const userId = 0;//req.params.userId;
+  var obj;
+  
+  let listSql = "SELECT x.objid,x.value,x.objtypedetname,x.objmaster FROM  (" +
+    " WITH RECURSIVE conblock(objid, objmaster) AS ( "+
+	"SELECT ro.objid, ro.objmaster "+
+    "FROM rbm_objects ro "+ 
+	"WHERE ro.objmaster = $1 and ro.objtype in (1,2)  "+
+    "UNION ALL "+
+    "SELECT m.objid, m.objmaster FROM rbm_objects m   "+
+    "JOIN conblock ON conblock.objid = m.objmaster "+
+    "WHERE m.objtype in (1,2) ) "+
+   "SELECT cb.objid, rod.value, rotd.objtypedetname,cb.objmaster "+
+   "FROM conblock cb, rbm_obj_details rod, rbm_obj_type_det rotd "+
+   "WHERE	rod.objid = cb.objid  and rod.objtypedetid = rotd.objtypedetid) x";
+   
+	db.many(listSql, [userId])
+	.then(entry=> {
+		//console.log(entry)
+		obj = getNestedChildren(entry,'0');
+		//console.log(obj);
+		return res.status(200).json({ entry: obj, message: '', error: '' });
+		})
 	.catch(error=> {
+		console.log(error);
 	   if (error instanceof QRE && error.code === qrec.noData) {
-			res.status(400).json({ error: 'No user could be found for this ID.' });
+			res.status(200).json({ entry: obj, message: 'NO_DATE_FOUND', error: error });
 			return next(error);
 		} else {
 			return next(error);
@@ -34,81 +55,34 @@ exports.listEntry = function (req, res, next) {
 	});
 };
 
-
-exports.userUpdate = function (req, res, next) {
-
-	const email = req.body.email;
-	const firstName = req.body.firstName;
-	const lastName = req.body.lastName;
-	const password = req.body.password;
-	const uid = req.body.uid;
-	let hashPassword = '123';
-	const SALT_FACTOR = 5;
-	if (!email) {
-		return res.status(422).send({ error: 'You must enter an email address.' });
-	}
-	// Return error if full name not provided
-	if (!firstName || !lastName) {
-		return res.status(422).send({ error: 'You must enter your full name.' });
-	}
-
-	// Return error if no password provided
-	if (!password) {
-		let registerSql = "UPDATE rbm_user SET username = $1, firstname=$2, lastname=$3 WHERE usrid = $4";
-			db.none(registerSql, [email, firstName, lastName, uid] )
-				.then((user) => {
-					obj = {
-						uid: uid,
-						email: email,
-						firstName: firstName,
-						lastName: lastName
-						};
-					console.log(obj);	
-					res.status(200).json({ user: obj });	
-				})
-				.catch(error=> {
-					if (error.code === "23505") {
-						return res.status(422).send({ error: 'That email address is already in use.' });	
-					} else {
-						//console.log(error);
-						return res.status(500).send({ error: error });
-					}
-				});
-			//});
-		//return res.status(422).send({ error: 'You must enter a password.' });
-	} else {
-		console.log('Password upate');
-		bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
-			if (err) return next(err);
-			bcrypt.hash(password, salt, null, (err, hash) => {
-			if (err) return next(err);
-			hashPassword = hash;
-			console.log('Validating password');
-			
-			let registerSql = "UPDATE rbm_user SET username = $1, password =$2, firstname=$3, lastname=$4 WHERE usrid = $5";
-			db.none(registerSql, [email, hashPassword, firstName, lastName, uid] )
-				.then((user) => {
-					obj = {
-						uid: uid,
-						email: email,
-						firstName: firstName,
-						lastName: lastName
-						};
-					console.log('Updated');	
-					console.log(obj);	
-					res.status(200).json({ user: obj });	
-				})
-				.catch(error=> {
-						console.log(error);
-					if (error.code === "23505") {
-						return res.status(200).json({ user: {email: email } , error: `Email ${email} is already in use.` });	
-					} else {
-						//console.log(error);
-						return res.status(500).send({ error: error });
-					}
-				});
-			});
-		});
-	}
-	
+exports.viewEntry = function (req, res, next) {
+  console.log(req.params);	
+  const entryId = req.params.entryId;
+  //let finUserSql = "select usrid,username as email, password, firstname, lastname from rbm_user where usrid = $1 ";
+  	var obj;
+	//db.one(finUserSql, [userId])
+	//.then(user=> {
+	//	if (req.user.email !== user.email) { 
+	//		return res.status(401).json({ error: 'You are not authorized to view this user profile.' }); 
+	//	} else {
+	//		obj = {
+	//			uid: user.usrid,
+	//			email: user.email,
+	//			password: null,
+	//			firstName: user.firstname,
+	//			lastName: user.lastname
+	//		};
+	//		return res.status(200).json({ user: obj });
+	//	}
+	//})
+	//.catch(error=> {
+	//   if (error instanceof QRE && error.code === qrec.noData) {
+			res.status(200).json({ entry: obj, message: 'NO_DATE_FOUND' });
+	//		return next(error);
+	//	} else {
+	//		return next(error);
+	//	}
+	//});
 };
+
+

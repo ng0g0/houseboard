@@ -1,66 +1,54 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+//import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import cookie from 'react-cookie';
-import { protectedTest } from '../../actions/auth';
+//import cookie from 'react-cookie';
+//import { protectedTest } from '../../actions/auth';
+import { fetchEntryList } from '../../actions/entry';
+import {bindActionCreators} from 'redux';
+import EntryList from '../entry/Entrylist';
+import Translation from '../locale/translate';
 
 class Dashboard extends Component {
-
   constructor(props) {
     super(props);
-
-    this.props.protectedTest();
   }
-
-  isRole(roleToCheck, toRender) {
-    const userRole = cookie.load('user').role;
-
-    if (userRole === roleToCheck) {
-      return toRender;
-    }
-
-    return false;
+  
+  componentDidMount() {
+	if (!this.props.entry) {
+		this.props.dispatch(fetchEntryList());
+	}
   }
-
-  adminMenu() {
-    return (
-      <div className="admin-menu">
-        <Link to="/admin">Admin</Link>
-      </div>
-    );
-  }
-
-  ownerMenu() {
-    return (
-      <div className="trainer-menu">
-        Owner menu coming soon.
-      </div>
-    );
-  }
-
-  clientMenu() {
-    return (
-      <div className="client-menu">
-        Client menu coming soon.
-      </div>
-    );
-  }
-
+  
   render() {
-    return (
-      <div>
-        <Link to="/dashboard/inbox">Inbox</Link> | <Link to="/profile"> Profile</Link> | <Link to="/billing/settings">Billing</Link>
-        {this.isRole('Admin', this.adminMenu())}
-        {this.isRole('Owner', this.ownerMenu())}
-        {this.isRole('Client', this.clientMenu())}
-        <p>{this.props.content}</p>
-      </div>
-    );
+	  if ( this.props.loadingSpinner ) {
+		return (<div className='loader'><Translation text="Loading" />...</div>);
+	} else {
+		console.log(this.props);
+		return (
+		<div>
+		<h2> <Translation text="BLOCK_LIST" />	</h2>
+		<EntryList entry={this.props.entry} />
+		</div>
+		);	
+	}
+    
   }
 }
 
 function mapStateToProps(state) {
-  return { content: state.auth.content };
+	//console.log(state);
+  return {
+    entry: state.entry.entry,	
+	locale: state.lang.locale,
+	errorMessage: state.entry.error,
+	loadingSpinner: state.entry.loadingSpinner
+  };
 }
 
-export default connect(mapStateToProps, { protectedTest })(Dashboard);
+const mapDispatchToProps = (dispatch) =>   
+  bindActionCreators({
+    fetchEntryList
+  }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+

@@ -2,7 +2,12 @@ import axios from 'axios';
 import cookie from 'react-cookie';
 import { logoutUser } from './auth';
 import { STATIC_ERROR//, FETCH_USER
-, SEND_CONTACT_FORM, REQ_USER_DATA, RECV_USER_DATA, ERROR_RESPONSE } from './types';
+, SEND_CONTACT_FORM,
+ REQ_USER_DATA, 
+ RECV_USER_DATA, 
+ ERROR_RESPONSE, 
+ LANG_CHANGE 
+ } from './types';
 
 //= ===============================
 // Utility actions
@@ -35,6 +40,22 @@ function returnClientUrl() {
 export const API_URL = returnApiUrl() ;
 export const CLIENT_ROOT_URL = returnClientUrl();
 
+export function setLang(lang) {
+	cookie.save('i18n', lang);
+	dispatch({ type: LANG_CHANGE, payload: { lang: lang } });
+}
+
+
+function requestData(type) {
+	return {type: type}
+}
+
+function receiveData(type, json) {
+	return{
+		type: RECV_USER_DATA,
+		data: json
+	}
+};
 
 function requestUserData() {
 	return {type: REQ_USER_DATA}
@@ -50,15 +71,20 @@ function receiveUserData(json) {
 export function fetchUser(uid) {
   return function (dispatch) {
 	dispatch(requestUserData());  
+	console.log(uid);
 	return axios({ url: `${API_URL}/user/${uid}`,
 			timeout: 2000,
 			method: 'get',
 			headers: { Authorization: cookie.load('token') }
     })
     .then((response) => {
+		console.log(response);
         dispatch(receiveUserData(response.data.user));
     })
-    .catch(response => dispatch(errorHandler(response.data.error)));
+    .catch((response) => {
+		console.log(response);
+	dispatch(errorHandler(response.data.error)
+	);});
   };
 }
 

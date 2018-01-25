@@ -6,9 +6,9 @@ import App from './components/app';
 import NotFoundPage from './components/pages/not-found-page';
 
 // Import static pages
-import HomePage from './components/pages/home-page';
-import ContactPage from './components/pages/contact-page';
-import ComponentSamplesPage from './components/pages/component-samples';
+//import HomePage from './components/pages/home-page';
+//import ContactPage from './components/pages/contact-page';
+//import ComponentSamplesPage from './components/pages/component-samples';
 
 // Import authentication related pages
 import Register from './components/auth/register';
@@ -36,18 +36,15 @@ import RequireAuth from './components/auth/require_auth';
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={HomePage} />
-    <Route path="contact-us" component={ContactPage} />
-    <Route path="component-samples" component={RequireAuth(ComponentSamplesPage)} />
+    <IndexRoute component={RequireAuth(Dashboard)} />
+    
+    
     <Route path="register" component={Register} />
     <Route path="login" component={Login} />
     <Route path="logout" component={Logout} />
     <Route path="forgot-password" component={ForgotPassword} />
     <Route path="reset-password/:resetToken" component={ResetPassword} />
     <Route path="profile" component={RequireAuth(ViewProfile)} />
-
-    <Route path="admin" component={RequireAuth(AdminDashboard)} />
-
     <Route path="dashboard">
       <IndexRoute component={RequireAuth(Dashboard)} />
     </Route>
@@ -57,11 +54,11 @@ export default (
   </Route>
 );
 
-
-//<Route path="checkout/:plan" component={RequireAuth(InitialCheckout)} />
+//<Route path="contact-us" component={ContactPage} />
+//<Route path="component-samples" component={RequireAuth(ComponentSamplesPage)} />
+    //<Route path="checkout/:plan" component={RequireAuth(InitialCheckout)} />
     //<Route path="billing/settings" component={RequireAuth(BillingSettings)} />
-
-
-	    //  <Route path="inbox" component={RequireAuth(Inbox)} />
+	//<Route path="admin" component={RequireAuth(AdminDashboard)} />
+    //  <Route path="inbox" component={RequireAuth(Inbox)} />
     //  <Route path="conversation/new" component={RequireAuth(ComposeMessage)} />
     //  <Route path="conversation/view/:conversationId" component={RequireAuth(Conversation)} />

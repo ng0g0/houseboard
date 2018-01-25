@@ -22,9 +22,10 @@ if (token) {
   // Update application state. User has token and is probably authenticated
   store.dispatch({ type: AUTH_USER });
 }
+console.log(store);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory} routes={routes} />
+		<Router history={browserHistory} routes={routes} />
   </Provider>,
   document.getElementById('root'));

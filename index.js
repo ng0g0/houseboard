@@ -1,5 +1,6 @@
 const UserController = require('./api/controllers/authentication');
 //const UserController = require('./api/controllers/user');
+const EntryController = require('./api/controllers/entrie');
 
 const express = require('express');
 const passport = require('passport');
@@ -33,7 +34,8 @@ app.use(function(req, res, next) {
 
 const apiRoutes = express.Router(),
     authRoutes = express.Router(),
-    userRoutes = express.Router();
+    userRoutes = express.Router(),
+	entryRoutes = express.Router();
 	
 	
 	// Set auth routes as subgroup/middleware to apiRoutes
@@ -51,6 +53,13 @@ const apiRoutes = express.Router(),
   // Password reset route (change password using token)
   authRoutes.post('/reset-password/:token', UserController.verifyToken);
 
+  //==========================
+  //  Entry
+  // =========================
+  apiRoutes.use('/entry', entryRoutes);
+  entryRoutes.get('/list', requireAuth, EntryController.listEntry);
+  entryRoutes.get('/:entryId', requireAuth, EntryController.viewEntry);
+  
   //= ========================
   // User Routes
   //= ========================

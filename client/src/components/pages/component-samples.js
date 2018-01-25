@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import PricingTable from '../sales/pricing-table';
-import SocialMediaBar from '../sales/social-media-bar';
-import Rotator from '../sales/rotator';
+#import PricingTable from '../sales/pricing-table';
+#import SocialMediaBar from '../sales/social-media-bar';
+#import Rotator from '../sales/rotator';
 
 const bronzeFeatures = ['Really cool', 'Pretty cheap', 'Awesome'];
 const silverFeatures = ['A couple features', 'Pretty neat'];
@@ -39,7 +39,18 @@ class ComponentSamplesPage extends Component {
   render() {
     return (
       <div className="select-plan">
-        <div className="row">
+	  KUR
+        
+      </div>
+    );
+  }
+}
+
+export default ComponentSamplesPage;
+
+
+/*
+<div className="row">
           <PricingTable planName="Bronze" color="#CCC" price="$10" features={bronzeFeatures} />
           <PricingTable planName="Silver" price="$15" features={silverFeatures} />
           <PricingTable planName="Gold" price="$20" features={goldFeatures} />
@@ -48,9 +59,4 @@ class ComponentSamplesPage extends Component {
         <SocialMediaBar socialNetworks={social} />
 
         <Rotator rotators={rotators} />
-      </div>
-    );
-  }
-}
-
-export default ComponentSamplesPage;
+*/

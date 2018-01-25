@@ -14,7 +14,12 @@ export const AUTH_USER = 'auth_user',
 export const FETCH_USER = 'fetch_user';
 export const REQ_USER_DATA = 'REQ_USER_DATA';
 export const RECV_USER_DATA = 'RECV_USER_DATA';
-
+//======================
+//  Entry
+//======================
+export const FETCH_ENTRY = 'FETCH_ENTRY';
+export const REQ_ENTRY_DATA = 'REQ_ENTRY_DATA';
+export const RECV_ENTRY_DATA = 'RECV_ENTRY_DATA';
 
 //= =====================
 // Messaging Actions
@@ -43,4 +48,5 @@ export const CREATE_CUSTOMER = 'create_customer',
   CHANGE_SUBSCRIPTION = 'change_subscription';
 
   export const ERROR_RESPONSE = 'error_response';
+  export const LANG_CHANGE = 'LANG_CHANGE';
   

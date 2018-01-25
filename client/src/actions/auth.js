@@ -2,11 +2,19 @@ import axios from 'axios';
 import { browserHistory } from 'react-router';
 import cookie from 'react-cookie';
 import { API_URL, CLIENT_ROOT_URL, errorHandler } from './index';
-import { AUTH_USER, AUTH_ERROR, UNAUTH_USER, FORGOT_PASSWORD_REQUEST, RESET_PASSWORD_REQUEST, PROTECTED_TEST } from './types';
+import { LANG_CHANGE, AUTH_USER, AUTH_ERROR, UNAUTH_USER, FORGOT_PASSWORD_REQUEST, RESET_PASSWORD_REQUEST, PROTECTED_TEST } from './types';
 
 //= ===============================
 // Authentication actions
 //= ===============================
+
+export function setLanguage(lang) {
+	return function (dispatch) {
+		cookie.save('i18n', lang);
+		dispatch({ type: LANG_CHANGE, payload: { lang: lang } 
+		});
+	};
+}
 
 // TO-DO: Add expiration to cookie
 export function loginUser({ email, password }) {

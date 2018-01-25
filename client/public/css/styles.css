@@ -7,7 +7,7 @@ and open the template in the editor.
     Created on : Aug 21, 2017, 4:18:16 PM
     Author     : cpt2geh
 */
-
+/*
 .modal {
     display: none;
     position: fixed;
@@ -57,13 +57,23 @@ and open the template in the editor.
       display: block;
     }
 }
-
+*/
 
 body {
   background: #EFEFEF;
-  padding-top: 70px;
+  padding-top: 0px;
 }
 
+.navbar img {
+  padding-top: 10px;
+
+}
+
+#myNavbar > ul > li > a > span {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	margin-left: 3px;
+}
+/*
 .navbar-default .navbar-nav>li>a:hover {
   color: #555;
   background-color: #E7E7E7;
@@ -90,10 +100,11 @@ ul.footer-nav {
 .footer-nav li:last-of-type::after {
   content: "";
 }
-
+*/
 p.copyright>span {
   color: #777;
 }
+
 
 .loader {
   font-size: 10px;

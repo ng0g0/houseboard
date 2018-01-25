@@ -6,12 +6,15 @@ var QRE = pgp.errors.QueryResultError;
 var qrec = pgp.errors.queryResultErrorCode;
 
 exports.viewProfile = function (req, res, next) {
+  console.log('viewProfile input:');
   console.log(req.params);	
   const userId = req.params.userId;
   let finUserSql = "select usrid,username as email, password, firstname, lastname from rbm_user where usrid = $1 ";
 	var obj;
 	db.one(finUserSql, [userId])
 	.then(user=> {
+		console.log('viewProfile');
+		console.log(user);
 		if (req.user.email !== user.email) { 
 			return res.status(401).json({ error: 'You are not authorized to view this user profile.' }); 
 		} else {
@@ -26,6 +29,7 @@ exports.viewProfile = function (req, res, next) {
 		}
 	})
 	.catch(error=> {
+		console.log(error);
 	   if (error instanceof QRE && error.code === qrec.noData) {
 			res.status(400).json({ error: 'No user could be found for this ID.' });
 			return next(error);

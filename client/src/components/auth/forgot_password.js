@@ -55,6 +55,13 @@ class ForgotPassword extends Component {
   }
 }
 
+const props = {
+  router: {}
+};
+
+PropTypes.checkPropTypes(ForgotPassword.contextTypes, props, 'prop', 'ForgotPassword');
+
+
 function mapStateToProps(state) {
   return {
     errorMessage: state.auth.error,

@@ -24,6 +24,13 @@ export default function (ComposedComponent) {
       return <ComposedComponent {...this.props} />;
     }
   }
+  
+  const props = {
+  router: {}
+};
+
+PropTypes.checkPropTypes(Authentication.contextTypes, props, 'prop', 'Authentication');
+
 
   function mapStateToProps(state) {
     return { authenticated: state.auth.authenticated };
