@@ -7,7 +7,7 @@ class LayerMask extends Component {
 	
   render() {
 	  const { layerid, header } = this.props
-	console.log(this.props);
+	//console.log(this.props);
     return (
       <div className="modal fade" id={layerid} role="dialog">
 		<div className="modal-dialog modal-lg">

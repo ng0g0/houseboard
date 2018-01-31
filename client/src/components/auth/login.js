@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 import { loginUser } from '../../actions/auth';
+import Translation from '../locale/translate';
 
 const form = reduxForm({
   form: 'login',
@@ -31,16 +32,16 @@ class Login extends Component {
         <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
           {this.renderAlert()}
           <div>
-            <label>Email</label>
+            <label><Translation text="Email" /></label>
             <Field name="email" className="form-control" component="input" type="text" />
           </div>
           <div>
-            <label>Password</label>
+            <label><Translation text="Password" /></label>
             <Field name="password" className="form-control" component="input" type="password" />
           </div>
-          <button type="submit" className="btn btn-primary">Login</button>
+          <button type="submit" className="btn btn-primary"><Translation text="Login" /></button>
         </form>
-        <Link to="/forgot-password">Forgot Password?</Link>
+        <Link to="/forgot-password"><Translation text="ForgotPass" />?</Link>
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import Translation from '../locale/translate';
 
 
 
@@ -10,13 +11,13 @@ class HeaderTemplate extends Component {
     if (this.props.authenticated) {
       return ( <ul className="nav navbar-nav">
 			<li key={`${1}header`}>
-			  <Link to="dashboard">Dashboard</Link>
+			  <Link to="dashboard"><Translation text="Dashboard" /></Link>
 			</li>
 			<li key={`${2}header`}>
-			  <Link to="logout">Buildings</Link>
+			  <Link to="/blocks"><Translation text="Building" /></Link>
 			</li>
 			<li key={`${3}header`}>
-			  <Link to="/">Reports</Link>
+			  <Link to="/"><Translation text="Reports" /></Link>
 			</li>
 		</ul>);
     } 
@@ -29,8 +30,8 @@ class HeaderTemplate extends Component {
 				 <a className="dropdown-toggle" data-toggle="dropdown" href="#">
 				 <span className="caret"></span></a>
 					<ul className="dropdown-menu">
-						<li><Link to="profile">Profile</Link></li>
-						<li><Link to="logout">Logout</Link></li>
+						<li><Link to="profile"><Translation text="Profile" /></Link></li>
+						<li><Link to="logout"><Translation text="Logout" /></Link></li>
                    </ul>
 				</li>
 			</ul>);
@@ -59,7 +60,7 @@ class HeaderTemplate extends Component {
 						<span className="icon-bar"></span>
 						<span className="icon-bar"></span>                        
 					</button>
-					<img alt="Brand" src="./images/header.jpg"/>
+					<img alt="Brand" src="/images/header.jpg"/>
 					<Link className="navbar-brand" to="/">{this.props.logo}</Link>
 				</div>
 				<div className="collapse navbar-collapse" id="myNavbar">

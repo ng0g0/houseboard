@@ -19,6 +19,8 @@ import ResetPassword from './components/auth/reset_password';
 
 // Import dashboard pages
 import Dashboard from './components/dashboard/dashboard';
+import BlockList from './components/blocks/block-list';
+import BlockView from './components/blocks/block-view';
 import ViewProfile from './components/dashboard/profile/view-profile';
 //import Inbox from './components/dashboard/messaging/inbox';
 //import Conversation from './components/dashboard/messaging/conversation';
@@ -48,8 +50,9 @@ export default (
     <Route path="dashboard">
       <IndexRoute component={RequireAuth(Dashboard)} />
     </Route>
+	<Route path="blocks" component={RequireAuth(BlockList)} />
+	<Route path="blocks/:blockid" component={RequireAuth(BlockView)} />
 
-    
     <Route path="*" component={NotFoundPage} />
   </Route>
 );

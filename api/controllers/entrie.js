@@ -7,6 +7,7 @@ var qrec = pgp.errors.queryResultErrorCode;
 
 function getNestedChildren(arr, parent) {
     var out = []
+	
     for(var i in arr) {
         if(arr[i].objmaster == parent) {
             var items = getNestedChildren(arr, arr[i].objid)
@@ -23,25 +24,33 @@ function getNestedChildren(arr, parent) {
 exports.listEntry = function (req, res, next) {
   const userId = 0;//req.params.userId;
   var obj;
-  
-  let listSql = "SELECT x.objid,x.value,x.objtypedetname,x.objmaster FROM  (" +
-    " WITH RECURSIVE conblock(objid, objmaster) AS ( "+
-	"SELECT ro.objid, ro.objmaster "+
-    "FROM rbm_objects ro "+ 
-	"WHERE ro.objmaster = $1 and ro.objtype in (1,2)  "+
-    "UNION ALL "+
-    "SELECT m.objid, m.objmaster FROM rbm_objects m   "+
-    "JOIN conblock ON conblock.objid = m.objmaster "+
-    "WHERE m.objtype in (1,2) ) "+
-   "SELECT cb.objid, rod.value, rotd.objtypedetname,cb.objmaster "+
-   "FROM conblock cb, rbm_obj_details rod, rbm_obj_type_det rotd "+
-   "WHERE	rod.objid = cb.objid  and rod.objtypedetid = rotd.objtypedetid) x";
-   
-	db.many(listSql, [userId])
+//  let objSql = "SELECT objid from rbm_objects where objid = $1";
+//  db.many(objSql, [userId])
+//  .then(userObj=> {
+	
+	let listSql = "SELECT x.objid,x.value,x.objtypedetname,x.objmaster, x.typename, x.actionX FROM ( "+
+    "  WITH RECURSIVE conblock(objid, objmaster, objtype) AS ( "+
+    "  SELECT ro.objid, ro.objmaster, ro.objtype "+
+    "  FROM rbm_objects ro  "+
+    " WHERE ro.objmaster =$1 and ro.objtype in (1,2)  "+
+    "  UNION ALL "+
+    "  SELECT m.objid, m.objmaster, m.objtype FROM rbm_objects m   "+
+    "  JOIN conblock ON conblock.objid = m.objmaster "+
+    "  WHERE m.objtype in (1,2) ) "+
+    "  SELECT cb.objid, rod.value, rotd.objtypedetname,cb.objmaster,rot.typename, "+
+    "  case when objtypeid = 1 then "+
+    "  (select string_agg(rotX.typename, ',')||',INFOBLOCK,DELETE' actionX from rbm_object_type rotX where rotX.objtypemaster = rot.objtypeid) "+
+    "  else 'INFO,DELETE' end "+
+    "   as actionX "+
+    "  FROM conblock cb, rbm_obj_details rod, rbm_obj_type_det rotd, rbm_object_type rot "+
+    "  WHERE	rod.objid = cb.objid  "+
+    "  and cb.objtype = rot.objtypeid "+
+    "  and rod.objtypedetid = rotd.objtypedetid) x ";
+	
+
+   db.many(listSql, [userId])
 	.then(entry=> {
-		//console.log(entry)
 		obj = getNestedChildren(entry,'0');
-		//console.log(obj);
 		return res.status(200).json({ entry: obj, message: '', error: '' });
 		})
 	.catch(error=> {
@@ -53,36 +62,77 @@ exports.listEntry = function (req, res, next) {
 			return next(error);
 		}
 	});
+	  
+  //}).catch(error=> {
+//		console.log(error);
+//	   if (error instanceof QRE && error.code === qrec.noData) {
+//			res.status(200).json({ entry: obj, message: 'NO_DATE_FOUND', error: error });
+//			return next(error);
+//		} else {
+//			return next(error);
+//		}
+//	});
+  
+  
 };
 
 exports.viewEntry = function (req, res, next) {
   console.log(req.params);	
-  const entryId = req.params.entryId;
-  //let finUserSql = "select usrid,username as email, password, firstname, lastname from rbm_user where usrid = $1 ";
-  	var obj;
-	//db.one(finUserSql, [userId])
-	//.then(user=> {
-	//	if (req.user.email !== user.email) { 
-	//		return res.status(401).json({ error: 'You are not authorized to view this user profile.' }); 
-	//	} else {
-	//		obj = {
-	//			uid: user.usrid,
-	//			email: user.email,
-	//			password: null,
-	//			firstName: user.firstname,
-	//			lastName: user.lastname
-	//		};
-	//		return res.status(200).json({ user: obj });
-	//	}
-	//})
-	//.catch(error=> {
-	//   if (error instanceof QRE && error.code === qrec.noData) {
+  const blockid = req.params.entryId;
+  var obj;	
+  let objSql = "SELECT objmaster,objid from rbm_objects where objid = $1";
+  	db.one(objSql, [blockid])
+	.then(object=> {
+		console.log(object);	
+		console.log(object.objmaster);
+		
+		let viewSql = "SELECT x.objid,x.value,x.objtypedetname,x.objmaster, x.typename, x.actionX FROM (  "+
+ 		" WITH RECURSIVE conblock(objid, objmaster, objtype) AS (  "+
+ 		" SELECT ro.objid, ro.objmaster, ro.objtype   "+
+ 		" FROM rbm_objects ro    "+
+ 		" WHERE ro.objid = $1 and ro.objtype in (2,3,4,7,8,9)    "+
+ 		" UNION ALL   "+
+ 		" SELECT m.objid, m.objmaster, m.objtype FROM rbm_objects m     "+
+ 		" JOIN conblock ON conblock.objid = m.objmaster   "+
+ 		" WHERE m.objtype in (2,3,4,7,8,9) )   "+
+ 		" SELECT cb.objid, rod.value, rotd.objtypedetname,cb.objmaster,rot.typename,  "+
+ 		" (select string_agg(rotX.typename, ',') actionX "+
+		" from rbm_object_type rotX where rotX.objtypemaster = rot.objtypeid) || "+
+		" case when objtypeid = 2 then ',INFO,DELETE' "+
+		" when objtypeid = 3 then ',FLOORINFO,DELETE' "+ 
+		" when objtypeid = 4 then ',APINFO,DELETE' "+
+		" else ',INFO,DELETE' end as actionX "+
+  		" FROM conblock cb, rbm_obj_details rod, rbm_obj_type_det rotd, rbm_object_type rot "+
+ 		" WHERE	rod.objid = cb.objid    "+
+ 		" and cb.objtype = rot.objtypeid  "+
+ 		" and rod.objtypedetid = rotd.objtypedetid ) x  ";
+	   
+		db.many(viewSql, [object.objid])
+		.then(entry=> {
+			console.log(entry)
+			obj = getNestedChildren(entry,object.objmaster);
+			
+			return res.status(200).json({ entry: obj });
+		})
+		.catch(error=> {
+		   if (error instanceof QRE && error.code === qrec.noData) {
+				res.status(200).json({ entry: obj, message: 'NO_DATE_FOUND' });
+				return next(error);
+			} else {
+				return next(error);
+			}
+		});
+	})
+	.catch(error=> {
+	   if (error instanceof QRE && error.code === qrec.noData) {
 			res.status(200).json({ entry: obj, message: 'NO_DATE_FOUND' });
-	//		return next(error);
-	//	} else {
-	//		return next(error);
-	//	}
-	//});
+			return next(error);
+		} else {
+			return next(error);
+		}
+	});
+  
+  
 };
 
 

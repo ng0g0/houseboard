@@ -69,6 +69,26 @@ body {
 
 }
 
+.nounderline{
+	text-decoration: none !important
+}
+
+
+.blockche {
+  margin-bottom: 0px;
+  border-radius: 0px;
+}
+.center-block {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+ }
+
+.dropdown-menu li:hover {
+    cursor: pointer;
+} 
+
+
 #myNavbar > ul > li > a > span {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	margin-left: 3px;

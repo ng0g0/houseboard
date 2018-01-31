@@ -2,39 +2,18 @@ import React, { Component } from 'react';
 import cookie from 'react-cookie';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { TRANSLATIONS } from './locale';
+import  * as lang2 from './locale';
 
 class Translation extends Component {
-	constructor(props) {
-    super(props);
-    this.state = {
-      translation: '',
-    };
-  }
-
-
-	componentDidMount() {
-		let local = cookie.load('i18n');
-		//console.log(local);
-		if (!local) {
-			local = this.props.locale || 'en';
-		}
-		//console.log(local);
-		if ((local) && (this.props.text)) {
-			this.setState({ translation: TRANSLATIONS[local][this.props.text]});
-		} else  {
-			this.setState({ translation: this.props.text});
-		}
-	}
 	
   render() {
-    return (<span>{this.state.translation}</span>);
+    return (<span>{lang2.default.TRANSLATIONS[this.props.locale][this.props.text]}</span>);
   }
 }
 
 function mapStateToProps(state) {
   return {
-    locale: state.lang.locale
+    locale: state.lang.lang
   };
 }
 
@@ -51,5 +30,6 @@ Translation.propTypes = {
 PropTypes.checkPropTypes(Translation.propTypes, props, 'prop', 'Translation');
 
 export default connect(mapStateToProps, null)(Translation);
+
 
 

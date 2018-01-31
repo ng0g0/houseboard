@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { setLanguage} from '../../actions/auth';
+import locale from '../locale/locale';
 
 
 class FooterTemplate extends Component {
@@ -37,6 +38,18 @@ class FooterTemplate extends Component {
       ];
     }
   }
+  
+  renderOptions(lang) {
+	  
+     const options = {
+		key: lang.locale,
+		value : lang.locale
+	 }
+	  
+	  return (
+		<option {...options}>{lang.name}</option>
+		);
+  }
 
   render() {
     const d = new Date();
@@ -50,9 +63,8 @@ class FooterTemplate extends Component {
             </div>
           </div>
 		  <div className="row">
-		  <select className="selectpicker" data-width="fit" onChange={this.setLang.bind(this)}>
-			<option value='en'>English</option>
-			<option value='bg'>Български</option>
+		  <select className="selectpicker" data-width="fit" onChange={this.setLang.bind(this)} value={this.props.locale}>
+			 {locale.LANG_NAMES.map((lang) =>   this.renderOptions(lang)   )}
 			</select>
 		  </div>
         </div>
@@ -65,7 +77,7 @@ class FooterTemplate extends Component {
 function mapStateToProps(state) {
   return {
     authenticated: state.auth.authenticated,
-	locale: state.lang.locale
+	locale: state.lang.lang
   };
 }
 

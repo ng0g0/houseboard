@@ -14,12 +14,15 @@ export const AUTH_USER = 'auth_user',
 export const FETCH_USER = 'fetch_user';
 export const REQ_USER_DATA = 'REQ_USER_DATA';
 export const RECV_USER_DATA = 'RECV_USER_DATA';
+
 //======================
 //  Entry
 //======================
 export const FETCH_ENTRY = 'FETCH_ENTRY';
 export const REQ_ENTRY_DATA = 'REQ_ENTRY_DATA';
 export const RECV_ENTRY_DATA = 'RECV_ENTRY_DATA';
+export const REQ_VIEW_DATA = 'REQ_VIEW_DATA';
+export const RECV_VIEW_DATA = 'RECV_VIEW_DATA';
 
 //= =====================
 // Messaging Actions
