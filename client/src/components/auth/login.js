@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router';
-import { loginUser } from '../../actions/auth';
+import { loginUser, showToast } from '../../actions/auth';
 import Translation from '../locale/translate';
 
 const form = reduxForm({
@@ -23,6 +23,7 @@ class Login extends Component {
       );
     }
   }
+    
 
   render() {
     const { handleSubmit } = this.props;
@@ -55,4 +56,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { loginUser })(form(Login));
+export default connect(mapStateToProps, { loginUser, showToast })(form(Login));

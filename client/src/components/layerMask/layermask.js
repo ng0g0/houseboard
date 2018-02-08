@@ -2,12 +2,44 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Translation from '../locale/translate';
+import PropTypes from 'prop-types'; // ES6
+import { submit } from 'redux-form'
+import { addBlockConst,  viewInfoConst, DeleteConst } from '../../consts';
+import { deleteBlock } from '../../actions/blocks';
 
 class LayerMask extends Component {
-	
+   
+  handleSaveNewBlockClick({ dispatch }) {
+        let aa =  this.props.header;
+        this.props.dispatch(submit(addBlockConst));
+    }	
+  
+    handleDeleteBlockClick({ dispatch }) {
+        console.log(this.props.objid);
+        this.props.dispatch(deleteBlock(this.props.objid));
+    }	
+  
+  
+  renderOKButtons(header, btnName) {
+    if (header === addBlockConst)  {
+        return(<button type="button" className="btn btn-primary" data-dismiss="modal"  
+                onClick={this.handleSaveNewBlockClick.bind(this)} > Save </button>)      
+    } 
+    if (header === viewInfoConst)  {
+        return(<button type="button" className="btn btn-primary" data-dismiss="modal"  
+                onClick={this.handleSaveNewBlockClick.bind(this)} > Update </button>)      
+    } 
+    
+    if (header === DeleteConst)  {
+        return(<button type="button" className="btn btn-primary" data-dismiss="modal"  
+                onClick={this.handleDeleteBlockClick.bind(this)} > Delete </button>)      
+    } 
+    
+    return(<button type="button" className="btn btn-primary" data-dismiss="modal"> OK </button>)
+  }
+   
   render() {
-	  const { layerid, header } = this.props
-	//console.log(this.props);
+    const { layerid, header } = this.props
     return (
       <div className="modal fade" id={layerid} role="dialog">
 		<div className="modal-dialog modal-lg">
@@ -22,20 +54,25 @@ class LayerMask extends Component {
 		{this.props.children}
         </div>
         <div className="modal-footer">
-			<button type="button" className="btn btn-primary"> OK</button>
-     		<button type="button" className="btn btn-danger" data-dismiss="modal"> Cancel</button>
-        </div>
+            {this.renderOKButtons(header)}
+            <button type="button" className="btn btn-danger" data-dismiss="modal"> <Translation text="Close" /></button>
+         </div>
       </div>
     </div>
   </div>
-	
-	
-	
     );
   }
 }
 
 
-/// {this.props.children}
+/*
+LayerMask.PropTypes = {
+	onActBtnClick: PropTypes.func,
+	onUpdateForm: PropTypes.func,
+	layerid: PropTypes.string,
+	header: PropTypes.string,
+    objid: PropsTypes.number,
+    closeBtnLayer: PropTypes.string,
+};*/
 
-export default LayerMask;
+export default connect()(LayerMask);

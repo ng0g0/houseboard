@@ -24,6 +24,13 @@ export const RECV_ENTRY_DATA = 'RECV_ENTRY_DATA';
 export const REQ_VIEW_DATA = 'REQ_VIEW_DATA';
 export const RECV_VIEW_DATA = 'RECV_VIEW_DATA';
 
+//===================
+//   Block
+export const REQ_BLOCK_LIST = 'REQ_BLOCK_LIST'; 
+export const RECV_BLOCK_LIST = 'RECV_BLOCK_LIST'; 
+export const REQ_BLOCK_INFO = 'REQ_BLOCK_INFO';
+export const RECV_BLOCK_INFO = 'RECV_BLOCK_INFO';
+
 //= =====================
 // Messaging Actions
 //= =====================

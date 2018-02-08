@@ -27,5 +27,6 @@ console.log(store);
 ReactDOM.render(
   <Provider store={store}>
 		<Router history={browserHistory} routes={routes} />
+        
   </Provider>,
   document.getElementById('root'));

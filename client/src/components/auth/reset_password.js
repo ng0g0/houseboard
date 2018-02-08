@@ -39,12 +39,6 @@ const renderField = ({
     </div>
   );
 
-//const renderField = field => (
-//  <div>
-//    <input className="form-control" {...field.input} />
-//    {field.touched && field.error && <div className="error">{field.error}</div>}
-//  </div>
-//);
 
 class ResetPassword extends Component {
   static contextTypes = {

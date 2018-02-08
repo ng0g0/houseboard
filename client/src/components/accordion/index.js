@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-//import { Link } from 'react-router';
-//import {icons} from '../../consts';
-//import Translation from '../locale/translate';
 import ButtonPanel from '../template/btnpanel';
-
 
 class AccordionPanel extends Component {
 	constructor(props) {
@@ -19,8 +15,10 @@ class AccordionPanel extends Component {
 	}
 	render() {
 		const { objid, title, buttons } = this.props
+        //console.log(buttons);
+        //console.log(title);
 		let panel = `panel-col${objid}`;
-		return(<div className="panel panel-primary">
+		return(<div className="panel panel-default">
 			<div className="panel-heading">
 				<h4 className="panel-title">
 					<a className="nounderline" href={`#panel-col${objid}`} data-toggle="collapse" 
@@ -30,9 +28,7 @@ class AccordionPanel extends Component {
 							: <span className="glyphicon glyphicon-chevron-down"></span> }
 						&nbsp;{title}
 					</a>
-					<ButtonPanel buttons={buttons} objid={objid} target="block" 
-					onViewEntry={this.props.handleViewClick}
-					/>
+					<ButtonPanel buttons={buttons} objid={objid} target="block" onViewEntry={this.props.handleViewClick}/>
 				</h4>
 			</div>
 			<div id={panel} className="collapse">
@@ -40,9 +36,6 @@ class AccordionPanel extends Component {
 			</div>
 			</div>);
 	}  
-	
-	
-//			
 }
 
   

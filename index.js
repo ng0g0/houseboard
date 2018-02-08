@@ -1,12 +1,10 @@
 const UserController = require('./api/controllers/authentication');
-//const UserController = require('./api/controllers/user');
 const EntryController = require('./api/controllers/entrie');
+const BlockController = require('./api/controllers/block');
 
 const express = require('express');
 const passport = require('passport');
 const path = require('path');
-//const generatePassword = require('password-generator');
-
 const passportService = require('./config/passport');
 const requireAuth = passport.authenticate('jwt', { session: false });
 const requireLogin = passport.authenticate('local', { session: false });
@@ -35,6 +33,7 @@ app.use(function(req, res, next) {
 const apiRoutes = express.Router(),
     authRoutes = express.Router(),
     userRoutes = express.Router(),
+    blockRoutes = express.Router(),
 	entryRoutes = express.Router();
 	
 	
@@ -57,8 +56,17 @@ const apiRoutes = express.Router(),
   //  Entry
   // =========================
   apiRoutes.use('/entry', entryRoutes);
-  entryRoutes.get('/list', requireAuth, EntryController.listEntry);
+  //entryRoutes.get('/list', requireAuth, EntryController.listEntry);
   entryRoutes.get('/:entryId', requireAuth, EntryController.viewEntry);
+   
+  //---------------------
+  //  Block 
+  
+  apiRoutes.use('/block', blockRoutes);
+  blockRoutes.post('/add', requireAuth, BlockController.blockAdd);
+  blockRoutes.get('/list', requireAuth, BlockController.blockList);
+  blockRoutes.get('/:blockId', requireAuth, BlockController.blockInfo);
+  blockRoutes.delete('/:blockId', requireAuth, BlockController.blockDelete);
   
   //= ========================
   // User Routes

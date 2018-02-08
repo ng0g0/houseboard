@@ -19,8 +19,8 @@ const TRANSLATIONS = {
 	'UserInformation': 'User information',
 	'NO_DATE_FOUND': 'No Data found',
 	'BLOCK_LIST': 'Block List',
-	'AddBlock': 'Add Block',
-	'ViewInfo': 'View Info',
+	'addBlock': 'Add Block',
+	'viewInfo': 'Info',
 	'AddApartAcom': 'Add Apartment Acomudation',
 	'AddFloorAcom': 'Add Floor Acomudation',
 	'AddEntAcom': 'Add Entrance Acomudation',
@@ -33,7 +33,16 @@ const TRANSLATIONS = {
 	'BLOCK_NUMBER': 'Block Number',
 	'ENTRY_NUMBER': 'Entry Number',
 	'Accomucation': 'Accomucation',
-	'FLOOR': 'Floor'
+	'FLOOR': 'Floor',
+    'country': 'Country',
+    'city': 'City',
+    'postCode': 'Post Code',
+    'Close': 'Close',
+    'distrtict': 'District',
+    'street': 'Street',
+    'stnumber': 'Number',
+    'title': 'Title',
+    'DELETE_BLOCK_QUESTION': 'Do you want to delete the block?'
     
   },
   bg: {
@@ -56,8 +65,8 @@ const TRANSLATIONS = {
 	'UserInformation': 'Потребителска информация',
 	'NO_DATE_FOUND': 'Няма намерени',
 	'BLOCK_LIST': 'Списък с блокове',
-	'AddBlock': 'Добави Блок',
-	'ViewInfo': 'Информация',
+	'addBlock': 'Добави Блок',
+	'viewInfo': 'Информация',
 	'AddApartAcom': 'Добави Разход към Апартамент',
 	'AddFloorAcom': 'Добави Разход към Етаж',
 	'AddEntAcom': 'Добави Разход към Вход',
@@ -70,7 +79,16 @@ const TRANSLATIONS = {
 	'BLOCK_NUMBER': 'Блок номер',
 	'ENTRY_NUMBER': 'Вход',
 	'Accomucation': 'Разходи',
-	'FLOOR': 'Етаж'
+	'FLOOR': 'Етаж',
+    'country': 'Държава',
+    'city': 'Град',
+    'postCode': 'Пощенски код',
+    'Close': 'Затвори',
+    'distrtict': 'Квартал',
+    'street': 'Име на улица',
+    'stnumber': 'Номер',
+    'title': 'Заглавие',
+    'DELETE_BLOCK_QUESTION': 'Желаете ли да изтриете избрания блок?'
 	
   }
 };

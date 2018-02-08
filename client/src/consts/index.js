@@ -1,12 +1,16 @@
-export const viewInfo = 'viewInfo'; 
-
+export const SUCCESS_NOTIF = 'SUCCESS_NOTIF';
+export const ERROR_NOTIF = 'ERROR_NOTIF';
+export const viewInfoConst = 'viewInfo'; 
+export const addBlockConst = 'addBlock'; 
+export const blocksTarget = 'blocks';
+export const DeleteConst = 'Delete';
 
 
 export const icons = [
 	{
 		name: 'BLOCK' , 
 		icon: 'glyphicon glyphicon-open-file',
-		label: 'AddBlock',
+		label: 'addBlock',
 		action: 'add',
 		target: '#newBlock'
 	},
@@ -35,7 +39,8 @@ export const icons = [
 		name: 'PERSON' , 
 		icon: 'glyphicon glyphicon-use',
 		label: 'AddPerson',
-		action: 'add'
+		action: 'add',
+		target: '#newPerson'
 	},
 	{
 		name: 'ACOM-BL' , 
@@ -60,7 +65,7 @@ export const icons = [
 	},
 	{
 		name: 'ACOM-AP' , 
-		icon: 'glyphicon glyphicon-tin',
+		icon: 'glyphicon glyphicon-tint',
 		label: 'AddApartAcom',
 		action: 'add',
 		target: '#newAcomudation'
@@ -68,33 +73,17 @@ export const icons = [
 	{
 		name: 'INFO' , 
 		icon: 'glyphicon glyphicon-info-sign',
-		label: 'ViewInfo',
+		label: 'viewInfo',
 		action: 'viewInfo',
 		target: 'blocks'
 	},
 	{
 		name: 'INFOBLOCK' , 
 		icon: 'glyphicon glyphicon-info-sign',
-		label: 'ViewInfo',
+		label: 'viewInfo',
 		action: 'viewInfo',
-		target: '#newBlock'
+		target: '#infoLayer'
 	}
-	,
-	{
-		name: 'FLOORINFO' , 
-		icon: 'glyphicon glyphicon-info-sign',
-		label: 'ViewInfo',
-		action: 'viewInfo',
-		target: '#newFloor'
-	},
-	{
-		name: 'APINFO' , 
-		icon: 'glyphicon glyphicon-info-sign',
-		label: 'ViewInfo',
-		action: 'viewInfo',
-		target: '#newApartment'
-	}
-	
 	,
 	{
 		name: 'DELETE' , 

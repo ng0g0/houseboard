@@ -2,26 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Translation from '../locale/translate';
-
-
-
+import { ToastContainer } from 'react-toastify';
 
 class HeaderTemplate extends Component {
-  renderLinks() {
-    if (this.props.authenticated) {
-      return ( <ul className="nav navbar-nav">
-			<li key={`${1}header`}>
-			  <Link to="dashboard"><Translation text="Dashboard" /></Link>
-			</li>
-			<li key={`${2}header`}>
-			  <Link to="/blocks"><Translation text="Building" /></Link>
-			</li>
-			<li key={`${3}header`}>
-			  <Link to="/"><Translation text="Reports" /></Link>
-			</li>
-		</ul>);
-    } 
-  }
+    renderLinks() {
+        if (this.props.authenticated) {
+            return ( <ul className="nav navbar-nav">
+                <li key={`${1}header`}>
+                    <Link to="dashboard"><Translation text="Dashboard" /></Link>
+                </li>
+                <li key={`${2}header`}>
+                    <Link to="/blocks"><Translation text="Building" /></Link>
+                </li>
+                <li key={`${3}header`}>
+                    <Link to="/"><Translation text="Reports" /></Link>
+                </li>
+            </ul>);
+        } 
+    }
   
 	renderUserMenu() {
 		if (this.props.authenticated) {
@@ -50,9 +48,10 @@ class HeaderTemplate extends Component {
 	  }
 	}
   
-  render() {
-	return (<nav className="navbar navbar-default">
+    render() {
+        return (<nav className="navbar navbar-default">
 			<div className="container">
+                <ToastContainer />
 				<div className="navbar-header">
 					<button type="button" className="navbar-toggle" 
 						data-toggle="collapse" data-target="#myNavbar">
@@ -73,10 +72,10 @@ class HeaderTemplate extends Component {
 }
 
 function mapStateToProps(state) {
-  return {
-    authenticated: state.auth.authenticated,
-	form: state.form
-  };
+    return {
+        authenticated: state.auth.authenticated,
+        form: state.form
+    };
 }
 
 export default connect(mapStateToProps)(HeaderTemplate);

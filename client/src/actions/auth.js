@@ -2,7 +2,9 @@ import axios from 'axios';
 import { browserHistory } from 'react-router';
 import cookie from 'react-cookie';
 import { API_URL, CLIENT_ROOT_URL, errorHandler } from './index';
+import { showNotify } from './toast'; 
 import { LANG_CHANGE, AUTH_USER, AUTH_ERROR, UNAUTH_USER, FORGOT_PASSWORD_REQUEST, RESET_PASSWORD_REQUEST, PROTECTED_TEST } from './types';
+
 
 //= ===============================
 // Authentication actions
@@ -40,7 +42,8 @@ export function registerUser({ email, firstName, lastName, password }) {
       cookie.save('token', response.data.token, { path: '/' });
       cookie.save('user', response.data.user, { path: '/' });
       dispatch({ type: AUTH_USER });
-      window.location.href = `${CLIENT_ROOT_URL}/dashboard`;
+      showNotify('KUR');
+      //window.location.href = `${CLIENT_ROOT_URL}/dashboard`;
     })
     .catch((error) => {
 	   console.log(error.response);	

@@ -53,8 +53,6 @@ exports.userDelete = function (req, res, next) {
 					  'If you did not request this change, please contact us immediately.'
 				};
 				console.log(message.text);
-				// Otherwise, send user email confirmation of password change via Mailgun
-				//mailgun.sendEmail(resetUser.email, message);
 				return res.status(200).json({ message: 'User Deleted successfully.' });  	
 		})
 		.catch(error=> {
