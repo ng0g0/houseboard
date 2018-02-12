@@ -35,7 +35,7 @@ class AddBlock extends Component {
 	//		this.props.dispatch(fetchBlockInfo());
     //        
 	//	}
-	//}
+	//} 
       
     render () {
         const { handleSubmit } = this.props;

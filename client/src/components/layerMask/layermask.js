@@ -4,15 +4,20 @@ import { Link } from 'react-router';
 import Translation from '../locale/translate';
 import PropTypes from 'prop-types'; // ES6
 import { submit } from 'redux-form'
-import { addBlockConst,  viewInfoConst, DeleteConst } from '../../consts';
+import { addBlockConst,  viewInfoConst, DeleteConst, AddEntranceConst } from '../../consts';
 import { deleteBlock } from '../../actions/blocks';
 
 class LayerMask extends Component {
    
-  handleSaveNewBlockClick({ dispatch }) {
-        let aa =  this.props.header;
+    handleSaveNewBlockClick({ dispatch }) {
         this.props.dispatch(submit(addBlockConst));
-    }	
+    }
+    
+    handleSaveNewEntranceClick({ dispatch }) {
+        this.props.dispatch(submit(AddEntranceConst));
+    }
+    
+    
   
     handleDeleteBlockClick({ dispatch }) {
         console.log(this.props.objid);
@@ -33,7 +38,12 @@ class LayerMask extends Component {
     if (header === DeleteConst)  {
         return(<button type="button" className="btn btn-primary" data-dismiss="modal"  
                 onClick={this.handleDeleteBlockClick.bind(this)} > Delete </button>)      
-    } 
+    }
+
+    if (header === AddEntranceConst) {
+         return(<button type="button" className="btn btn-primary" data-dismiss="modal"  
+                onClick={this.handleSaveNewEntranceClick.bind(this)} > Save </button>) 
+    }
     
     return(<button type="button" className="btn btn-primary" data-dismiss="modal"> OK </button>)
   }

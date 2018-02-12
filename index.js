@@ -57,6 +57,7 @@ const apiRoutes = express.Router(),
   // =========================
   apiRoutes.use('/entry', entryRoutes);
   //entryRoutes.get('/list', requireAuth, EntryController.listEntry);
+  entryRoutes.post('/add', requireAuth, EntryController.entryAdd);
   entryRoutes.get('/:entryId', requireAuth, EntryController.viewEntry);
    
   //---------------------

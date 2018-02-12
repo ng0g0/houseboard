@@ -14,7 +14,7 @@ class AccordionPanel extends Component {
 		}));
 	}
 	render() {
-		const { objid, title, buttons } = this.props
+		const { objid, title, buttons, type } = this.props
         //console.log(buttons);
         //console.log(title);
 		let panel = `panel-col${objid}`;
@@ -28,7 +28,7 @@ class AccordionPanel extends Component {
 							: <span className="glyphicon glyphicon-chevron-down"></span> }
 						&nbsp;{title}
 					</a>
-					<ButtonPanel buttons={buttons} objid={objid} target="block" onViewEntry={this.props.handleViewClick}/>
+					<ButtonPanel buttons={buttons} objid={objid} target="block" type={type} onViewEntry={this.props.handleViewClick}/>
 				</h4>
 			</div>
 			<div id={panel} className="collapse">

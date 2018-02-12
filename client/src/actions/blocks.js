@@ -7,7 +7,8 @@ import {
  REQ_BLOCK_LIST,
  RECV_BLOCK_LIST,
  REQ_BLOCK_INFO,
- RECV_BLOCK_INFO
+ RECV_BLOCK_INFO,
+ CLEAR_BLOCK_INFO
  } 
 from './types';
 
@@ -32,17 +33,25 @@ function requestBlockInfo() {
    return {type: REQ_BLOCK_INFO} 
 }
 
+function clearBlockInfo() {
+   return {type: CLEAR_BLOCK_INFO}  
+}
+
 function receiveBlockInfo(json) {
 	return{
 		type: RECV_BLOCK_INFO,
 		data: json
 	}
 };
-
+export function resetBlockInfo(){
+    return function (dispatch) {
+        dispatch(clearBlockInfo() );  
+    }
+}
 
 export function fetchBlockList() {
   return function (dispatch) {
-	dispatch(requestBlockList());  
+	
 	return axios({ url: `${API_URL}/block/list`,
 			timeout: 2000,
 			method: 'get',
@@ -113,6 +122,26 @@ export function deleteBlock(objid) {
         showNotify(response.message, SUCCESS_NOTIF );
 	});
    }
+}
+
+export function saveEntry({name, objid, number}) {
+    return function (dispatch) {
+    axios.post(`${API_URL}/entry/add`, { name, objid, number }
+    ,{ headers: { Authorization: cookie.load('token') }}) 
+    .then((response) => {
+		//console.log(response);
+        if (response.error) {
+            showNotify(response.error, ERROR_NOTIF );
+        } else {
+            showNotify(response.data.message, SUCCESS_NOTIF );
+            dispatch(fetchBlockList());
+        }
+    })
+    .catch((error) => {
+		console.log(error);
+        showNotify('Error during creation', ERROR_NOTIF );
+    });
+  };
 }
 
 

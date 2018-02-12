@@ -51,7 +51,7 @@ class HeaderTemplate extends Component {
     render() {
         return (<nav className="navbar navbar-default">
 			<div className="container">
-                <ToastContainer />
+                <ToastContainer autoClose={3000} />
 				<div className="navbar-header">
 					<button type="button" className="navbar-toggle" 
 						data-toggle="collapse" data-target="#myNavbar">

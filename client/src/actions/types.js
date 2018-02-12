@@ -30,6 +30,7 @@ export const REQ_BLOCK_LIST = 'REQ_BLOCK_LIST';
 export const RECV_BLOCK_LIST = 'RECV_BLOCK_LIST'; 
 export const REQ_BLOCK_INFO = 'REQ_BLOCK_INFO';
 export const RECV_BLOCK_INFO = 'RECV_BLOCK_INFO';
+export const CLEAR_BLOCK_INFO ='CLEAR_BLOCK_INFO';
 
 //= =====================
 // Messaging Actions

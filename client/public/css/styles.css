@@ -83,6 +83,10 @@ body {
     margin-left: auto;
     margin-right: auto;
  }
+ 
+.bigshit {
+    font-size: 30px;
+} 
 
 .dropdown-menu li:hover {
     cursor: pointer;

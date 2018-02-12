@@ -6,8 +6,12 @@ import Translation from '../locale/translate';
 import { isUndefined } from 'underscore';
 import ButtonPanel from '../template/btnpanel';
 import LayerMask from '../layerMask/layermask';
+import PropTypes from 'prop-types'; // ES6
 
 class BlockView extends Component {
+    static contextTypes = {
+		router: PropTypes.object,
+	}  
 	constructor(props) {
     super(props);
   }
@@ -17,6 +21,12 @@ class BlockView extends Component {
 		this.props.dispatch(viewEntry(this.props.params.blockid));
 	}
   }
+  
+    handleViewClick(target, objid, label ) {
+        console.log(label);
+        console.log(objid);
+    }
+
   
   renderApps(app) {
 	  
@@ -47,7 +57,7 @@ class BlockView extends Component {
                         <div className="panel panel-default">
                             <div className="panel-body">
                             <div>
-                                <ButtonPanel buttons={buttons} target="modal" />	
+                                //	
                             </div>	
                                 <img className={classNum} src="../images/apartment.jpg" alt="entry" height="80px"/>
                             </div>
@@ -59,6 +69,8 @@ class BlockView extends Component {
 		return (<div className="row"><div className="col-sm-12"></div></div>);
 	}		
   }
+  
+  //<ButtonPanel buttons={buttons} target="modal" />
 
   renderFloors( entry ) {
 	function compare(a,b) {
@@ -79,7 +91,7 @@ class BlockView extends Component {
                         </div>
                         <div className="panel-heading">
                             <Translation text="FLOOR" />: {details.number} 
-                            <ButtonPanel buttons={buttons} target="modal" />	
+                            //
                         </div>
                         
                     </div>)
@@ -88,6 +100,7 @@ class BlockView extends Component {
 	  );  
 	  }	
   }
+  //<ButtonPanel buttons={buttons} target="modal" />	
   
   renderEntry( entry ) {
 	console.log(entry);	
@@ -100,10 +113,13 @@ class BlockView extends Component {
 				</div>
 				<div className="panel-heading">
 				&nbsp;
-				<ButtonPanel buttons={buttons} />	
+                    <ButtonPanel buttons={buttons} target="modal" objid={entry.objid} type={entry.typename}
+                        onViewEntry={this.handleViewClick}
+                    />
 				</div>
 			</div>);
   }
+  //<ButtonPanel buttons={buttons} />
   
   render () {
 	// console.log(this.props);
@@ -115,6 +131,11 @@ class BlockView extends Component {
 		}
 	else {
 		const { entry }  = this.props;
+        if (!entry) {
+            var redirect = '/blocks';
+            this.context.router.push(redirect); 
+            return(<div>NOT FOUND</div>);
+        }
 		if (entry.length > 0) {
 			let entryNum = entry[0];
 			return ( <div className="panel panel-default"> 

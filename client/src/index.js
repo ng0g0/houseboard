@@ -22,7 +22,7 @@ if (token) {
   // Update application state. User has token and is probably authenticated
   store.dispatch({ type: AUTH_USER });
 }
-console.log(store);
+//console.log(store);
 
 ReactDOM.render(
   <Provider store={store}>

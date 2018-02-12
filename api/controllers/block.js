@@ -28,7 +28,7 @@ exports.blockList = function (req, res, next) {
   //  let objSql = "SELECT objid from rbm_objects where objid = $1";
 //  db.many(objSql, [userId])
 //  .then(userObj=> {
-    let listSql = "SELECT x.objid,x.objmaster,x.actionX,x.details FROM (  "+
+    let listSql = "SELECT x.objid,x.objmaster,x.actionX,x.details,x.typename FROM (  "+
     "  WITH RECURSIVE conblock(objid, objmaster, objtype) AS (  "+
     "  SELECT ro.objid, ro.objmaster, ro.objtype  "+
     "  FROM rbm_objects ro   "+
@@ -37,7 +37,7 @@ exports.blockList = function (req, res, next) {
     "  SELECT m.objid, m.objmaster, m.objtype FROM rbm_objects m    "+
     "  JOIN conblock ON conblock.objid = m.objmaster  "+
     "  WHERE m.objtype in (1,2) and m.objactive =1)  "+
-    "  SELECT cb.objid,cb.objmaster,  "+
+    "  SELECT cb.objid,cb.objmaster,rot.typename,  "+
     "  case when objtypeid = 1 then  "+
     "  (select string_agg(rotX.typename, ',')||',INFOBLOCK,DELETE' actionX from rbm_object_type rotX where rotX.objtypemaster = rot.objtypeid) "+
     "  else 'INFO,DELETE' end as actionX, "+
@@ -60,33 +60,13 @@ exports.blockList = function (req, res, next) {
 			return next(error);
 		}
 	});
-	  
-  //}).catch(error=> {
-//		console.log(error);
-//	   if (error instanceof QRE && error.code === qrec.noData) {
-//			res.status(200).json({ entry: obj, message: 'NO_DATE_FOUND', error: error });
-//			return next(error);
-//		} else {
-//			return next(error);
-//		}
-//	});
   
 };
 
 exports.blockInfo = function (req, res, next) {
    console.log(req.params);
    const blockId = req.params.blockId;
-    var obj = {
-        objid: blockId,
-        name: 'TEST EMPTY NAME',
-        city: 'TEST EMPTY CITY',
-        country: 'TEST EMPTY country',
-        distict: 'TEST EMPTY distict',
-        postCode: 'TEST EMPTY postCode',
-        street: 'TEST EMPTY street',
-        number: 'TEST EMPTY number',
-        number: 'TEST EMPTY number',
-    };
+    var obj;
     
     let blockInfoSql = " select  '{'|| string_agg( "+
     " case when (det.objtypedetid = rotd.objtypedetid) then '\"'||rotd.objtypedetname||'\":\"'||det.value||'\"' "+

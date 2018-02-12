@@ -41,8 +41,12 @@ const TRANSLATIONS = {
     'distrtict': 'District',
     'street': 'Street',
     'stnumber': 'Number',
+    'NUMBER': 'Number',
+    'NAME': 'Title',
     'title': 'Title',
-    'DELETE_BLOCK_QUESTION': 'Do you want to delete the block?'
+    'DELETE_BLOCK_QUESTION': 'Do you want to delete the block?',
+    'DELETE_ENTRY_QUESTION': 'Do you want to delete the entrance?',
+    'DELETE_QUESTION': 'Do you want to delete?'
     
   },
   bg: {
@@ -87,8 +91,12 @@ const TRANSLATIONS = {
     'distrtict': 'Квартал',
     'street': 'Име на улица',
     'stnumber': 'Номер',
+    'NUMBER': 'Номер',
+    'NAME': 'Заглавие',
     'title': 'Заглавие',
-    'DELETE_BLOCK_QUESTION': 'Желаете ли да изтриете избрания блок?'
+    'DELETE_BLOCK_QUESTION': 'Желаете ли да изтриете избрания блок?',
+    'DELETE_ENTRY_QUESTION': 'Желаете ли да изтриете избрания вход?',
+    'DELETE_QUESTION': 'Желаете ли да го изтриете?'
 	
   }
 };

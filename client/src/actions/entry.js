@@ -51,9 +51,7 @@ function errorHandler(error) {
   };
 }; 
 
-function requestBlockInfo() {
-   return {type: REQ_BLOCK_INFO} 
-}
+
 
 function receiveBlockInfo(json) {
 	return{
@@ -119,7 +117,7 @@ export function fetchEntryInfo(eid) {
   };  
 }
 
-
+/*
 export function fetchBlockInfo(bid) {
   return function (dispatch) {
 	dispatch(requestBlockInfo());  
@@ -136,34 +134,8 @@ export function fetchBlockInfo(bid) {
 	});
   };  
 }
+*/
 
 
-export function saveBlock({name, objid, city, country, distict, number, postCode, street}) {
-    console.log('saveBlock');
-    console.log(city);
-    return function (dispatch) {
-    axios.post(`${API_URL}/entry/addblock`, { name, objid, city, country, distict, number, postCode, street }
-    ,{ headers: { Authorization: cookie.load('token') }})
-    .then((response) => {
-		console.log('OK');
-        showNotify('KUR OK', SUCCESS_NOTIF );
-		dispatch(fetchEntryList());
-		//} else {
-		//	console.log('NOK');
-        //    showNotify('KUR', SUCCESS_NOTIF );
-		//	dispatch({
-		//		type: ERROR_RESPONSE,
-		//		payload: {
-		//				error: 'OK'
-		//		}
-		//	});
-		//}
-    })
-    .catch((error) => {
-		console.log(error);
-        showNotify('KUR OK', ERROR_NOTIF );
-    });
-  };
-}
 
 

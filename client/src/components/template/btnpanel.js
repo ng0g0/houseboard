@@ -12,7 +12,7 @@ class ButtonPanel extends Component {
 	}
 	
 	render() {
-		const { buttons, target, objid } = this.props;
+		const { buttons, target, objid, type } = this.props;
 		return(<div className="btn-group pull-right">
 			<a className="btn-sm btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown">
 				<span className="glyphicon glyphicon-plus"></span>
@@ -40,7 +40,7 @@ class ButtonPanel extends Component {
 				}		
 			})}
 			</ul>
-            <LayerMaskControl items={buttons} id={objid}/>    
+            <LayerMaskControl items={buttons} id={objid} type={type}/>    
 		</div>);
 	} 
 }

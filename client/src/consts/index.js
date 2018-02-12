@@ -4,6 +4,9 @@ export const viewInfoConst = 'viewInfo';
 export const addBlockConst = 'addBlock'; 
 export const blocksTarget = 'blocks';
 export const DeleteConst = 'Delete';
+export const AddEntranceConst = 'AddEntrance';
+export const BLOCK = 'BLOCK';
+export const ENTRANCE = 'ENTRANCE';
 
 
 export const icons = [

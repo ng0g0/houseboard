@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchBlockList, fetchBlockInfo, deleteBlock } from '../../actions/blocks';
+import { fetchBlockList, fetchBlockInfo, deleteBlock, resetBlockInfo } from '../../actions/blocks';
 import { viewEntry } from '../../actions/entry';
 import {bindActionCreators} from 'redux';
 import Translation from '../locale/translate';
@@ -9,7 +9,14 @@ import ButtonPanel from '../template/btnpanel';
 //import LayerMask from '../layerMask/layermask';
 import AccordionPanel from '../accordion';
 import PropTypes from 'prop-types'; // ES6
-import { blocksTarget,viewInfoConst,DeleteConst } from '../../consts';
+import { change } from 'redux-form';
+import { 
+    blocksTarget,
+    viewInfoConst,
+    DeleteConst,
+    addBlockConst,
+    AddEntranceConst 
+} from '../../consts';
 
 
 class BlockList extends Component {
@@ -31,7 +38,7 @@ class BlockList extends Component {
 	}
 	
 	handleViewClick(target, objid, label ) {
-        console.log(label);
+        //console.log(label);
 		if (target === blocksTarget) {
            var redirect = `/${target}/${objid}`;
             //console.log(redirect);
@@ -42,6 +49,14 @@ class BlockList extends Component {
                 case viewInfoConst:
                     this.props.dispatch(fetchBlockInfo(objid));    
                     break;
+                case addBlockConst:
+                    this.props.dispatch(resetBlockInfo()); 
+                    break;
+                case AddEntranceConst:
+                    this.props.dispatch(change(AddEntranceConst, 'objid', objid));
+                    this.props.dispatch(change(AddEntranceConst, 'name', ''));
+                    this.props.dispatch(change(AddEntranceConst, 'number', ''));
+                    break;
                 //case DeleteConst:
                 //    this.props.dispatch(deleteBlock(objid));    
                 //    break;
@@ -51,7 +66,7 @@ class BlockList extends Component {
         }
         
 	}
-	
+
 	renderBlockItems( block) {
         //console.log('renderBlockItems');
         if (block.items) {
@@ -63,8 +78,10 @@ class BlockList extends Component {
                 //console.log(buttons);
                 return (<div key={it.objid.toString()} className="panel panel-default">
                         <div className="panel-body"> 
-                        <Translation text="ENTRY_NUMBER" />:{details.NUMBER}
-                        <ButtonPanel buttons={buttons} objid={it.objid} target="blocks" 
+                        {Object.entries(details).map(([key,value])=>{
+                            return ( <div key={key}><b><Translation text={key} /></b>:{value.toString()}</div> );
+                            }) }
+                        <ButtonPanel buttons={buttons} objid={it.objid} target="blocks" type={it.typename} 
                         onViewEntry={this.handleViewClick} 
                         />
                         </div>
@@ -87,7 +104,7 @@ class BlockList extends Component {
                     var details = JSON.parse(block.details);
                    // console.log(details);
 					return (
-                        <AccordionPanel objid={block.objid} title={details.NAME} buttons={buttons} key={block.objid}
+                        <AccordionPanel objid={block.objid} title={details.NAME} buttons={buttons} key={block.objid} type={block.typename}
 							handleViewClick={this.handleViewClick}>
                            {  this.renderBlockItems(block)}
 						</AccordionPanel>)
@@ -103,8 +120,8 @@ class BlockList extends Component {
   renderListHeader() {
 	let buttons = ['BLOCK'];
 	return (<div className="panel-heading">
-			<Translation text="BLOCK_LIST" />
-			<ButtonPanel buttons={buttons} target="modal" objid="0" 
+			<span className="bigshit"> <Translation text="BLOCK_LIST" />	</span>
+			<ButtonPanel buttons={buttons} target="modal" objid="0" type="BLOCK"
                 onViewEntry={this.handleViewClick}
             />
 		</div>);
@@ -118,13 +135,10 @@ class BlockList extends Component {
 	} else {
 		 const { block} = this.props;
          //console.log(block);
-		return (<div>
-		<h2> <Translation text="BLOCK_LIST" />	</h2>
-            <div className="panel panel-default">
+		return (<div className="panel panel-default">
 			{this.renderListHeader()}
 			{this.renderListContent(block)}
-			</div>
-		</div>);	
+			</div>);	
 	}
     
   }

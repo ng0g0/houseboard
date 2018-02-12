@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AddBlock from '../blocks/block-add';
-import { addBlockConst,  viewInfoConst, DeleteConst} from '../../consts';
+import AddEntrance from '../blocks/entry-add';
+import { addBlockConst,  viewInfoConst, DeleteConst, AddEntranceConst, BLOCK, ENTRANCE} from '../../consts';
 import Translation from '../locale/translate';
 
 
@@ -14,7 +15,20 @@ class BlockLayer extends Component {
             return (<AddBlock objid={this.props.objid} />);
         }
         if (this.props.layercalled === DeleteConst) {
-            return (<div><Translation text={'DELETE_BLOCK_QUESTION'} /> </div>);
+            switch(this.props.type) {
+                case BLOCK: 
+                    return (<div><Translation text={'DELETE_BLOCK_QUESTION'} /> </div>);
+                    break;
+                case ENTRANCE:
+                    return (<div><Translation text={'DELETE_ENTRY_QUESTION'} /> </div>);
+                    break;
+                default:
+                    return (<div><Translation text={'DELETE_QUESTION'} /> </div>);
+            }                
+            
+        }
+        if ( this.props.layercalled === AddEntranceConst) {
+            return (<AddEntrance />);
         }
         return (<div> test </div>);
         
