@@ -2,7 +2,7 @@ import axios from 'axios';
 import cookie from 'react-cookie';
 //import { showNotify } from './toast';
 import {SUCCESS_NOTIF, ERROR_NOTIF} from '../consts';
-import jsonp from 'jsonp';
+//import jsonp from 'jsonp';
 
 import { 
  REQ_WALMART_LIST,
@@ -52,11 +52,27 @@ function receiveWalmartAPI(json) {
 
 //http://api.walmartlabs.com/v1/items?apiKey=upxrg7rpj4hjew5jbjwqhwkf&itemId=17201599,469836497
 
-
+export function fetchFromWalmarAPI(items) {
+    return function (dispatch) {
+        dispatch(requestWalmartAPI());
+        return axios({
+            url: `${API_WALMART_URL}/v1/items?apiKey=${WALMART_API_KEY}&itemId=${items}`,
+            timeout: 2000,
+			method: 'get',
+        })
+        .then((response) => {
+            dispatch(receiveWalmartAPI(response.data));
+        })
+        .catch((error) => {
+            console.log(error)
+		});
+    };    
+}
 
 // search for 'frog'
+/*
 export function fetchData(items) {
-    return jsonp(`${API_WALMART_URL}/v1/items?apiKey=${WALMART_API_KEY}&itemId=${items}`, null, function (err, data) {
+    return jsonp(, null, function (err, data) {
         if (err) {
             console.error(err.message);
         } else {
@@ -164,16 +180,10 @@ export function fetchFromWalmarAPI(items) {
 		console.log(error)
 	});
     
-    /*
-    
- 
-    
-    
-    */
-
     
   };
 };
+*/
 
 export function fetchWalmarUserList() {
   return function (dispatch) {
