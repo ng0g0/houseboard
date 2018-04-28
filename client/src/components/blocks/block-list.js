@@ -75,7 +75,7 @@ class BlockList extends Component {
             {block.items.map((it) => {
                 var buttons = it.actionx.split(",");
                 var details = JSON.parse(it.details);
-                //console.log(buttons);
+                console.log(buttons);
                 return (<div key={it.objid.toString()} className="panel panel-default">
                         <div className="panel-body"> 
                         {Object.entries(details).map(([key,value])=>{
@@ -102,7 +102,6 @@ class BlockList extends Component {
 				{item.map((block) => {
 					var buttons = block.actionx.split(",");
                     var details = JSON.parse(block.details);
-                   // console.log(details);
 					return (
                         <AccordionPanel objid={block.objid} title={details.NAME} buttons={buttons} key={block.objid} type={block.typename}
 							handleViewClick={this.handleViewClick}>
@@ -134,7 +133,7 @@ class BlockList extends Component {
 		return (<div className='loader'><Translation text="Loading" />...</div>);
 	} else {
 		 const { block} = this.props;
-         //console.log(block);
+         console.log(block);
 		return (<div className="panel panel-default">
 			{this.renderListHeader()}
 			{this.renderListContent(block)}
@@ -145,6 +144,25 @@ class BlockList extends Component {
 }
 
 
+// helper
+/*
+function convertItemDetails(myArray){
+    var object = {};
+    for (var i=0; i < myArray.length; i++) {
+        var value =  myArray[i].detname;
+        if (myArray[i].dettype === 3) {
+            Object.assign(object, {BLOCK_ADDRESS: value});  ;
+        }
+        if (myArray[i].dettype === 4) {
+            Object.assign(object, {NUMBER: value});
+        }
+        if (myArray[i].dettype === 8) {
+            Object.assign(object, {NAME: value});  ;
+        }
+    }
+    return object;
+}
+*/
 
 function mapStateToProps(state) {
   return {

@@ -5,6 +5,7 @@ import userReducer from './user_reducer';
 import langReducer from './lang_reducer';
 import entryReducer from './entry_reducer';
 import blockReducer from './block_reducer';
+import walmartReducer from './walmart_reducer';
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   user: userReducer,
   lang: langReducer,
   entry: entryReducer,
-  block: blockReducer
+  block: blockReducer,
+  walmart: walmartReducer
   
   
 });

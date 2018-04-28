@@ -6,10 +6,17 @@ import Translation from '../locale/translate';
 import { saveEntry } from '../../actions/blocks';
 import {bindActionCreators} from 'redux';
 import { AddEntranceConst } from '../../consts';
+import {required, maxLength15, minLength2} from '../../consts/validation';
 
 
 function validate(formProps) {
   const errors = {};
+  
+  //if (!formProps.name) {
+  //  errors.name = 'FIELD_NAME_MISSING';
+ // }
+  
+  errors.name = required(formProps.name);
   return errors;
 }
 
@@ -20,7 +27,7 @@ const renderField = ({
 }) =>
   ( <div>
       <input className="form-control" {...input} type={type} />
-	  {touched &&  error &&   <div className="error">  {error}  </div>}
+	  {touched &&  error &&   <div className="error"><Translation text={error} /></div>}
     </div>
   );
   
@@ -40,7 +47,8 @@ class AddEntrance extends Component {
             <div className="row">
                <div className="col-md-12">
                 <label><Translation text="title" /></label>
-                <Field name="name" className="form-control" component={renderField} type="text" />
+                <Field name="name" className="form-control" component={renderField} type="text" 
+                />
                 <Field name="objid" style={{ height: 0 }} component="input" type="hidden" />
               </div>
               <div className="col-md-12">
@@ -58,15 +66,12 @@ class AddEntrance extends Component {
 function mapStateToProps(state) {
    return {
     block: state.block.blockInfo,
-//	setupComplete: state.block.loadingSpinnerInfo,
-//    initialValues: ownProp,
 	errorMessage: state.block.error
   };
 }
 const mapDispatchToProps = (dispatch) =>   
   bindActionCreators({
     saveEntry
-  //  fetchBlockInfo
 }, dispatch);
 
 function  handleFormSubmit(formProps, dispatch) {

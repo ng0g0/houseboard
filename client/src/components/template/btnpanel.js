@@ -22,19 +22,20 @@ class ButtonPanel extends Component {
 				var butname = icons.find(function(e) {
 					return e.name === btn;
 				});
-				let icon = butname.icon;
+                //console.log(btn);
+				let icon = (butname.icon) ? butname.icon : 'glyphicon glyphicon-fire';
 				let layerid = `${butname.target}-${this.props.objid}`;
 				if (butname.target.startsWith("#")) {
                     return (<li key={btn}> 
 						<a href="#" className="dropdown-item" data-toggle="modal" data-target={layerid}
                         onClick={()=> this.props.onViewEntry(butname.target, objid, butname.label) }> 
-                        <span className={butname.icon}></span>&nbsp;<Translation text={butname.label} />
+                        <span className={icon}></span>&nbsp;<Translation text={butname.label} />
 						</a>
 						</li>);
 				} else {
                     return (<li key={btn}><Link  className="dropdown-item"  
 								onClick={()=> this.props.onViewEntry(butname.target, objid, butname.label) }>
-						<span className={butname.icon}></span>&nbsp;
+						<span className={icon}></span>&nbsp;
 							<Translation text={butname.label} /></Link>
 						</li>);
 				}		

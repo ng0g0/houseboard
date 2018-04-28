@@ -22,6 +22,8 @@ import Dashboard from './components/dashboard/dashboard';
 import BlockList from './components/blocks/block-list';
 import BlockView from './components/blocks/block-view';
 import ViewProfile from './components/dashboard/profile/view-profile';
+
+import UserWalmartList from './components/walmart/user-items';
 //import Inbox from './components/dashboard/messaging/inbox';
 //import Conversation from './components/dashboard/messaging/conversation';
 //import ComposeMessage from './components/dashboard/messaging/compose-message';
@@ -47,6 +49,7 @@ export default (
     <Route path="forgot-password" component={ForgotPassword} />
     <Route path="reset-password/:resetToken" component={ResetPassword} />
     <Route path="profile" component={RequireAuth(ViewProfile)} />
+    <Route path="walmart" component={RequireAuth(UserWalmartList)} />
     <Route path="dashboard">
       <IndexRoute component={RequireAuth(Dashboard)} />
     </Route>

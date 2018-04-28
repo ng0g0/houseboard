@@ -73,8 +73,37 @@ body {
 	text-decoration: none !important
 }
 
+.grouplink{
+	text-decoration: none !important;
+    color: #008489;
+}
+
+.btnborder {
+    margin-top: 10px;
+    margin-bottom: 10px;  
+}
+
+.linche {
+    border-bottom: 1px solid #DBDBDB !important;
+    border-top: 1px solid #DBDBDB !important;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.slider {
+    width: 40px
+}
+
+.blockcolor {
+    background-color: #999;
+}
+
+.entryfloor {
+    margin-bottom: 0px;
+}
 
 .blockche {
+  margin-top: 0px;
   margin-bottom: 0px;
   border-radius: 0px;
 }

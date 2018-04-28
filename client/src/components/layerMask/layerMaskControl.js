@@ -16,7 +16,7 @@ class LayerMaskControl extends Component {
 			});
 			if (butname.target.startsWith("#")) {
                 let layerid = `${butname.target.substring(1)}-${this.props.id}`;
-				return (<LayerMask layerid={layerid} header={butname.label} key={butname.label} objid={this.props.id}>
+				return (<LayerMask layerid={layerid} header={butname.label} key={butname.label} objid={this.props.id} type={this.props.type}>
                             <BlockLayer layercalled={butname.label} objid={this.props.id} type={this.props.type}/>
                         </LayerMask>);
 			} 	

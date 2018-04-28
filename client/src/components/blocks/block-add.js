@@ -5,10 +5,15 @@ import { Field, reduxForm } from 'redux-form';
 import Translation from '../locale/translate';
 import { saveBlock, fetchBlockInfo } from '../../actions/blocks';
 import {bindActionCreators} from 'redux';
+import AccGroup from '../accordion/accordiongroup';
+import {required} from '../../consts/validation';
 
 
 function validate(formProps) {
   const errors = {};
+  
+   errors.name = required(formProps.name);
+          
   return errors;
 }
 
@@ -28,14 +33,6 @@ class AddBlock extends Component {
     constructor(props) {
 		super(props);
 	}
-    
-   // componentDidMount() {
-	//	if (this.props.objid != 0) {
-    //        console.log(this.props.objid);
-	//		this.props.dispatch(fetchBlockInfo());
-    //        
-	//	}
-	//} 
       
     render () {
         const { handleSubmit } = this.props;
@@ -51,21 +48,22 @@ class AddBlock extends Component {
                 <Field name="objid" style={{ height: 0 }} component="input" type="hidden" />
               </div>
                </div>
+            <AccGroup title="addBlockAddress" >   
             <div className="row">
-              <div className="col-md-6">
-                <label><Translation text="country" /></label>
-                <Field name="country" className="form-control" component={renderField} type="text" />
-              </div>
-              <div className="col-md-6">
-                <label><Translation text="city" /></label>
-                <Field name="city" className="form-control" component={renderField} type="text" />
-              </div>
+                <div className="col-md-12">
+                    <label><Translation text="country" /></label>
+                    <Field name="country" className="form-control" component={renderField} type="text" />
+                </div>
             </div>
             <div className="row">
-              <div className="col-md-12">
-                <label><Translation text="postCode" /></label>
-                <Field name="postCode" className="form-control" component={renderField} type="text" />
-              </div>
+                <div className="col-md-6">
+                    <label><Translation text="city" /></label>
+                    <Field name="city" className="form-control" component={renderField} type="text" />
+                </div>
+                <div className="col-md-6">
+                    <label><Translation text="postCode" /></label>
+                    <Field name="postCode" className="form-control" component={renderField} type="text" />
+                </div>
             </div>
             <div className="row">
               <div className="col-md-12">
@@ -79,12 +77,15 @@ class AddBlock extends Component {
                 <Field name="street" className="form-control" component={renderField} type="text" />
               </div>
             </div>
-            <div className="row">
-              <div className="col-md-12">
-                <label><Translation text="stnumber" /></label>
-                <Field name="number" className="form-control" component={renderField} type="text" />
-              </div>
-            </div>
+            </AccGroup>
+            <AccGroup title="addBlockNumber" collapsed="Y" >
+                <div className="row">
+                  <div className="col-md-12">
+                    <label><Translation text="stnumber" /></label>
+                    <Field name="number" className="form-control" component={renderField} type="text" />
+                  </div>
+                </div>
+            </AccGroup>
            
           </form>); 
         }

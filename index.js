@@ -1,6 +1,7 @@
 const UserController = require('./api/controllers/authentication');
 const EntryController = require('./api/controllers/entrie');
 const BlockController = require('./api/controllers/block');
+const WalmartController = require('./api/controllers/walmart');
 
 const express = require('express');
 const passport = require('passport');
@@ -13,13 +14,16 @@ const app = express();
 const bodyParser = require('body-parser');
 const config = require('./config/main');
 const favicon  = require('serve-favicon');
+const cors = require('cors');
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/prod')));
-app.use(favicon(path.join(__dirname,'/client/prod/favicon.ico')));
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+
+var corsOptions = {
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204 
+  credentials: true, 
+  origin: true
+}
 
 
 app.use(function(req, res, next) {
@@ -29,6 +33,15 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 }); 
+
+
+app.use(cors(corsOptions));
+app.use(express.static(path.join(__dirname, 'client/prod')));
+app.use(favicon(path.join(__dirname,'/client/prod/favicon.ico')));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 
 const apiRoutes = express.Router(),
     authRoutes = express.Router(),
@@ -58,8 +71,12 @@ const apiRoutes = express.Router(),
   apiRoutes.use('/entry', entryRoutes);
   //entryRoutes.get('/list', requireAuth, EntryController.listEntry);
   entryRoutes.post('/add', requireAuth, EntryController.entryAdd);
+  entryRoutes.post('/:entryId/floor', requireAuth, EntryController.updateFloor);
+  entryRoutes.post('/:entryId/appartment', requireAuth, EntryController.updateAppartment);
+   entryRoutes.post('/:entryId/:apartId', requireAuth, EntryController.apartmentInfo);
   entryRoutes.get('/:entryId', requireAuth, EntryController.viewEntry);
-   
+  
+
   //---------------------
   //  Block 
   
@@ -77,7 +94,11 @@ const apiRoutes = express.Router(),
   apiRoutes.use('/user', userRoutes);
 
   // View user profile route
+  userRoutes.get('/walmartList', requireAuth, WalmartController.getUserItemList);
   userRoutes.get('/:userId', requireAuth, UserController.viewProfile);
+  //userRoutes.get('/items/:userId', requireAuth, WalmartController.getUserItems);
+  
+    
   userRoutes.post('/:userId', UserController.userUpdate);
   userRoutes.delete('/:userId', UserController.userDelete);
 

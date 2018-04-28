@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import Translation from '../locale/translate';
 import PropTypes from 'prop-types'; // ES6
 import { submit } from 'redux-form'
-import { addBlockConst,  viewInfoConst, DeleteConst, AddEntranceConst } from '../../consts';
+import { addBlockConst,  viewInfoConst, DeleteConst, AddEntranceConst,AddFloorConst } from '../../consts';
 import { deleteBlock } from '../../actions/blocks';
 
 class LayerMask extends Component {
@@ -17,11 +17,15 @@ class LayerMask extends Component {
         this.props.dispatch(submit(AddEntranceConst));
     }
     
+    handleSaveFloorsClick({ dispatch }) {
+        this.props.dispatch(submit(AddFloorConst));
+    }
+    
     
   
     handleDeleteBlockClick({ dispatch }) {
         console.log(this.props.objid);
-        this.props.dispatch(deleteBlock(this.props.objid));
+        this.props.dispatch(deleteBlock(this.props.objid, this.props.type));
     }	
   
   
@@ -43,6 +47,10 @@ class LayerMask extends Component {
     if (header === AddEntranceConst) {
          return(<button type="button" className="btn btn-primary" data-dismiss="modal"  
                 onClick={this.handleSaveNewEntranceClick.bind(this)} > Save </button>) 
+    }
+    if (header == AddFloorConst) {
+         return(<button type="button" className="btn btn-primary" data-dismiss="modal"  
+                onClick={this.handleSaveFloorsClick.bind(this)} > Save Floor </button>) 
     }
     
     return(<button type="button" className="btn btn-primary" data-dismiss="modal"> OK </button>)

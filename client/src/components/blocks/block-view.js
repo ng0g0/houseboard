@@ -7,24 +7,67 @@ import { isUndefined } from 'underscore';
 import ButtonPanel from '../template/btnpanel';
 import LayerMask from '../layerMask/layermask';
 import PropTypes from 'prop-types'; // ES6
+import { AddFloorConst, AddApartmentConst } from '../../consts';
+import { change } from 'redux-form';
+
 
 class BlockView extends Component {
     static contextTypes = {
 		router: PropTypes.object,
 	}  
 	constructor(props) {
-    super(props);
-  }
+        super(props);
+        this.handleViewClick = this.handleViewClick.bind(this);
+    }
   
-  componentDidMount() {
-	if (!this.props.entry) {
-		this.props.dispatch(viewEntry(this.props.params.blockid));
-	}
-  }
+    componentDidMount() {
+        console.log('componentDidMount');
+        console.log(this.props);
+        if (!this.props.entry) {
+            this.props.dispatch(viewEntry(this.props.params.blockid));
+        }
+    }
   
     handleViewClick(target, objid, label ) {
+        
+        function retFloors( ent) {
+            function compare(a,b) {
+                if (parseInt(a.NUMBER) < parseInt(b.NUMBER))  return 1;
+                if (parseInt(a.NUMBER) > parseInt(b.NUMBER))  return -1;
+                return 0;
+            }
+            let floor = []; 
+            
+            if (ent) {
+                if (ent[0].items) {
+                    console.log(ent);
+                    let x = ent[0].items;
+                    x.forEach(function(item) {
+                        //console.log(item);
+                        var details = JSON.parse(item.details); 
+                        floor.push({ NUMBER: details.NUMBER})
+                    });
+                }
+            }
+            floor.sort(compare);
+            return floor;
+        }
         console.log(label);
         console.log(objid);
+        //console.log(this.props.entry);
+        switch(label) {
+            case AddFloorConst:
+                var floors = retFloors(this.props.entry);
+                console.log(floors);
+                this.props.dispatch(change(AddFloorConst, 'floors', floors));
+                this.props.dispatch(change(AddFloorConst, 'objid', objid));
+            break;
+            case AddApartmentConst:
+                console.log(label);
+              break;
+            default:
+                console.log(label);
+        }
     }
 
   
@@ -54,10 +97,11 @@ class BlockView extends Component {
                 var details = JSON.parse(ap.details); 
                 console.log(details);
                 return (<div className={`col-xs-${colItems}`} key={ap.objid}>
-                        <div className="panel panel-default">
+                        <div className="panel panel-default blockcolor">
                             <div className="panel-body">
                             <div>
-                                //	
+                            <ButtonPanel buttons={buttons} objid={ap.objid} target="modal" type={ap.typename} 
+                                    onViewEntry={this.handleViewClick} />
                             </div>	
                                 <img className={classNum} src="../images/apartment.jpg" alt="entry" height="80px"/>
                             </div>
@@ -65,61 +109,69 @@ class BlockView extends Component {
                         </div>);})	
             }
         </div>);
-	} else {
-		return (<div className="row"><div className="col-sm-12"></div></div>);
 	}		
   }
   
-  //<ButtonPanel buttons={buttons} target="modal" />
+  
+  renderEntry( entry , floor) {
+	//console.log(floor);	
+    if (floor === "0") {
+        var buttons = entry.actionx.split(",");
+	return (<div className="panel panel-default entryfloor blockcolor">
+				<div className="panel-body">
+				<div className="row">
+					<div className="col-xs-12">
+                        <ButtonPanel buttons={buttons} target="modal" objid={entry.objid} type={entry.typename} onViewEntry={this.handleViewClick} />
+                        <img className="center-block" src="../images/entrance.jpg" alt="entry" height="80px"/>
+                    </div>
+                </div>
+				</div>
+			</div>);    
+    }
+	
+  }
+  //
+  
 
   renderFloors( entry ) {
 	function compare(a,b) {
-		if (a.value < b.value)  return 1;
-		if (a.value > b.value)  return -1;
+        var ad = JSON.parse(a.details);
+        var bd = JSON.parse(b.details);
+		if (parseInt(ad.NUMBER) < parseInt(bd.NUMBER))  return 1;
+		if (parseInt(ad.NUMBER) > parseInt(bd.NUMBER))  return -1;
 		return 0;
 	}
     if (!isUndefined(entry.items)) {
 		entry.items.sort(compare);
+        //console.log(entry);
         return(<div >
           {entry.items.map((it) => {
               var buttons = it.actionx.split(",");
-              var details = JSON.parse(ap.details); 
-              console.log(details);
-              return (<div key={it.value} className="panel panel-default blockche" >
-                        <div className="panel-body"> 
-                        { this.renderApps(it)}
+              var details = JSON.parse(it.details); 
+              //console.log(details);
+              return (<div key={details.NUMBER} className="panel panel-default blockche" >
+                        <div className="panel-body blockcolor">
+                        <div className="row">  
+                        <div className="col-sm-1"><Translation text="FLOOR" />: {details.NUMBER} 
+                                <ButtonPanel buttons={buttons} target="modal" objid={it.objid} type={it.typename} 
+                                onViewEntry={this.handleViewClick} />	                        
                         </div>
-                        <div className="panel-heading">
-                            <Translation text="FLOOR" />: {details.number} 
-                            //
+                        <div className="col-sm-11">
+                            { this.renderEntry(entry, details.NUMBER)}
+                            { this.renderApps(it)}
+                        </div>
                         </div>
                         
+                        </div>
                     </div>)
           })}
 		</div>
 	  );  
 	  }	
   }
-  //<ButtonPanel buttons={buttons} target="modal" />	
   
-  renderEntry( entry ) {
-	console.log(entry);	
-	var buttons = entry.actionx.split(",");
-	return (<div className="panel panel-default">
-				<div className="panel-body">
-				<div className="row">
-					<div className="col-xs-12"><img className="center-block" src="../images/entrance.jpg" alt="entry" height="80px"/></div>
-				</div>
-				</div>
-				<div className="panel-heading">
-				&nbsp;
-                    <ButtonPanel buttons={buttons} target="modal" objid={entry.objid} type={entry.typename}
-                        onViewEntry={this.handleViewClick}
-                    />
-				</div>
-			</div>);
-  }
-  //<ButtonPanel buttons={buttons} />
+  
+  
   
   render () {
 	// console.log(this.props);
@@ -138,24 +190,24 @@ class BlockView extends Component {
         }
 		if (entry.length > 0) {
 			let entryNum = entry[0];
+            console.log(entryNum);
 			return ( <div className="panel panel-default"> 
 					<div className="panel-heading">ADDRESS</div>
-					<div className="panel-body">
+					<div className="panel-body blockcolor">
 						{this.renderFloors( entryNum )}	
-						{this.renderEntry( entryNum )}
-						
 					</div>
 				</div>);	
 		} else {
 			return(<div className="panel panel-default"> 
 					<div className="panel-heading">ADDRESS</div>
 					<div className="panel-body">
-						</div>
+					</div>
 				</div>);
 		}
 	}
   }
 }
+
 	
 function mapStateToProps(state) {
   return {

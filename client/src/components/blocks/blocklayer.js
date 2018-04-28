@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import AddBlock from '../blocks/block-add';
 import AddEntrance from '../blocks/entry-add';
-import { addBlockConst,  viewInfoConst, DeleteConst, AddEntranceConst, BLOCK, ENTRANCE} from '../../consts';
+import AddFloor from '../blocks/floor-add';
+import AddAppartment from '../blocks/appartment-add';
+
+import { addBlockConst,  viewInfoConst, DeleteConst, AddEntranceConst, 
+    BLOCK, ENTRANCE, 
+    AddFloorConst, AddApartmentConst
+} from '../../consts';
 import Translation from '../locale/translate';
 
 
@@ -30,6 +36,13 @@ class BlockLayer extends Component {
         if ( this.props.layercalled === AddEntranceConst) {
             return (<AddEntrance />);
         }
+        if ( this.props.layercalled === AddFloorConst) {
+            return (<AddFloor />);
+        }
+        if ( this.props.layercalled === AddApartmentConst) {
+            return (<AddAppartment />);
+        }
+        
         return (<div> test </div>);
         
     }

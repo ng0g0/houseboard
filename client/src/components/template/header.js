@@ -15,7 +15,7 @@ class HeaderTemplate extends Component {
                     <Link to="/blocks"><Translation text="Building" /></Link>
                 </li>
                 <li key={`${3}header`}>
-                    <Link to="/"><Translation text="Reports" /></Link>
+                    <Link to="/walmart"><Translation text="Walmart" /></Link>
                 </li>
             </ul>);
         } 

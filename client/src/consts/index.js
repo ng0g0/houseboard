@@ -5,9 +5,11 @@ export const addBlockConst = 'addBlock';
 export const blocksTarget = 'blocks';
 export const DeleteConst = 'Delete';
 export const AddEntranceConst = 'AddEntrance';
+export const AddFloorConst = 'AddFloor';
 export const BLOCK = 'BLOCK';
 export const ENTRANCE = 'ENTRANCE';
-
+export const AddApartmentConst = 'AddApartment';
+export const APARTMENT = 'APARTMENT';
 
 export const icons = [
 	{
@@ -85,6 +87,28 @@ export const icons = [
 		icon: 'glyphicon glyphicon-info-sign',
 		label: 'viewInfo',
 		action: 'viewInfo',
+		target: '#infoLayer'
+	},
+    {
+		name: 'INFOENTRY' , 
+		icon: 'glyphicon glyphicon-info-sign',
+		label: 'viewEntry',
+		action: 'viewEntry',
+		target: '#infoLayer'
+	},
+    {
+		name: 'FLOORINFO' , 
+		icon: 'glyphicon glyphicon-info-sign',
+		label: 'viewFloor',
+		action: 'viewFloor',
+		target: '#infoLayer'
+	},
+    
+    {
+		name: 'APINFO' , 
+		icon: 'glyphicon glyphicon-info-sign',
+		label: 'viewAppartment',
+		action: 'viewAppartment',
 		target: '#infoLayer'
 	}
 	,
