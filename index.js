@@ -17,7 +17,11 @@ const favicon  = require('serve-favicon');
 const cors = require('cors');
 
 // Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/prod')));
+app.use(favicon(path.join(__dirname,'/client/prod/favicon.ico')));
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 var corsOptions = {
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204 
@@ -25,7 +29,7 @@ var corsOptions = {
   origin: true
 }
 
-
+app.use(cors(corsOptions));
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
@@ -34,13 +38,6 @@ app.use(function(req, res, next) {
   next();
 }); 
 
-
-app.use(cors(corsOptions));
-app.use(express.static(path.join(__dirname, 'client/prod')));
-app.use(favicon(path.join(__dirname,'/client/prod/favicon.ico')));
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 
 const apiRoutes = express.Router(),
