@@ -1,8 +1,19 @@
 const pgp = require('pg-promise')(/*options*/);
 const db = require('../connection/postgres');
+var request = require('request');
 
 var QRE = pgp.errors.QueryResultError;
 var qrec = pgp.errors.queryResultErrorCode;
+
+exports.getWalmartItems = function (req, res, next) {
+    console.log(req.params);
+   const itemId = req.params.itemId;
+   return request({
+            uri: `https://api.walmartlabs.com/v1/items?apiKey=upxrg7rpj4hjew5jbjwqhwkf&itemId=${itemId}`,
+        }).pipe(res);
+    
+};
+
 
 
 exports.getUserItems = function (req, res, next) {

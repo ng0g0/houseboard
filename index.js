@@ -14,7 +14,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const config = require('./config/main');
 const favicon  = require('serve-favicon');
-//const cors = require('cors');
+
+
+
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/prod')));
@@ -28,6 +30,7 @@ app.use(bodyParser.json());
 //  credentials: true, 
 //  origin: true
 //}
+
 
 //app.use(cors(corsOptions));
 app.use(function(req, res, next) {
@@ -44,8 +47,9 @@ const apiRoutes = express.Router(),
     authRoutes = express.Router(),
     userRoutes = express.Router(),
     blockRoutes = express.Router(),
-	entryRoutes = express.Router();
-	
+	entryRoutes = express.Router(),
+    walmartRouter = express.Router();
+
 	
 	// Set auth routes as subgroup/middleware to apiRoutes
   apiRoutes.use('/auth', authRoutes);
@@ -95,16 +99,21 @@ const apiRoutes = express.Router(),
   userRoutes.get('/:userId', requireAuth, UserController.viewProfile);
   //userRoutes.get('/items/:userId', requireAuth, WalmartController.getUserItems);
   
-    
   userRoutes.post('/:userId', UserController.userUpdate);
   userRoutes.delete('/:userId', UserController.userDelete);
 
+    apiRoutes.use('/walmart', walmartRouter);
+    walmartRouter.get('/item/:itemId', WalmartController.getWalmartItems);	
+
+  
   // Test protected route
    apiRoutes.get('/protected', requireAuth, (req, res) => {
     res.send({ content: 'The protected test route is functional!' });
   });
 
 app.use('/api', apiRoutes);
+
+
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.

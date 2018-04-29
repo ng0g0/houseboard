@@ -39,7 +39,7 @@ function returnClientUrl() {
 
 export const API_URL = returnApiUrl() ;
 export const CLIENT_ROOT_URL = returnClientUrl();
-export const API_WALMART_URL = 'https://api.walmartlabs.com';
+export const API_WALMART_URL = 'http://api.walmartlabs.com';
 export const WALMART_API_KEY = 'upxrg7rpj4hjew5jbjwqhwkf';
 
 export function setLang(lang) {

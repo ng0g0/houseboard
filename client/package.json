@@ -50,5 +50,5 @@
     "build:prod": "webpack --progress --profile --colors",
     "start": "webpack-dev-server --open"
   },
-  "proxy": "https://localhost:5000"
+  "proxy": "http://localhost:5000"
 }
